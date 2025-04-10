@@ -1,0 +1,181 @@
+name: cudddle
+description: A new Flutter project.
+# The following line prevents the package from being accidentally published to
+# pub.dev using `flutter pub publish`. This is preferred for private packages.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.6 <4.0.0'
+
+# Dependencies specify other packages that your package needs in order to work.
+# To automatically upgrade your package dependencies to the latest versions
+# consider running `flutter pub upgrade --major-versions`. Alternatively,
+# dependencies can be manually updated by changing the version numbers below to
+# the latest version available on pub.dev. To see which dependencies have newer
+# versions available, run `flutter pub outdated`.
+dependencies:
+  flutter:
+    sdk: flutter
+
+  flutter_localizations:
+    sdk: flutter
+  # localizations and datetime formatting
+  intl: ^0.19.0
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+  cupertino_icons: ^1.0.2
+
+  # rendering svg files
+  flutter_svg: ^2.0.10+1
+
+  # firebase services 
+  firebase_core: ^2.17.0
+
+  # local persistence
+  shared_preferences: ^2.0.15
+
+  # declarative routing 
+  # auto_route: ^5.0.4
+  auto_route: ^8.3.0
+
+  # state management 
+  flutter_hooks: ^0.18.5+1
+  hooks_riverpod: ^2.1.1
+
+  # loading .env files 
+  flutter_dotenv: ^5.0.2
+
+  # displaying flags 
+  flag: ^7.0.0
+
+  # http requests
+  dio: ^4.0.6
+
+  # Image picker
+  image_picker: ^1.1.2
+
+  freezed_annotation: ^2.2.0
+  json_annotation: ^4.8.0
+  # auto_route_generator: ^5.0.3
+  auto_route_generator: ^8.1.0
+  flutter_card_swiper: ^7.0.1
+  flutter_inappwebview: ^6.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  # The "flutter_lints" package below contains a set of recommended lints to
+  # encourage good coding practices. The lint set provided by the package is
+  # activated in the `analysis_options.yaml` file located at the root of your
+  # package. See that file for information about deactivating specific lint
+  # rules and activating additional ones.
+  flutter_lints: ^2.0.0
+  flutter_launcher_icons: "^0.11.0"
+
+  build_runner: ^2.3.3
+  freezed: ^2.3.2
+  json_serializable: ^6.6.0
+
+# launcher icons configuration
+flutter_icons:
+  android: "ic_launcher"
+  ios: true
+  remove_alpha_ios: true
+  image_path: "assets/pngs/app_icon.png"
+
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+
+# The following section is specific to Flutter packages.
+flutter:
+
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
+  generate: true
+
+  # To add assets to your application, add an assets section, like this:
+  assets:
+    # - assets/pngs/
+    - assets/fonts/
+
+    - assets/icons/linear_icons/
+    - assets/icons/misc_icons/
+
+    - assets/icons/tabs_icons/active_tab/
+    - assets/icons/tabs_icons/inactive_tab/
+
+    - assets/logo/app_logo/
+    - assets/logo/social_logo/
+
+    - assets/icons/navigation_icons/
+
+    - assets/dev/
+
+    - .env
+
+  # An image asset can refer to one or more resolution-specific "variants", see
+  # https://flutter.dev/assets-and-images/#resolution-aware
+
+  # For details regarding adding assets from package dependencies, see
+  # https://flutter.dev/assets-and-images/#from-packages
+
+  # To add custom fonts to your application, add a fonts section here,
+  # in this "flutter" section. Each entry in this list should have a
+  # "family" key with the font family name, and a "fonts" key with a
+  # list giving the asset and other descriptors for the font. For
+  # example:
+  fonts:
+    - family: General Sans
+      fonts:
+        - asset: assets/fonts/general_sans/GeneralSans-Bold.otf
+          weight: 700
+
+        - asset: assets/fonts/general_sans/GeneralSans-Semibold.otf
+          weight: 600
+
+        - asset: assets/fonts/general_sans/GeneralSans-Medium.otf
+          weight: 500
+
+        - asset: assets/fonts/general_sans/GeneralSans-Regular.otf
+          weight: 400
+          
+        - asset: assets/fonts/general_sans/GeneralSans-Light.otf
+          weight: 300
+
+        - asset: assets/fonts/general_sans/GeneralSans-Extralight.otf
+          weight: 200
+
+    - family: Athletics
+      fonts:
+        - asset: assets/fonts/athletics/Athletics-Black.otf
+          weight: 900
+
+        - asset: assets/fonts/athletics/Athletics-ExtraBold.otf
+          weight: 800
+
+        - asset: assets/fonts/athletics/Athletics-Bold.otf
+          weight: 700
+
+        - asset: assets/fonts/athletics/Athletics-Medium.otf
+          weight: 500
+
+        - asset: assets/fonts/athletics/Athletics-Regular.otf
+          weight: 400
+
+        - asset: assets/fonts/athletics/Athletics-Light.otf
+          weight: 300
+
+  #   - family: Trajan Pro
+  #     fonts:
+  #       - asset: fonts/TrajanPro.ttf
+  #       - asset: fonts/TrajanPro_Bold.ttf
+  #         weight: 700
+  #
+  # For details regarding fonts from package dependencies,
+  # see https://flutter.dev/custom-fonts/#from-packages

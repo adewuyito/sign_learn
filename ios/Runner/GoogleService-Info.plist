@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>781039824244-da4g7iolevfuvepda09pih31chm90o43.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.781039824244-da4g7iolevfuvepda09pih31chm90o43</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBnLWso9DSqE4n6NtSY8sxBs-iae4nBpug</string>
+	<key>GCM_SENDER_ID</key>
+	<string>781039824244</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>come.qbase.signLearn</string>
+	<key>PROJECT_ID</key>
+	<string>sign-learn-3e2d3</string>
+	<key>STORAGE_BUCKET</key>
+	<string>sign-learn-3e2d3.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:781039824244:ios:2d668594b6905622f61021</string>
+</dict>
+</plist>

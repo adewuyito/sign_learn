@@ -1,0 +1,91 @@
+import 'package:sign_learn/routes/sign_learn_router.gr.dart';
+
+import 'route_guard.dart';
+import 'package:flutter/material.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+// part 'sign_learn_router.gr.dart';
+
+final signRouteProvider = Provider<SignRouter>((ref) {
+  return SignRouter(signAuthGuard: ref.watch(authGuardProvider));
+});
+
+class TransitionsBuilder {
+  static Widget fadeTransition(
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+    Widget child,
+  ) {
+    /// you get an animation object and a widget
+    /// make your own transition
+    return FadeTransition(opacity: animation, child: child);
+  }
+}
+
+@AutoRouterConfig(replaceInRouteName: 'Page|View|Screen,Route')
+class SignRouter extends RootStackRouter {
+  SignRouter({required this.signAuthGuard});
+  AuthGuard signAuthGuard;
+
+  @override
+  List<AutoRoute> get routes => [
+        // ~ Initial routes
+        routeWithTransition(
+          initial: false,
+          page: LoginRoute.page,
+          // keepInHistory: false,
+        ),
+        routeWithTransition(
+          initial: false,
+          page: SignupRoute.page,
+          // keepInHistory: false,
+        ),
+
+        //  ~ Home Routes
+        routeWithTransition(
+          initial: true,
+          page: SkeletonTabRoute.page,
+          children: [
+            routeWithTransition(page: HomeRoute.page),
+            routeWithTransition(page: DictionaryRoute.page),
+            routeWithTransition(page: ProfileRoute.page),
+          ],
+          // guards: [signAuthGuard],
+        ),
+        // ~ Settings Routes
+        routeWithTransition(initial: false, page: SettingsRoute.page),
+
+        // ~ Lesson Routes
+        routeWithTransition(initial: false, page: LessonListRoute.page),
+
+        routeWithTransition(initial: false, page: LessonDetailRoute.page),
+      ];
+
+  CustomRoute routeWithTransition({
+    required PageInfo page,
+    bool initial = false,
+    String? path,
+    Widget Function(
+      BuildContext,
+      Animation<double>,
+      Animation<double>,
+      Widget,
+    )? transitionsBuilder = TransitionsBuilders.fadeIn,
+    List<AutoRoute>? children,
+    List<AutoRouteGuard>? guards,
+    bool keepInHistory = true,
+  }) {
+    return CustomRoute(
+      path: path,
+      page: page,
+      initial: initial,
+      transitionsBuilder: transitionsBuilder,
+      duration: Duration(milliseconds: 400),
+      children: children,
+      guards: guards ?? [],
+      keepHistory: keepInHistory,
+    );
+  }
+}

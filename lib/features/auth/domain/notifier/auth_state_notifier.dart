@@ -52,13 +52,13 @@ class AuthStateNotifier extends StateNotifier<AuthState> {
       state = switch (result) {
         AuthSuccess() => () {
             final userId = _authenticator.userId; // ~ Id Not set yet
-            ref.read(userNotiferProvider.notifier).updateUser(
-                  id: userId!,
-                  name: _authenticator.displayName,
-                  email: _authenticator.email,
-                  displayImage: _authenticator.displayImage ??
-                      _authenticator.profileDefaultImage,
-                );
+            // ref.read(userNotiferProvider.notifier).updateUser(
+            //       id: userId!,
+            //       name: _authenticator.displayName,
+            //       email: _authenticator.email,
+            //       displayImage: _authenticator.displayImage ??
+            //           _authenticator.profileDefaultImage,
+            //     );
             if (context.mounted) {
               SnackbarUtils.of(context)
                   .signSnackBar("Logged in Successfully", false);

@@ -1,10 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sign_learn/common/components/components.dart';
 
 import 'package:sign_learn/core/constants/constants.dart';
+import 'package:sign_learn/features/auth/domain/providers/auth_state_provider.dart';
 import 'package:sign_learn/features/lessons/data/models/category_levels.dart';
 import 'package:sign_learn/features/lessons/presentation/widgets/lesson_list_view.dart';
 import 'package:sign_learn/features/profile/riverpod/user_payload_provider.dart';
@@ -23,8 +25,17 @@ class HomeView extends ConsumerStatefulWidget {
 class _HomeViewState extends ConsumerState<HomeView> {
   @override
   void initState() {
-    ref.read(userNotiferProvider.notifier).initUser();
     super.initState();
+
+    // // Schedule the provider update to run after the widget is built
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   if (mounted) {
+    //     ref.read(userNotiferProvider.notifier).initUser();
+    //   }
+    // });
+    Future(() {
+      ref.read(userNotiferProvider.notifier).initUser();
+    });
   }
 
   @override
@@ -34,6 +45,10 @@ class _HomeViewState extends ConsumerState<HomeView> {
     return SafeArea(
       minimum: safeAreaPadding,
       child: Scaffold(
+        floatingActionButton: FloatingActionButton(onPressed: () {
+           final user = ref.watch(userNotiferProvider);
+          debugPrint(user.toString());
+        }),
         body: Column(
           children: [
             // YBox(.2.dyPercent),

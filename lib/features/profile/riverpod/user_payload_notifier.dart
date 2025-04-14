@@ -79,7 +79,7 @@ class UserPayloadNotifier extends Notifier<UserInfoModel> {
     if (ref.watch(isLoggedInProvider)) {
       final user = ref.watch(authNotifierProvider);
 
-      state = state = state.copyWith(
+      state = UserInfoModel(
         userId: user.userId!,
         email: _authenticator.email,
         fullname: _authenticator.displayName,

@@ -47,16 +47,6 @@ class AuthNotifier extends Notifier<AuthState> {
     state = switch (result) {
       AuthSuccess() => () {
           final userId = _authenticator.userId;
-          if (userId != null) {
-            final _user = UserInfoModel(
-              userId: userId,
-              fullname: _authenticator.displayName,
-              email: _authenticator.email,
-              displayImage: _authenticator.displayName,
-            );
-            ref.read(userNotiferProvider.notifier).setUser(_user);
-          }
-
           if (context.mounted) {
             SnackbarUtils.of(context)
                 .signSnackBar("Logged in Successfully", false);

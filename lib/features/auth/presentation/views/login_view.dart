@@ -27,7 +27,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
     ref.listen<bool>(
       isLoggedInProvider,
       (prev, next) {
-        if (next && ref.read(authStateProvider).userId != null) {
+        if (next && ref.read(authNotifierProvider).userId != null) {
           SignNavigator.of(context).pop<bool>(next);
         }
       },
@@ -71,7 +71,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                       color: appColors.purple,
                       label: "Login",
                       onPressed: () => ref
-                          .read(authStateProvider.notifier)
+                          .read(authNotifierProvider.notifier)
                           .loginWithCredentials(
                             email: emailController.text,
                             password: passwordCotroller.text,
@@ -102,7 +102,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                         ],
                       ),
                       onPressed: () => ref
-                          .read(authStateProvider.notifier)
+                          .read(authNotifierProvider.notifier)
                           .loginWithCredentials(
                             email: emailController.text,
                             password: passwordCotroller.text,

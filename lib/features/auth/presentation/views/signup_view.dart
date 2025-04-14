@@ -68,7 +68,7 @@ class _SignupViewState extends ConsumerState<SignupView> {
                   label: "Sign Up",
                   color: appColors.buttonYellow,
                   onPressed: () => ref
-                      .read(authStateProvider.notifier)
+                      .read(authNotifierProvider.notifier)
                       .signUpWithCredentials(
                         name: nameCotroller.text,
                         email: emailController.text,

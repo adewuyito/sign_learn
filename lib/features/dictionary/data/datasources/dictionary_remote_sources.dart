@@ -1,11 +1,29 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sign_learn/features/dictionary/data/models/dictionary_models.dart';
 
-import '../../business/repository/dictionary_repository.dart';
+final firestoreProvider = Provider((ref) => FirebaseFirestore.instance);
 
-class FirebaseDictionaryRepository implements DictionaryRepository {
+final dictionaryRemoteSourcesProvider = Provider<IDictionaryRemoteSources>(
+  (ref) {
+    final firestore = ref.watch(firestoreProvider);
+    return DictionaryRemoteSources(ref, firestore: firestore);
+  },
+);
+
+abstract class IDictionaryRemoteSources {
+  Future<List<DictionaryEntries>> getAllEntries();
+  Future<DictionaryEntries?> getEntryById(String id);
+  Future<void> addEntry(DictionaryEntries entry);
+  Future<void> updateEntry(DictionaryEntries entry);
+  Future<void> deleteEntry(String id);
+}
+
+
+class DictionaryRemoteSources implements IDictionaryRemoteSources {
   final FirebaseFirestore firestore;
-  FirebaseDictionaryRepository(this.firestore);
+  Ref ref;
+  DictionaryRemoteSources(this.ref ,{required this.firestore});
 
   @override
   Future<List<DictionaryEntries>> getAllEntries() async {

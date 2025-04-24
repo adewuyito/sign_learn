@@ -13,6 +13,9 @@ class FontFamily {
   /// Font family: Athletics
   static const String athletics = 'Athletics';
 
+  /// Font family: Clash display
+  static const String clashDisplay = 'Clash display';
+
   /// Font family: General Sans
   static const String generalSans = 'General Sans';
 

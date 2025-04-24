@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sign_learn/features/auth/domain/authenticator.dart';
 
-import '../../../profile/riverpod/user_payload_provider.dart';
+import '../../../profile/presentation/provider/user_payload_provider.dart';
 import '../../../../core/core.dart';
 import '../../auth.dart';
 

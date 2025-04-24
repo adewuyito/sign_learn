@@ -13,6 +13,10 @@ class $AssetsIconsGen {
   /// Directory path: assets/Icons/misc_icons
   $AssetsIconsMiscIconsGen get miscIcons => const $AssetsIconsMiscIconsGen();
 
+  /// Directory path: assets/Icons/profile_icons
+  $AssetsIconsProfileIconsGen get profileIcons =>
+      const $AssetsIconsProfileIconsGen();
+
   /// Directory path: assets/Icons/social_icons
   $AssetsIconsSocialIconsGen get socialIcons =>
       const $AssetsIconsSocialIconsGen();
@@ -32,6 +36,34 @@ class $AssetsIconsMiscIconsGen {
 
   /// List of all assets
   List<String> get values => [revealIcon, tickMark, unRevealIcon];
+}
+
+class $AssetsIconsProfileIconsGen {
+  const $AssetsIconsProfileIconsGen();
+
+  /// File path: assets/Icons/profile_icons/profile_account_info_icon.svg
+  String get profileAccountInfoIcon =>
+      'assets/Icons/profile_icons/profile_account_info_icon.svg';
+
+  /// File path: assets/Icons/profile_icons/profile_help_icon.svg
+  String get profileHelpIcon =>
+      'assets/Icons/profile_icons/profile_help_icon.svg';
+
+  /// File path: assets/Icons/profile_icons/profile_logout_icon.svg
+  String get profileLogoutIcon =>
+      'assets/Icons/profile_icons/profile_logout_icon.svg';
+
+  /// File path: assets/Icons/profile_icons/profile_security_icon.svg
+  String get profileSecurityIcon =>
+      'assets/Icons/profile_icons/profile_security_icon.svg';
+
+  /// List of all assets
+  List<String> get values => [
+    profileAccountInfoIcon,
+    profileHelpIcon,
+    profileLogoutIcon,
+    profileSecurityIcon,
+  ];
 }
 
 class $AssetsIconsSocialIconsGen {

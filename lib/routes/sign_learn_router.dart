@@ -12,7 +12,7 @@ final signRouteProvider = Provider<SignRouter>((ref) {
 });
 
 class TransitionsBuilder {
-  static Widget fadeTransition(
+  static Widget cupertino(
     BuildContext context,
     Animation<double> animation,
     Animation<double> secondaryAnimation,
@@ -20,7 +20,13 @@ class TransitionsBuilder {
   ) {
     /// you get an animation object and a widget
     /// make your own transition
-    return FadeTransition(opacity: animation, child: child);
+    // return FadeTransition(opacity: animation, child: child);
+    return CupertinoPageTransition(
+      primaryRouteAnimation: animation,
+      secondaryRouteAnimation: secondaryAnimation,
+      linearTransition: true,
+      child: child,
+    );
   }
 }
 
@@ -34,6 +40,7 @@ class SignRouter extends RootStackRouter {
         // ~ Initial routes
         routeWithTransition(
           initial: false,
+          // initial: true,
           page: LoginRoute.page,
           // keepInHistory: false,
         ),
@@ -58,9 +65,19 @@ class SignRouter extends RootStackRouter {
         routeWithTransition(initial: false, page: SettingsRoute.page),
 
         // ~ Lesson Routes
-        routeWithTransition(initial: false, page: LessonListRoute.page),
+        routeWithTransition(
+          initial: false,
+          page: LessonListRoute.page,
+          transitionsBuilder: TransitionsBuilder.cupertino,
+        ),
 
         routeWithTransition(initial: false, page: LessonDetailRoute.page),
+
+        // ~ Dictionary View
+        routeWithTransition(
+          page: DictionaryEntryDetailRoute.page,
+          transitionsBuilder: TransitionsBuilder.cupertino,
+        ),
       ];
 
   CustomRoute routeWithTransition({

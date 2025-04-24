@@ -9,9 +9,10 @@ part of 'lesson_models.dart';
 _$LessonImpl _$$LessonImplFromJson(Map<String, dynamic> json) => _$LessonImpl(
       id: json['id'] as String,
       title: json['title'] as String,
-      unit: json['unit'] as String,
+      unit: (json['unit'] as num).toInt(),
       categoryLevel: categoryLevelFromJson(json['categoryLevel'] as String),
-      videoUrl: json['videoUrl'] as String,
+      videoUrl:
+          (json['videoUrl'] as List<dynamic>).map((e) => e as String).toList(),
       isCompleted: json['isCompleted'] as bool? ?? false,
     );
 

@@ -58,26 +58,27 @@ flutter:
     - assets/Icons/home_icons/
     - assets/Icons/misc_icons/
     - assets/Icons/social_icons/
+    - assets/Icons/profile_icons/
 
   fonts:
-    - family: General Sans
+    - family: Clash display
       fonts:
-        - asset: assets/fonts/general_sans/GeneralSans-Bold.otf
+        - asset: assets/fonts/clash_display/ClashDisplay-Bold.otf
           weight: 700
 
-        - asset: assets/fonts/general_sans/GeneralSans-Semibold.otf
+        - asset: assets/fonts/clash_display/ClashDisplay-Semibold.otf
           weight: 600
 
-        - asset: assets/fonts/general_sans/GeneralSans-Medium.otf
+        - asset: assets/fonts/clash_display/ClashDisplay-Medium.otf
           weight: 500
 
-        - asset: assets/fonts/general_sans/GeneralSans-Regular.otf
+        - asset: assets/fonts/clash_display/ClashDisplay-Regular.otf
           weight: 400
 
-        - asset: assets/fonts/general_sans/GeneralSans-Light.otf
+        - asset: assets/fonts/clash_display/ClashDisplay-Light.otf
           weight: 300
 
-        - asset: assets/fonts/general_sans/GeneralSans-Extralight.otf
+        - asset: assets/fonts/clash_display/ClashDisplay-Extralight.otf
           weight: 200
 
     - family: General Sans

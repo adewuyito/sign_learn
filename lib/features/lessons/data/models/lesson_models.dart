@@ -10,11 +10,11 @@ class Lesson with _$Lesson {
   const factory Lesson({
     required String id,
     required String title,
-    required String unit,
+    required int unit,
     // ignore: invalid_annotation_target
     @JsonKey(fromJson: categoryLevelFromJson, toJson: categoryLevelToJson)
     required CategoryLevel categoryLevel,
-    required String videoUrl,
+    required List<String> videoUrl,
     @Default(false) bool isCompleted,
   }) = _Lesson;
 

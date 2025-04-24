@@ -11,7 +11,8 @@ class VideoPlayerWidget extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = VideoPlayerController.networkUrl(videoUrl as Uri);
+    final videoUri = Uri.parse(videoUrl);
+    final controller = VideoPlayerController.networkUrl(videoUri);
 
     final isVideoPlayerReady = useState(false);
 

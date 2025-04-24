@@ -153,6 +153,10 @@ class _LoginViewState extends ConsumerState<LoginView> {
                     ],
                   ),
                 ),
+                RichTextWidget(texts: [
+                  BaseText.plain(text: "Dont have an account?", style: TextTheme.of(context).labelSmall),
+                  BaseText.plain(text: "Create Account")
+                ])
               ],
             ),
           ),

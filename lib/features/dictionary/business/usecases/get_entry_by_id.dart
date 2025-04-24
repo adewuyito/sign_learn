@@ -1,11 +1,12 @@
 import 'package:sign_learn/features/dictionary/data/models/dictionary_models.dart';
 import 'package:sign_learn/features/dictionary/data/repository/dictionary_repository.dart';
 
-class GetDictionaryEntries {
+class GetDictionaryEntriesById {
   final IDictionaryRepository repository;
-  GetDictionaryEntries(this.repository);
+  final String id;
+  GetDictionaryEntriesById(this.repository, {required this.id});
 
-  Future<List<DictionaryEntries>> call() async {
-    return await repository.getAllEntries();
+  Future<DictionaryEntries?> call() async {
+    return await repository.getEntryById(id);
   }
 }

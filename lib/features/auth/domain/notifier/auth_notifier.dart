@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:sign_learn/features/auth/auth.dart';
-import 'package:sign_learn/features/profile/model/user_model.dart';
+import 'package:sign_learn/features/profile/data/model/user_model.dart';
 
 import '../../../../core/core.dart' show SnackbarUtils;
 import '../../../profile/presentation/provider/user_payload_provider.dart';

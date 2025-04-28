@@ -2,7 +2,7 @@ import 'dart:collection';
 
 import 'package:flutter/foundation.dart';
 
-import '../../../common/commons.dart' show UserId;
+import '../../../../common/commons.dart' show UserId;
 
 
 @immutable

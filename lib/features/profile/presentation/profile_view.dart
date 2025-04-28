@@ -5,7 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sign_learn/common/components/sign_button/sign_button.dart';
 import 'package:sign_learn/core/core.dart';
 import 'package:sign_learn/features/auth/domain/domain.dart';
-import 'package:sign_learn/features/profile/model/user_profile_image_model.dart';
+import 'package:sign_learn/features/profile/data/model/user_profile_image_model.dart';
 import 'package:sign_learn/features/profile/presentation/widget/profile_option_button.dart';
 import 'package:sign_learn/features/profile/presentation/widget/sign_profile_image.dart';
 import 'package:sign_learn/gen/assets.gen.dart';

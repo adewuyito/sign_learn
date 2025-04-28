@@ -6,11 +6,13 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sign_learn/common/components/components.dart';
 
 import 'package:sign_learn/core/constants/constants.dart';
+import 'package:sign_learn/core/services/storage/shared_pref_storage_service.dart';
 import 'package:sign_learn/features/auth/domain/providers/auth_state_provider.dart';
 import 'package:sign_learn/features/lessons/data/models/category_levels.dart';
 import 'package:sign_learn/features/lessons/presentation/lesson_list_view.dart';
 import 'package:sign_learn/features/profile/presentation/provider/user_payload_provider.dart';
 import 'package:sign_learn/features/home/presentation/widgets/home_calender.dart';
+import 'package:sign_learn/features/splash_view.dart';
 import 'package:sign_learn/gen/fonts.gen.dart';
 import 'package:sign_learn/routes/router.dart';
 import 'package:sign_learn/routes/sign_learn_router.gr.dart';

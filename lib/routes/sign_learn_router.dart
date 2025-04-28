@@ -39,6 +39,17 @@ class SignRouter extends RootStackRouter {
   List<AutoRoute> get routes => [
         // ~ Initial routes
         routeWithTransition(
+          initial: true,
+          page: AuthInitRoute.page,
+          path: '/auth-init',
+        ),
+
+        routeWithTransition(page: SignSplashRoute.page),
+
+        routeWithTransition(page: SignIntroRoute.page),
+
+        // ~ Login Routes
+        routeWithTransition(
           initial: false,
           // initial: true,
           page: LoginRoute.page,
@@ -52,14 +63,14 @@ class SignRouter extends RootStackRouter {
 
         //  ~ Home Routes
         routeWithTransition(
-          initial: true,
+          initial: false,
           page: SkeletonTabRoute.page,
           children: [
             routeWithTransition(page: HomeRoute.page),
             routeWithTransition(page: DictionaryRoute.page),
             routeWithTransition(page: ProfileRoute.page),
           ],
-          // guards: [signAuthGuard],
+          guards: [signAuthGuard],
         ),
         // ~ Settings Routes
         routeWithTransition(initial: false, page: SettingsRoute.page),

@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../common/commons.dart' show UserId;
+import '../../../../common/commons.dart' show UserId;
 
 part 'user_model.freezed.dart';
 part 'user_model.g.dart';

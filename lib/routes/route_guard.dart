@@ -13,30 +13,19 @@ class AuthGuard extends AutoRouteGuard {
 
   // ignore: prefer_final_fields
   Ref _ref;
-
   @override
   void onNavigation(NavigationResolver resolver, StackRouter router) async {
-    switch (_ref.watch(isLoggedInProvider)) {
-      case true:
-        resolver.next(true);
-        break;
-      case false:
-        final result = await router.push<bool>(LoginRoute());
+    final isLoggedIn = _ref.read(isLoggedInProvider);
 
-        switch (result) {
-          case true:
-            resolver.next(true);
-            break;
-          case false:
-            resolver.next(false);
-            break;
-          case null:
-            // TODO: Handle this case.
-            throw UnimplementedError(
-              'You have gotten a null type from implementation of guard',
-            );
-        }
-        break;
+    if (isLoggedIn) {
+      resolver.next();
+    } else {
+      final result = await router.replace<bool>(const LoginRoute());
+      if (result == true) {
+        resolver.next(true);
+      } else {
+        resolver.next(false);
+      }
     }
   }
 }

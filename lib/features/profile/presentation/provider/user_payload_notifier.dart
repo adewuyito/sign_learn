@@ -5,7 +5,7 @@ import 'package:sign_learn/features/auth/domain/providers/is_logged_provider.dar
 import 'package:sign_learn/features/features.dart';
 
 import '../../../../common/commons.dart' show UserId;
-import '../../model/user_model.dart';
+import '../../data/model/user_model.dart';
 
 class UserProfileNotifier extends StateNotifier<UserInfoModel> {
   UserProfileNotifier() : super(const UserInfoModel.unknown());

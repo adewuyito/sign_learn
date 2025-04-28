@@ -6,10 +6,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../core/core.dart';
+import '../../../../routes/router.dart';
 import '../../domain/domain.dart';
 import '../../../../gen/assets.gen.dart';
-import '../../../../routes/sign_navigator.dart';
-
 import '../../../../common/commons.dart';
 import '../../../../gen/fonts.gen.dart';
 import '../../domain/providers/is_logged_provider.dart';
@@ -28,10 +27,11 @@ class _LoginViewState extends ConsumerState<LoginView> {
       isLoggedInProvider,
       (prev, next) {
         if (next && ref.read(authNotifierProvider).userId != null) {
-          SignNavigator.of(context).pop<bool>(next);
+          SignNavigator.of(context).replace(const HomeRoute());
         }
       },
     );
+
     final _formKey = GlobalKey<FormState>();
     final emailController = useTextEditingController();
     final passwordCotroller = useTextEditingController();
@@ -154,7 +154,9 @@ class _LoginViewState extends ConsumerState<LoginView> {
                   ),
                 ),
                 RichTextWidget(texts: [
-                  BaseText.plain(text: "Dont have an account?", style: TextTheme.of(context).labelSmall),
+                  BaseText.plain(
+                      text: "Dont have an account?",
+                      style: TextTheme.of(context).labelSmall),
                   BaseText.plain(text: "Create Account")
                 ])
               ],

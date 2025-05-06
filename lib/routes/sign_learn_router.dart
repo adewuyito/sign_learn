@@ -89,6 +89,9 @@ class SignRouter extends RootStackRouter {
           page: DictionaryEntryDetailRoute.page,
           transitionsBuilder: TransitionsBuilder.cupertino,
         ),
+
+        //  ~ Profile EditView
+        routeWithTransition(page: ProfileEditRoute.page),
       ];
 
   CustomRoute routeWithTransition({

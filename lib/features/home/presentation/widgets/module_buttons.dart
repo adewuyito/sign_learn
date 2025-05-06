@@ -1,19 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:sign_learn/routes/sign_learn_router.gr.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:sign_learn/common/components/dialog/view/dissmisable_dialog.dart';
 import 'package:sign_learn/features/lessons/data/models/category_levels.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../core/core.dart';
+import '../../../../gen/assets.gen.dart';
 import '../../../../routes/router.dart';
 import '../../../../common/commons.dart';
 
-class ModuleButtons extends StatelessWidget {
+class ModuleButtons extends ConsumerWidget {
   const ModuleButtons({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(context, ref) {
     final tt = Theme.of(context).textTheme;
+    final lL = ref.read(sharedPrefStorageProvider).get(lessonLock);
+    var getASLLock = lL.map((e) => e == 'open').toList();
+
     return SizedBox(
       height: .4.dyPercent,
       child: ListView.separated(
@@ -26,11 +32,13 @@ class ModuleButtons extends StatelessWidget {
           ];
           return SignActionButton(
             onPressed: () {
-              SignNavigator.of(context).push(
-                LessonListRoute(
-                  categoryLevel: CategoryLevel.values[index],
-                ),
-              );
+              getASLLock[index]
+                  ? SignNavigator.of(context).push(
+                      LessonListRoute(
+                        categoryLevel: CategoryLevel.values[index],
+                      ),
+                    )
+                  : NextMouleDialog().present(context);
             },
             size: buttonSize(ButtonSize.full),
             labelWidget: Row(
@@ -40,10 +48,12 @@ class ModuleButtons extends StatelessWidget {
                   style: tt.labelLarge!,
                 ),
                 Spacer(),
-                Icon(
-                  Icons.arrow_forward_ios_rounded,
-                  color: appColors.black,
-                )
+                !getASLLock[index]
+                    ? Icon(
+                        Icons.lock,
+                        color: appColors.black,
+                      )
+                    : SvgPicture.asset(Assets.icons.miscIcons.nextArrow)
               ],
             ),
             color: buttonColor[index],

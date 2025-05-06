@@ -6,9 +6,7 @@ import '../../data/repository/dictionary_repository.dart';
 
 final dictionaryEntriesProvider = FutureProvider<List<DictionaryEntries>>(
   (ref) async {
-    final getEntries =
-        GetDictionaryEntries(ref.watch(dictionaryRepositoryProvider));
-    return await getEntries();
+    return await GetDictionaryEntries(ref.watch(dictionaryRepositoryProvider)).call();
   },
 );
 

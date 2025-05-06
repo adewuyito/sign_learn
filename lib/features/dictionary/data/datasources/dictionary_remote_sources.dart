@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sign_learn/features/dictionary/data/models/dictionary_models.dart';
 
@@ -14,49 +15,58 @@ final dictionaryRemoteSourcesProvider = Provider<IDictionaryRemoteSources>(
 abstract class IDictionaryRemoteSources {
   Future<List<DictionaryEntries>> getAllEntries();
   Future<DictionaryEntries?> getEntryById(String id);
-  Future<void> addEntry(DictionaryEntries entry);
-  Future<void> updateEntry(DictionaryEntries entry);
   Future<void> deleteEntry(String id);
 }
 
-
 class DictionaryRemoteSources implements IDictionaryRemoteSources {
+  static const String collectionsName = "dictionary";
   final FirebaseFirestore firestore;
   Ref ref;
-  DictionaryRemoteSources(this.ref ,{required this.firestore});
+  DictionaryRemoteSources(this.ref, {required this.firestore});
 
   @override
   Future<List<DictionaryEntries>> getAllEntries() async {
-    final query = await firestore.collection('dictionary_entries').get();
-    return query.docs
-        .map((doc) => DictionaryEntries.fromJson({...doc.data(), 'id': doc.id}))
-        .toList();
+    try {
+      final query = await firestore
+          .collection(collectionsName)
+          .orderBy('title', descending: false)
+          .get();
+      if (query.docs.isEmpty) {
+        debugPrint('No dictionary entries found');
+        throw Exception('No dictionary entries found');
+      }
+
+      return query.docs
+          .map(
+            (doc) => DictionaryEntries.fromFirebase(
+              doc.data(),
+              id: doc.id,
+            ),
+          )
+          .toList();
+    } catch (e) {
+      throw Exception('Failed to fetch dictionary entries: $e');
+    }
   }
 
   @override
   Future<DictionaryEntries?> getEntryById(String id) async {
-    final doc = await firestore.collection('dictionary_entries').doc(id).get();
-    if (doc.exists) {
-      return DictionaryEntries.fromJson({...doc.data()!, 'id': doc.id});
+    try {
+      final doc = await firestore.collection(collectionsName).doc(id).get();
+      if (doc.exists) {
+        return DictionaryEntries.fromFirebase(
+          doc.data()!,
+          id: doc.id,
+        );
+      }
+      return null;
+    } catch (e) {
+      throw Exception('Failed to get entry by id: $e');
     }
-    return null;
-  }
-
-  @override
-  Future<void> addEntry(DictionaryEntries entry) async {
-    await firestore.collection('dictionary_entries').add(entry.toJson());
-  }
-
-  @override
-  Future<void> updateEntry(DictionaryEntries entry) async {
-    await firestore
-        .collection('dictionary_entries')
-        .doc(entry.id)
-        .update(entry.toJson());
   }
 
   @override
   Future<void> deleteEntry(String id) async {
-    await firestore.collection('dictionary_entries').doc(id).delete();
+    await firestore.collection(collectionsName).doc(id).delete();
   }
 }

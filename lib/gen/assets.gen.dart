@@ -25,6 +25,12 @@ class $AssetsIconsGen {
 class $AssetsIconsMiscIconsGen {
   const $AssetsIconsMiscIconsGen();
 
+  /// File path: assets/Icons/misc_icons/next_arrow.svg
+  String get nextArrow => 'assets/Icons/misc_icons/next_arrow.svg';
+
+  /// File path: assets/Icons/misc_icons/next_arrow_large.svg
+  String get nextArrowLarge => 'assets/Icons/misc_icons/next_arrow_large.svg';
+
   /// File path: assets/Icons/misc_icons/reveal_Icon.svg
   String get revealIcon => 'assets/Icons/misc_icons/reveal_Icon.svg';
 
@@ -35,7 +41,13 @@ class $AssetsIconsMiscIconsGen {
   String get unRevealIcon => 'assets/Icons/misc_icons/un_reveal_icon.svg';
 
   /// List of all assets
-  List<String> get values => [revealIcon, tickMark, unRevealIcon];
+  List<String> get values => [
+    nextArrow,
+    nextArrowLarge,
+    revealIcon,
+    tickMark,
+    unRevealIcon,
+  ];
 }
 
 class $AssetsIconsProfileIconsGen {

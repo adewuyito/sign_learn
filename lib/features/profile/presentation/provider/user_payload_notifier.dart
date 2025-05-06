@@ -5,8 +5,9 @@ import 'package:sign_learn/features/auth/domain/providers/is_logged_provider.dar
 import 'package:sign_learn/features/features.dart';
 
 import '../../../../common/commons.dart' show UserId;
+import '../../../../core/core.dart';
 import '../../data/model/user_model.dart';
-
+/* 
 class UserProfileNotifier extends StateNotifier<UserInfoModel> {
   UserProfileNotifier() : super(const UserInfoModel.unknown());
 
@@ -36,7 +37,7 @@ class UserProfileNotifier extends StateNotifier<UserInfoModel> {
   void clearUser() {
     state = const UserInfoModel.unknown();
   }
-}
+} */
 
 class UserPayloadNotifier extends Notifier<UserInfoModel> {
   final _authenticator = Authenticator();
@@ -75,9 +76,17 @@ class UserPayloadNotifier extends Notifier<UserInfoModel> {
     state = const UserInfoModel.unknown();
   }
 
-  void initUser() {
+  void initUser() async {
     if (ref.watch(isLoggedInProvider)) {
       final user = ref.watch(authNotifierProvider);
+      // ~ Sett the user lesson lock
+      final asllessonLock =
+          await ref.read(sharedPrefStorageProvider).get(lessonLock);
+      if (asllessonLock == null) {
+        await ref
+            .read(sharedPrefStorageProvider)
+            .set(lessonLock, ['open', 'lock', 'lock', 'lock']);
+      }
 
       state = UserInfoModel(
         userId: user.userId!,

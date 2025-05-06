@@ -2,6 +2,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sign_learn/core/services/storage/storage_service.dart';
 
+const String lessonLock =  "lesson_lock";
+const String onboardingLock = "onBoarding_lock";
+
 final sharedPreferencesProvider = Provider<SharedPreferences>((ref) {
   throw UnimplementedError();
 });

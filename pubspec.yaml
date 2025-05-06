@@ -41,6 +41,7 @@ dependencies:
   video_thumbnail: ^0.5.3
   video_player: ^2.8.2
   youtube_player_flutter: ^9.1.1
+  cached_network_image: ^3.4.1
 
 dev_dependencies:
   flutter_test:
@@ -54,7 +55,6 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/svg/
     - assets/Icons/home_icons/
     - assets/Icons/misc_icons/
     - assets/Icons/social_icons/

@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import '../../../../core/core.dart' show appColors; // TODO: Work On this file
 
-
 class ProfileImage extends StatelessWidget {
   final String image;
+  final Size size;
   const ProfileImage({
     super.key,
     this.editImage,
     required this.image,
+    this.size = const Size(125, 125),
   });
 
   final VoidCallback? editImage;
@@ -29,8 +30,8 @@ class ProfileImage extends StatelessWidget {
               ),
             ),
             child: Container(
-              width: 125,
-              height: 125,
+              width: size.width,
+              height: size.height,
               clipBehavior: Clip.antiAlias,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(125),
@@ -41,7 +42,7 @@ class ProfileImage extends StatelessWidget {
                 ),
               ),
               child: null,
-              // CachedNetworkImage(
+              // CachedNetworkImage( // TODO: Fix with better implementation
               //   imageUrl: image,
               //   fit: BoxFit.cover,
               //   alignment: Alignment.topCenter,

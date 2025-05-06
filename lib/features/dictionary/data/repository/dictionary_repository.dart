@@ -10,8 +10,6 @@ final dictionaryRepositoryProvider = Provider<IDictionaryRepository>((ref) {
 abstract class IDictionaryRepository {
   Future<List<DictionaryEntries>> getAllEntries();
   Future<DictionaryEntries?> getEntryById(String id);
-  Future<void> addEntry(DictionaryEntries entry);
-  Future<void> updateEntry(DictionaryEntries entry);
   Future<void> deleteEntry(String id);
 }
 
@@ -26,11 +24,6 @@ class DictionaryRepository implements IDictionaryRepository {
   IDictionaryLocalSources dictionaryLocalSource;
 
   @override
-  Future<void> addEntry(DictionaryEntries entry) async {
-    await dictionaryRemoteSource.addEntry(entry);
-  }
-
-  @override
   Future<void> deleteEntry(String id) async {
     await dictionaryRemoteSource.deleteEntry(id);
   }
@@ -43,10 +36,5 @@ class DictionaryRepository implements IDictionaryRepository {
   @override
   Future<DictionaryEntries?> getEntryById(String id) async {
     return await dictionaryRemoteSource.getEntryById(id);
-  }
-
-  @override
-  Future<void> updateEntry(DictionaryEntries entry) async {
-    await dictionaryRemoteSource.updateEntry(entry);
   }
 }

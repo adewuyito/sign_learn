@@ -4,47 +4,38 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sign_learn/common/components/components.dart';
 import 'package:sign_learn/core/core.dart';
 import 'package:sign_learn/features/dictionary/presentation/providers/dictionary_providers.dart';
-import 'package:sign_learn/features/lessons/data/models/models.dart';
-import 'package:sign_learn/gen/fonts.gen.dart';
+
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 @RoutePage()
-class DictionaryEntryDetailView extends ConsumerWidget {
-  final String entryId;
-
-  const DictionaryEntryDetailView({super.key, this.entryId = "1"});
+class DictionaryEntryDetailView extends ConsumerStatefulWidget {
+  final String videoId;
+  const DictionaryEntryDetailView(this.videoId, {super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final entry = ref.watch(dictionaryEntryByIdProvider(entryId));
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _DictionaryEntryDetailViewState();
+}
 
-    final mockLesson = Lesson(
-      // TODO Fix the title to work with the new dictionary model to get word name
-      id: "asl_lesson1",
-      title: "Hose",
-      unit: 1,
-      categoryLevel: CategoryLevel.ASL1,
-      videoUrl: [""],
+class _DictionaryEntryDetailViewState
+    extends ConsumerState<DictionaryEntryDetailView> {
+  late final YoutubePlayerController _youtubePlayerController;
+
+  @override
+  void initState() {
+    _youtubePlayerController = YoutubePlayerController(
+      initialVideoId: '',
+      flags: const YoutubePlayerFlags(
+        autoPlay: false,
+        mute: false,
+      ),
     );
+    super.initState();
+  }
 
-    Set<String> buildAppbarTitle(CategoryLevel category, int unit) {
-      String firstPart = "ASL ${category.index + 1}";
-      String secondPart = "Unit $unit";
-      return {firstPart, secondPart};
-    }
-
-    final appBarTitle =
-        buildAppbarTitle(mockLesson.categoryLevel, mockLesson.unit);
-
-    final mockAsyncValue = AsyncData(mockLesson);
-
-    final ftt = TextStyle(
-      fontWeight: FontWeight.w900,
-      fontFamily: FontFamily.satoshi,
-    );
-    final stt = TextStyle(
-      fontWeight: FontWeight.normal,
-      fontFamily: FontFamily.athletics,
-    );
+  @override
+  Widget build(BuildContext context) {
+    final asyncDL = ref.watch(dictionaryEntryByIdProvider(widget.videoId));
 
     final screenWidth = buttonSize(ButtonSize.full).width;
 
@@ -52,22 +43,14 @@ class DictionaryEntryDetailView extends ConsumerWidget {
       appBar: AppBar(),
       body: SafeArea(
         minimum: safeAreaPadding,
-        child: mockAsyncValue.when(
+        child: asyncDL.when(
           data: (lesson) {
+            _youtubePlayerController.load(lesson!.videoId);
+
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                RichTextWidget(
-                  styleForAll: TextStyle(color: appColors.black, fontSize: 24),
-                  texts: [
-                    BaseText.plain(
-                      text: "${appBarTitle.first}, ",
-                      style: ftt,
-                    ),
-                  ],
-                ),
-                YBox(padding),
                 BoxOutline(
                   size: Size(screenWidth, 224),
                   child: Container(
@@ -83,15 +66,15 @@ class DictionaryEntryDetailView extends ConsumerWidget {
                 ),
 
                 // Video Player
-                // VideoPlayerWidget(
-                //   videoUrl: lesson.videoUrl.first,
-                // ),
+                YoutubePlayer(
+                  controller: _youtubePlayerController,
+                  showVideoProgressIndicator: true,
+                ),
                 SizedBox(
-                    height:
-                        20), // TODO: Add the description of the sign to the dictionary section. Alson think about related words to link with
+                  height: 20,
+                ), // TODO: Add the description of the sign to the dictionary section. Alson think about related words to link with
 
                 // Transcript
-
                 // Quiz/Questions
                 // LessonQuizWidget(lessonId: lesson.id),
                 Spacer(),

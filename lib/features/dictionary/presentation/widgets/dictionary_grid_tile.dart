@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:sign_learn/features/dictionary/presentation/dictionary_entry_detail_view.dart';
 
 import '../../../../core/core.dart';
-import '../../../../routes/router.dart';
 import '../../data/models/dictionary_models.dart';
 
 class DictionaryGridTile extends StatelessWidget {
@@ -13,11 +13,30 @@ class DictionaryGridTile extends StatelessWidget {
 
   final DictionaryEntries entries;
 
+  void _showDictionaryEntryModal(
+      BuildContext context, DictionaryEntries entries) {
+    showModalBottomSheet(
+      useSafeArea: true,
+      showDragHandle: true,
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => DraggableScrollableSheet(
+        expand: false,
+        initialChildSize: 0.5,
+        maxChildSize: 0.9,
+        minChildSize: 0.3,
+        builder: (context, scrollController) =>
+            DictionaryEntryDetailView(entries.id, youtubeUrl: entries.videoId),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => SignNavigator.of(context)
-          .push(DictionaryEntryDetailRoute(videoId: entries.id, youtubeUrl: entries.videoId)),
+      // onTap: () => SignNavigator.of(context)
+      //     .push(DictionaryEntryDetailRoute(videoId: entries.id, youtubeUrl: entries.videoId)),
+      onTap: () => _showDictionaryEntryModal(context, entries),
       child: Container(
         clipBehavior: Clip.hardEdge,
         decoration: BoxDecoration(

@@ -12,7 +12,8 @@ class DictionaryEntryDetailView extends ConsumerStatefulWidget {
   final String videoId;
   final String youtubeUrl;
 
-  const DictionaryEntryDetailView(this.videoId, {super.key, required this.youtubeUrl});
+  const DictionaryEntryDetailView(this.videoId,
+      {super.key, required this.youtubeUrl});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -42,7 +43,7 @@ class _DictionaryEntryDetailViewState
     final screenWidth = buttonSize(ButtonSize.full).width;
 
     return Scaffold(
-      appBar: AppBar(),
+      // appBar: AppBar(),
       body: SafeArea(
         minimum: safeAreaPadding,
         child: asyncDL.when(
@@ -55,8 +56,9 @@ class _DictionaryEntryDetailViewState
             // }
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                YBox(padding),
                 BoxOutline(
                   size: Size(screenWidth, 224),
                   child: Container(
@@ -76,7 +78,12 @@ class _DictionaryEntryDetailViewState
 
                 SizedBox(
                   height: 20,
-                ), // TODO: Add the description of the sign to the dictionary section. Alson think about related words to link with
+                ),
+                Text(
+                  lesson!.title,
+                  style: Theme.of(context).textTheme.titleSmall!.copyWith(fontWeight: FontWeight.w500),
+                ),
+                // TODO: Add the description of the sign to the dictionary section. Alson think about related words to link with
 
                 // Transcript
                 // Quiz/Questions

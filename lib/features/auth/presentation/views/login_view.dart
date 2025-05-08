@@ -49,6 +49,14 @@ class _LoginViewState extends ConsumerState<LoginView> {
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                YBox(padding),
+                Text(
+                  "SignBridge",
+                  style: TextTheme.of(context)
+                      .headlineLarge!
+                      .copyWith(fontFamily: FontFamily.clashDisplay),
+                ),
+                YBox(.08.dyPercent),
                 InputModel(
                   keyBoardType: TextInputType.emailAddress,
                   role: TextFieldRole.inputField,

@@ -10,7 +10,9 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 @RoutePage()
 class DictionaryEntryDetailView extends ConsumerStatefulWidget {
   final String videoId;
-  const DictionaryEntryDetailView(this.videoId, {super.key});
+  final String youtubeUrl;
+
+  const DictionaryEntryDetailView(this.videoId, {super.key, required this.youtubeUrl});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -24,10 +26,10 @@ class _DictionaryEntryDetailViewState
   @override
   void initState() {
     _youtubePlayerController = YoutubePlayerController(
-      initialVideoId: '',
+      initialVideoId: widget.youtubeUrl,
       flags: const YoutubePlayerFlags(
-        autoPlay: false,
-        mute: false,
+        autoPlay: true,
+        mute: true,
       ),
     );
     super.initState();
@@ -45,8 +47,12 @@ class _DictionaryEntryDetailViewState
         minimum: safeAreaPadding,
         child: asyncDL.when(
           data: (lesson) {
-            _youtubePlayerController.load(lesson!.videoId);
-
+            // final videoId = YoutubePlayer.convertUrlToId(lesson!.url);
+            // if (videoId != null) {
+            //   _youtubePlayerController.load(videoId);
+            // } else {
+            //   return Center(child: CircularProgressIndicator());
+            // }
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,

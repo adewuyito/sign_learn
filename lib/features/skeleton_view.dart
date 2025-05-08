@@ -127,11 +127,11 @@ class DashBoardNavigationBar extends StatelessWidget {
               label: "Explore",
             ),
             NavigationDestination(
-              icon: Icon(Icons.portable_wifi_off_outlined),
-              label: "Chats",
+              icon: Icon(Icons.book),
+              label: "Vocabulary",
             ),
             NavigationDestination(
-              icon: Icon(Icons.abc),
+              icon: Icon(Icons.person),
               label: "Profile",
             ),
           ],

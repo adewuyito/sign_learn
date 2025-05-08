@@ -17,7 +17,7 @@ class DictionaryGridTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => SignNavigator.of(context)
-          .push(DictionaryEntryDetailRoute(videoId: entries.id)),
+          .push(DictionaryEntryDetailRoute(videoId: entries.id, youtubeUrl: entries.videoId)),
       child: Container(
         clipBehavior: Clip.hardEdge,
         decoration: BoxDecoration(

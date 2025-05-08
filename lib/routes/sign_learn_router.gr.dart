@@ -62,10 +62,15 @@ class DictionaryEntryDetailRoute
   DictionaryEntryDetailRoute({
     required String videoId,
     _i17.Key? key,
+    required String youtubeUrl,
     List<_i16.PageRouteInfo>? children,
   }) : super(
          DictionaryEntryDetailRoute.name,
-         args: DictionaryEntryDetailRouteArgs(videoId: videoId, key: key),
+         args: DictionaryEntryDetailRouteArgs(
+           videoId: videoId,
+           key: key,
+           youtubeUrl: youtubeUrl,
+         ),
          initialChildren: children,
        );
 
@@ -75,21 +80,31 @@ class DictionaryEntryDetailRoute
     name,
     builder: (data) {
       final args = data.argsAs<DictionaryEntryDetailRouteArgs>();
-      return _i2.DictionaryEntryDetailView(args.videoId, key: args.key);
+      return _i2.DictionaryEntryDetailView(
+        args.videoId,
+        key: args.key,
+        youtubeUrl: args.youtubeUrl,
+      );
     },
   );
 }
 
 class DictionaryEntryDetailRouteArgs {
-  const DictionaryEntryDetailRouteArgs({required this.videoId, this.key});
+  const DictionaryEntryDetailRouteArgs({
+    required this.videoId,
+    this.key,
+    required this.youtubeUrl,
+  });
 
   final String videoId;
 
   final _i17.Key? key;
 
+  final String youtubeUrl;
+
   @override
   String toString() {
-    return 'DictionaryEntryDetailRouteArgs{videoId: $videoId, key: $key}';
+    return 'DictionaryEntryDetailRouteArgs{videoId: $videoId, key: $key, youtubeUrl: $youtubeUrl}';
   }
 }
 

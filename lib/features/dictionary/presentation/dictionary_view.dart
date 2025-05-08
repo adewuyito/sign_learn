@@ -18,7 +18,7 @@ class DictionaryView extends ConsumerWidget {
       minimum: safeAreaPadding,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('ASL Dictionary'),
+          title: Text('ASL Vocabulary Builder'),
           scrolledUnderElevation: 0,
         ),
         body: RefreshIndicator(

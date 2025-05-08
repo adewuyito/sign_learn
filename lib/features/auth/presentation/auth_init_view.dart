@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../routes/router.dart';
-import '../auth.dart';
 import '../domain/providers/is_logged_provider.dart';
 
 @RoutePage()
@@ -29,17 +28,9 @@ class _AuthInitPageState extends ConsumerState<AuthInitPage> {
       }
     });
   }
+
   @override
   Widget build(BuildContext context) {
-    ref.listen<bool>(isLoggedInProvider, (prev, next) {
-      final userId = ref.read(authNotifierProvider).userId;
-      if (next && userId != null) {
-        context.replaceRoute(const HomeRoute());
-      } else {
-        context.replaceRoute(const LoginRoute());
-      }
-    });
-
     return const Scaffold(
       body: Center(child: SizedBox.shrink()),
     );

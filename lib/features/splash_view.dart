@@ -4,8 +4,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sign_learn/core/services/services.dart';
 import 'package:sign_learn/routes/router.dart';
 
-const String introScreenPrefKey = "is_passed_intro_flow";
 
+const String introScreenPrefKey = 'hasCompletedOnboarding';
 @RoutePage()
 class SignSplashScreen extends ConsumerStatefulWidget {
   const SignSplashScreen({super.key});
@@ -19,25 +19,18 @@ class _SignSplashScreenState extends ConsumerState<SignSplashScreen> {
   @override
   void initState() {
     super.initState();
+    __navigateToNextScreen();
+  }
 
-    Future.delayed(Duration(seconds: 2), () async {
-      final storage = ref.read(sharedPrefStorageProvider);
-      final bool? isViewdIntro = storage.get(introScreenPrefKey);
-      if (isViewdIntro != true) {
-        if (isViewdIntro == null) {
-          await storage.set(introScreenPrefKey, false);
-        }
-
-        if (mounted) {
-          SignNavigator.of(context).replace(SignIntroRoute());
-        }
-      } else {
-        // User has already seen the intro
-        if (mounted) {
-          SignNavigator.of(context).replace(HomeRoute());
-        }
-      }
-    });
+  Future<void> __navigateToNextScreen() async {
+    final storage = ref.read(sharedPrefStorageProvider);
+    final completedOnboarding = storage.get(introScreenPrefKey) ?? false;
+    if (!mounted) return;
+    if (completedOnboarding) {
+      SignNavigator.of(context).replace(SkeletonTabRoute());
+    } else {
+      SignNavigator.of(context).replace(SignIntroRoute());
+    }
   }
 
   @override

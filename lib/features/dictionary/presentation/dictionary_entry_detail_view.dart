@@ -59,17 +59,15 @@ class _DictionaryEntryDetailViewState
                       border: Border.all(color: Colors.black, width: 2),
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: SizedBox.fromSize(
-                      size: Size(screenWidth, 224),
+                    child: YoutubePlayer(
+                      controller: _youtubePlayerController,
+                      showVideoProgressIndicator: true,
                     ),
                   ),
                 ),
 
                 // Video Player
-                YoutubePlayer(
-                  controller: _youtubePlayerController,
-                  showVideoProgressIndicator: true,
-                ),
+
                 SizedBox(
                   height: 20,
                 ), // TODO: Add the description of the sign to the dictionary section. Alson think about related words to link with

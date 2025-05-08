@@ -30,12 +30,12 @@ import 'package:sign_learn/features/lessons/presentation/lesson_detail_screen.da
 import 'package:sign_learn/features/lessons/presentation/lesson_list_view.dart'
     as _i7;
 import 'package:sign_learn/features/profile/presentation/profile_edit_view.dart'
-    as _i9;
-import 'package:sign_learn/features/profile/presentation/profile_view.dart'
     as _i10;
-import 'package:sign_learn/features/settings/presentation/settings_view.dart'
+import 'package:sign_learn/features/profile/presentation/profile_view.dart'
     as _i11;
-import 'package:sign_learn/features/sign_intro_view.dart' as _i12;
+import 'package:sign_learn/features/settings/presentation/settings_view.dart'
+    as _i12;
+import 'package:sign_learn/features/sign_intro_view.dart' as _i9;
 import 'package:sign_learn/features/skeleton_view.dart' as _i15;
 import 'package:sign_learn/features/splash_view.dart' as _i13;
 
@@ -237,7 +237,23 @@ class LoginRoute extends _i16.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i9.ProfileEditView]
+/// [_i9.OnboardingScreen]
+class OnboardingRoute extends _i16.PageRouteInfo<void> {
+  const OnboardingRoute({List<_i16.PageRouteInfo>? children})
+    : super(OnboardingRoute.name, initialChildren: children);
+
+  static const String name = 'OnboardingRoute';
+
+  static _i16.PageInfo page = _i16.PageInfo(
+    name,
+    builder: (data) {
+      return const _i9.OnboardingScreen();
+    },
+  );
+}
+
+/// generated route for
+/// [_i10.ProfileEditView]
 class ProfileEditRoute extends _i16.PageRouteInfo<void> {
   const ProfileEditRoute({List<_i16.PageRouteInfo>? children})
     : super(ProfileEditRoute.name, initialChildren: children);
@@ -247,13 +263,13 @@ class ProfileEditRoute extends _i16.PageRouteInfo<void> {
   static _i16.PageInfo page = _i16.PageInfo(
     name,
     builder: (data) {
-      return const _i9.ProfileEditView();
+      return const _i10.ProfileEditView();
     },
   );
 }
 
 /// generated route for
-/// [_i10.ProfileView]
+/// [_i11.ProfileView]
 class ProfileRoute extends _i16.PageRouteInfo<void> {
   const ProfileRoute({List<_i16.PageRouteInfo>? children})
     : super(ProfileRoute.name, initialChildren: children);
@@ -263,13 +279,13 @@ class ProfileRoute extends _i16.PageRouteInfo<void> {
   static _i16.PageInfo page = _i16.PageInfo(
     name,
     builder: (data) {
-      return const _i10.ProfileView();
+      return const _i11.ProfileView();
     },
   );
 }
 
 /// generated route for
-/// [_i11.SettingsView]
+/// [_i12.SettingsView]
 class SettingsRoute extends _i16.PageRouteInfo<void> {
   const SettingsRoute({List<_i16.PageRouteInfo>? children})
     : super(SettingsRoute.name, initialChildren: children);
@@ -279,13 +295,13 @@ class SettingsRoute extends _i16.PageRouteInfo<void> {
   static _i16.PageInfo page = _i16.PageInfo(
     name,
     builder: (data) {
-      return const _i11.SettingsView();
+      return const _i12.SettingsView();
     },
   );
 }
 
 /// generated route for
-/// [_i12.SignIntroView]
+/// [_i9.SignIntroView]
 class SignIntroRoute extends _i16.PageRouteInfo<void> {
   const SignIntroRoute({List<_i16.PageRouteInfo>? children})
     : super(SignIntroRoute.name, initialChildren: children);
@@ -295,7 +311,7 @@ class SignIntroRoute extends _i16.PageRouteInfo<void> {
   static _i16.PageInfo page = _i16.PageInfo(
     name,
     builder: (data) {
-      return const _i12.SignIntroView();
+      return const _i9.SignIntroView();
     },
   );
 }

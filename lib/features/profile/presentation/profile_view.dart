@@ -2,8 +2,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'package:sign_learn/common/commons.dart';
-import 'package:sign_learn/features/auth/domain/domain.dart';
+import '../../../common/commons.dart';
+import '../../auth/domain/domain.dart';
 
 import '../../../core/core.dart';
 import '../../../gen/assets.gen.dart';

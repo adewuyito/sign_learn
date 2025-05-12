@@ -14,19 +14,24 @@ class DictionaryGridTile extends StatelessWidget {
   final DictionaryEntries entries;
 
   void _showDictionaryEntryModal(
-      BuildContext context, DictionaryEntries entries) {
+    BuildContext context,
+    DictionaryEntries entries,
+  ) {
     showModalBottomSheet(
       useSafeArea: true,
       showDragHandle: true,
       context: context,
       isScrollControlled: true,
+      backgroundColor: appColors.white,
       builder: (context) => DraggableScrollableSheet(
         expand: false,
         initialChildSize: 0.5,
         maxChildSize: 0.9,
         minChildSize: 0.3,
-        builder: (context, scrollController) =>
-            DictionaryEntryDetailView(entries.id, youtubeUrl: entries.videoId),
+        builder: (context, scrollController) => DictionaryEntryDetailView(
+          entries.id,
+          youtubeUrl: entries.videoId,
+        ),
       ),
     );
   }
@@ -34,23 +39,21 @@ class DictionaryGridTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      // onTap: () => SignNavigator.of(context)
-      //     .push(DictionaryEntryDetailRoute(videoId: entries.id, youtubeUrl: entries.videoId)),
       onTap: () => _showDictionaryEntryModal(context, entries),
       child: Container(
-        clipBehavior: Clip.hardEdge,
+        clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           border: Border.all(color: appColors.black, width: 2),
         ),
         child: Padding(
-          padding: const EdgeInsets.only(top: 0.0),
+          padding: const EdgeInsets.only(top: 3.0, left: 3, right: 3),
           child: Column(
             children: [
               Expanded(
                 child: CachedNetworkImage(
                   imageUrl: entries.thumbnails.medium,
-                  fit: BoxFit.cover,
+                  fit: BoxFit.fitHeight,
                 ),
               ),
               Text(entries.title)

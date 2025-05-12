@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:sign_learn/features/profile/presentation/provider/user_payload_provider.dart';
 
 import '../core/core.dart';
 import '../gen/fonts.gen.dart';
@@ -17,6 +18,15 @@ class SkeletonTabView extends ConsumerStatefulWidget {
 }
 
 class _SkeletonTabViewState extends ConsumerState<SkeletonTabView> {
+  @override
+  void initState() {
+    Future(() {
+      ref.read(userNotiferProvider.notifier).initUser();
+    });
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return AutoTabsRouter.tabBar(

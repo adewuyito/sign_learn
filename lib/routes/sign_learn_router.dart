@@ -1,3 +1,4 @@
+import 'package:sign_learn/features/quiz/presentation/sign_quiz_view.dart';
 import 'package:sign_learn/routes/sign_learn_router.gr.dart';
 
 import 'route_guard.dart';
@@ -39,7 +40,7 @@ class SignRouter extends RootStackRouter {
   List<AutoRoute> get routes => [
         // ~ Initial routes
         routeWithTransition(
-          initial: true,
+          // initial: true,
           page: AuthInitRoute.page,
           path: '/auth-init',
         ),
@@ -72,6 +73,7 @@ class SignRouter extends RootStackRouter {
           ],
           guards: [signAuthGuard],
         ),
+     
         // ~ Settings Routes
         routeWithTransition(initial: false, page: SettingsRoute.page),
 
@@ -92,6 +94,9 @@ class SignRouter extends RootStackRouter {
 
         //  ~ Profile EditView
         routeWithTransition(page: ProfileEditRoute.page),
+
+        // Quiz
+        routeWithTransition(initial: true, page: SignQuizRoute.page),
       ];
 
   CustomRoute routeWithTransition({

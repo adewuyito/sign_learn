@@ -2,18 +2,15 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:sign_learn/common/commons.dart';
-import 'package:sign_learn/core/services/storage/shared_pref_storage_service.dart';
-import 'package:sign_learn/features/profile/presentation/widget/sign_profile_image.dart';
 
-import 'package:sign_learn/gen/fonts.gen.dart';
-
-import 'package:sign_learn/core/constants/extensions.dart';
-
+import '../../../common/commons.dart';
+import '../../../core/core.dart';
+import '../../../gen/fonts.gen.dart';
+import '../../../routes/router.dart';
+import '../../profile/presentation/provider/user_payload_provider.dart';
+import '../../profile/presentation/widget/sign_profile_image.dart';
 import 'widgets/home_calender.dart';
 import 'widgets/module_buttons.dart';
-import '../../../core/constants/constants.dart';
-import '../../profile/presentation/provider/user_payload_provider.dart';
 
 @RoutePage()
 class HomeView extends ConsumerStatefulWidget {
@@ -27,28 +24,19 @@ class _HomeViewState extends ConsumerState<HomeView> {
   @override
   void initState() {
     super.initState();
-
-    // // Schedule the provider update to run after the widget is built
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   if (mounted) {
-    //     ref.read(userNotiferProvider.notifier).initUser();
-    //   }
-    // });
-    Future(() {
-      ref.read(userNotiferProvider.notifier).initUser();
-    });
-    
   }
 
   @override
   Widget build(BuildContext context) {
-  
     final userName = ref.watch(userNotiferProvider).fullname;
     final _widgetSize = Size(Dims.availableWidth, 141.dy);
     final tt = Theme.of(context).textTheme;
     return SafeArea(
       minimum: safeAreaPadding,
       child: Scaffold(
+        floatingActionButton: FloatingActionButton(onPressed: () {
+          SignNavigator.of(context).push(SignQuizRoute());
+        }),
         appBar: AppBar(
           centerTitle: false,
           title: Row(

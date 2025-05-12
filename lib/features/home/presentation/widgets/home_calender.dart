@@ -96,7 +96,7 @@ class StreakWeekCalander extends HookConsumerWidget {
                           style: TextStyle(
                             fontFamily: 'Satoshi',
                             color: appColors.black,
-                            fontSize: 25,
+                            fontSize: 25.sp,
                             fontWeight:
                                 isToday ? FontWeight.w900 : FontWeight.bold,
                           ),
@@ -113,7 +113,7 @@ class StreakWeekCalander extends HookConsumerWidget {
                             "Sun"
                           ][date.weekday - 1],
                           style: TextStyle(
-                            fontSize: 22,
+                            fontSize: 22.sp,
                             fontFamily: 'Satoshi',
                             color: appColors.black,
                             fontWeight:

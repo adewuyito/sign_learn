@@ -4,9 +4,8 @@ import 'package:flutter/foundation.dart';
 
 import '../../../../common/commons.dart' show UserId;
 
-
 @immutable
-class UserInfoPayload extends MapView<String, String> {
+class UserInfoPayload extends MapView<String, String> { // ! Not used for this guy
   // This is a method that would be used to create a new instance of the [UserInfoPayload]
   // with the new values serialized into the map
   UserInfoPayload({

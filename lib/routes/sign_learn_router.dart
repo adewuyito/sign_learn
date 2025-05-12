@@ -40,7 +40,7 @@ class SignRouter extends RootStackRouter {
   List<AutoRoute> get routes => [
         // ~ Initial routes
         routeWithTransition(
-          // initial: true,
+          initial: true,
           page: AuthInitRoute.page,
           path: '/auth-init',
         ),
@@ -96,7 +96,7 @@ class SignRouter extends RootStackRouter {
         routeWithTransition(page: ProfileEditRoute.page),
 
         // Quiz
-        routeWithTransition(initial: true, page: SignQuizRoute.page),
+        routeWithTransition( page: SignQuizRoute.page),
       ];
 
   CustomRoute routeWithTransition({

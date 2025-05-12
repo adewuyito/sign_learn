@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sign_learn/features/auth/domain/authenticator.dart';
 import 'package:sign_learn/features/auth/domain/providers/is_logged_provider.dart';
 import 'package:sign_learn/features/features.dart';
+import 'package:sign_learn/features/profile/domain/usecases/get_profile.dart';
 
 import '../../../../common/commons.dart' show UserId;
 import '../../../../core/core.dart';
@@ -40,7 +41,6 @@ class UserProfileNotifier extends StateNotifier<UserInfoModel> {
 } */
 
 class UserPayloadNotifier extends Notifier<UserInfoModel> {
-  final _authenticator = Authenticator();
   @override
   build() {
     return UserInfoModel.unknown();
@@ -78,8 +78,9 @@ class UserPayloadNotifier extends Notifier<UserInfoModel> {
 
   void initUser() async {
     if (ref.watch(isLoggedInProvider)) {
-      final user = ref.watch(authNotifierProvider);
-      // ~ Sett the user lesson lock
+      final authUser = ref.watch(authNotifierProvider);
+      final _user = await ref.read(getProfileProvider).call(authUser.userId!);
+      // ~ Set the user lesson lock
       final asllessonLock =
           await ref.read(sharedPrefStorageProvider).get(lessonLock);
       if (asllessonLock == null) {
@@ -88,12 +89,7 @@ class UserPayloadNotifier extends Notifier<UserInfoModel> {
             .set(lessonLock, ['open', 'lock', 'lock', 'lock']);
       }
 
-      state = UserInfoModel(
-        userId: user.userId!,
-        email: _authenticator.email,
-        fullname: _authenticator.displayName,
-        displayImage: _authenticator.displayImage,
-      );
+      state = _user ?? UserInfoModel.unknown();
     }
   }
 }

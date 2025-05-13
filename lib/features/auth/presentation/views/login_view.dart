@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:sign_learn/features/auth/presentation/widget/tcpp_widget.dart';
+import 'package:sign_learn/features/auth/presentation/widget/two_part_auth_page_widget.dart';
 
 import '../../../../core/core.dart';
 import '../../../../routes/router.dart';
@@ -32,6 +34,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
       },
     );
 
+    final tt = TextTheme.of(context);
     final _formKey = GlobalKey<FormState>();
     final emailController = useTextEditingController();
     final passwordCotroller = useTextEditingController();
@@ -52,8 +55,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                 YBox(padding),
                 Text(
                   "SignBridge",
-                  style: TextTheme.of(context)
-                      .headlineLarge!
+                  style: tt.headlineLarge!
                       .copyWith(fontFamily: FontFamily.clashDisplay),
                 ),
                 YBox(.08.dyPercent),
@@ -98,14 +100,11 @@ class _LoginViewState extends ConsumerState<LoginView> {
                           ),
                           Text(
                             'Face Id',
-                            style: Theme.of(context)
-                                .textTheme
-                                .labelMedium!
-                                .copyWith(
-                                  fontFamily: FontFamily.satoshi,
-                                  fontWeight: FontWeight.w500,
-                                  color: appColors.white,
-                                ),
+                            style: tt.labelMedium!.copyWith(
+                              fontFamily: FontFamily.satoshi,
+                              fontWeight: FontWeight.w500,
+                              color: appColors.white,
+                            ),
                           ),
                         ],
                       ),
@@ -131,11 +130,10 @@ class _LoginViewState extends ConsumerState<LoginView> {
                       SvgPicture.asset(Assets.icons.socialIcons.googlePlain),
                       Text(
                         'Continue with Google',
-                        style:
-                            Theme.of(context).textTheme.labelMedium!.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: FontFamily.satoshi,
-                                ),
+                        style: tt.labelMedium!.copyWith(
+                          fontWeight: FontWeight.bold,
+                          fontFamily: FontFamily.satoshi,
+                        ),
                       ),
                     ],
                   ),
@@ -152,21 +150,24 @@ class _LoginViewState extends ConsumerState<LoginView> {
                       SvgPicture.asset(Assets.icons.socialIcons.facebookPlain),
                       Text(
                         'Continue with Facebook',
-                        style:
-                            Theme.of(context).textTheme.labelMedium!.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: FontFamily.satoshi,
-                                ),
+                        style: tt.labelMedium!.copyWith(
+                          fontWeight: FontWeight.bold,
+                          fontFamily: FontFamily.satoshi,
+                        ),
                       ),
                     ],
                   ),
                 ),
-                RichTextWidget(texts: [
-                  BaseText.plain(
-                      text: "Dont have an account?",
-                      style: TextTheme.of(context).labelSmall),
-                  BaseText.plain(text: "Create Account")
-                ])
+                YBox(47.dy),
+                TwoPartAuthPages(
+                  firstPart: "Dont have an account? ",
+                  secondPart: "Create Account",
+                  onTap: () {
+                    SignNavigator.of(context).replace(SignupRoute());
+                  },
+                ),
+                YBox(padding * 2),
+                TCPPWidget(),
               ],
             ),
           ),

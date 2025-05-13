@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sign_learn/routes/router.dart';
-import 'package:sign_learn/routes/sign_learn_router.gr.dart';
 
 import '../data/data.dart';
 import 'providers/lessons_provider.dart';

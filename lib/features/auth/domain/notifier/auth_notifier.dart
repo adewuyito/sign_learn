@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:riverpod/riverpod.dart';
-import 'package:sign_learn/features/auth/auth.dart';
-import 'package:sign_learn/features/profile/data/model/user_model.dart';
 
 import '../../../../core/core.dart' show SnackbarUtils;
-import '../../../profile/presentation/provider/user_payload_provider.dart';
+import '../../../profile/presentation/provider/provider.dart';
+import '../../auth.dart';
 import '../authenticator.dart';
 
 class AuthNotifier extends Notifier<AuthState> {
@@ -115,6 +114,7 @@ class AuthNotifier extends Notifier<AuthState> {
             if (context.mounted) {
               SnackbarUtils.of(context).signSnackBar("Account Created", false);
             }
+          
             return AuthState(
               result: AuthResult.success(),
               isLoading: false,
@@ -126,7 +126,7 @@ class AuthNotifier extends Notifier<AuthState> {
           () {
             if (context.mounted) {
               SnackbarUtils.of(context)
-                  .signSnackBar("An error occurred: $message", false);
+                  .signSnackBar("An error occurred: $message", true);
             }
             return AuthState(
               result: result,
@@ -143,11 +143,6 @@ class AuthNotifier extends Notifier<AuthState> {
           ),
         )
     };
-
-    // ~
-    // if (result == AuthResult.success && userId != null) {
-    //   await _saveUserInfo(userId: userId);
-    // }
   }
 
   Future<void> updateUserName({

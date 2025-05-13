@@ -1,8 +1,7 @@
 import 'package:riverpod/riverpod.dart';
 import 'package:sign_learn/common/typedefs.dart';
-import 'package:sign_learn/features/profile/data/model/user_model.dart';
 
-import '../datasources/datasources.dart';
+import '../data.dart';
 
 final profileRepositoryProvider = Provider<IProfileRepository>((ref) {
   return LessonRepository(

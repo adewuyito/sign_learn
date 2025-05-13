@@ -43,7 +43,9 @@ class ProfileLocalSource implements IProfileLocalSource {
   Future<bool> isUser({required userId}) async {
     try {
       final rp = await prefProvider.get(profileLocation);
-      // TODO: Unimplimented error
+      if (rp.isEmpty) {
+        return false;
+      }
       return true;
     } catch (e) {
       throw Exception('');

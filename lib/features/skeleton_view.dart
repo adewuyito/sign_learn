@@ -2,11 +2,11 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:sign_learn/features/profile/presentation/provider/user_payload_provider.dart';
 
 import '../core/core.dart';
 import '../gen/fonts.gen.dart';
 import '../routes/sign_learn_router.gr.dart';
+import 'profile/presentation/provider/provider.dart';
 
 @RoutePage()
 class SkeletonTabView extends ConsumerStatefulWidget {

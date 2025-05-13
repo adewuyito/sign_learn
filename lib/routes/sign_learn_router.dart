@@ -1,4 +1,3 @@
-import 'package:sign_learn/features/quiz/presentation/sign_quiz_view.dart';
 import 'package:sign_learn/routes/sign_learn_router.gr.dart';
 
 import 'route_guard.dart';
@@ -45,9 +44,9 @@ class SignRouter extends RootStackRouter {
           path: '/auth-init',
         ),
 
-        routeWithTransition(page: SignSplashRoute.page),
+        routeWithTransition(page: SignSplashRoute.page, transitionsBuilder: TransitionsBuilders.noTransition),
 
-        routeWithTransition(page: SignIntroRoute.page),
+        routeWithTransition(page: SignIntroRoute.page, transitionsBuilder: TransitionsBuilders.noTransition),
 
         // ~ Login Routes
         routeWithTransition(

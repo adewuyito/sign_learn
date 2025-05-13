@@ -87,20 +87,24 @@ class ProfileRemoteSource implements IProfileRemoteSource {
     }
   }
 
-
   // ~ Get the user data
   @override
   Future<UserInfoModel> getUserData({required UserId userId}) async {
     try {
       final snapshot = await firestore.collection('users').doc(userId).get();
       if (!snapshot.exists) {
-        throw Exception('User data not found');
+        throw UserNotFoundException();
       }
-      final data = UserInfoModel.fromJson(snapshot.data() as Map<String, dynamic>);
-    
+      final data =
+          UserInfoModel.fromJson(snapshot.data() as Map<String, dynamic>);
+
       return data;
     } catch (e) {
       throw Exception('Failed to get user data: $e');
     }
   }
+}
+
+class UserNotFoundException implements Exception {
+  static String message = 'User not found';
 }

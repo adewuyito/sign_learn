@@ -4,7 +4,6 @@ import 'package:sign_learn/features/profile/data/model/user_model.dart';
 
 import '../datasources/datasources.dart';
 
-
 final profileRepositoryProvider = Provider<IProfileRepository>((ref) {
   return LessonRepository(
     ref,

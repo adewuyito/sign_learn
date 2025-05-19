@@ -44,26 +44,29 @@ class SignRouter extends RootStackRouter {
           path: '/auth-init',
         ),
 
-        routeWithTransition(page: SignSplashRoute.page, transitionsBuilder: TransitionsBuilders.noTransition),
+        routeWithTransition(
+          page: SignSplashRoute.page,
+          transitionsBuilder: TransitionsBuilders.noTransition,
+        ),
 
-        routeWithTransition(page: SignIntroRoute.page, transitionsBuilder: TransitionsBuilders.noTransition),
+        routeWithTransition(
+          page: SignIntroRoute.page,
+          transitionsBuilder: TransitionsBuilders.noTransition,
+        ),
 
         // ~ Login Routes
         routeWithTransition(
           initial: false,
           // initial: true,
           page: LoginRoute.page,
-          // keepInHistory: false,
         ),
         routeWithTransition(
           initial: false,
           page: SignupRoute.page,
-          // keepInHistory: false,
         ),
 
         //  ~ Home Routes
         routeWithTransition(
-          initial: false,
           page: SkeletonTabRoute.page,
           children: [
             routeWithTransition(page: HomeRoute.page),
@@ -72,7 +75,7 @@ class SignRouter extends RootStackRouter {
           ],
           guards: [signAuthGuard],
         ),
-     
+
         // ~ Settings Routes
         routeWithTransition(initial: false, page: SettingsRoute.page),
 
@@ -95,7 +98,7 @@ class SignRouter extends RootStackRouter {
         routeWithTransition(page: ProfileEditRoute.page),
 
         // Quiz
-        routeWithTransition( page: SignQuizRoute.page),
+        routeWithTransition(page: SignQuizRoute.page),
       ];
 
   CustomRoute routeWithTransition({

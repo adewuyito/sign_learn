@@ -31,9 +31,18 @@ android {
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+
+  compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17  // Change from VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_17  // Change from VERSION_1_8
+    }
+    // compileOptions {
+    //     sourceCompatibility = JavaVersion.VERSION_1_8
+    //     targetCompatibility = JavaVersion.VERSION_1_8
+    // }
+
+      kotlinOptions {
+        jvmTarget = "17"  // This should already be 17, but make sure
     }
 
     defaultConfig {
@@ -53,6 +62,11 @@ android {
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.debug
         }
+    }
+
+    java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
     }
 }
 

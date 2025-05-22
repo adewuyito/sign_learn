@@ -3,19 +3,26 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:sign_learn/features/profile/presentation/widget/sign_profile_image.dart';
-import 'package:sign_learn/routes/router.dart';
 
 import '../../../common/commons.dart';
 import '../../../core/core.dart';
+import '../../../routes/router.dart';
 import '../../features.dart';
 import 'provider/user_payload_provider.dart';
+import 'widget/sign_profile_image.dart';
 
 @RoutePage()
-class ProfileEditView extends HookConsumerWidget {
+class ProfileEditView extends StatefulHookConsumerWidget {
   const ProfileEditView({super.key});
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _ProfileEditViewState();
+}
+
+class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
+  @override
+  Widget build(BuildContext context) {
     final user = ref.read(userNotiferProvider);
 
     final _nameController = useTextEditingController(text: user.fullname);

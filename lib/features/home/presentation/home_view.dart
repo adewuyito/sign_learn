@@ -6,7 +6,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../common/commons.dart';
 import '../../../core/core.dart';
 import '../../../gen/fonts.gen.dart';
-import '../../../routes/router.dart';
 import '../../profile/presentation/provider/user_payload_provider.dart';
 import '../../profile/presentation/widget/sign_profile_image.dart';
 import 'widgets/home_calender.dart';
@@ -34,9 +33,9 @@ class _HomeViewState extends ConsumerState<HomeView> {
     return SafeArea(
       minimum: safeAreaPadding,
       child: Scaffold(
-        floatingActionButton: FloatingActionButton(onPressed: () {
-          SignNavigator.of(context).push(SignQuizRoute());
-        }),
+        // floatingActionButton: FloatingActionButton(onPressed: () {
+        //   SignNavigator.of(context).push(SignQuizRoute());
+        // }),
         appBar: AppBar(
           centerTitle: false,
           title: Row(

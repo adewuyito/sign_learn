@@ -7,6 +7,7 @@ import '../../../../common/commons.dart';
 import '../../../../core/core.dart';
 import '../../../../gen/fonts.gen.dart';
 import '../../../../routes/router.dart';
+import '../../../profile/profile.dart';
 import '../../auth.dart';
 
 @RoutePage()
@@ -27,6 +28,17 @@ class _SignupViewState extends ConsumerState<SignupView> {
     final nameCotroller = useTextEditingController();
 
     return Scaffold(
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () async {
+      //     debugPrint(
+      //         'Is a user => ${await ref.read(profileRepositoryProvider).saveUserInfo(
+      //               userId: "275EmTLDsobRZGiIOFdIIl5dzHj2",
+      //               fullname: "Timothy Adewuyi",
+      //               email: "adewuyitimothy",
+      //             )}');
+      //   },
+      //   child: Icon(Icons.check),
+      // ),
       body: SafeArea(
         minimum: safeAreaPadding,
         child: Form(
@@ -79,14 +91,21 @@ class _SignupViewState extends ConsumerState<SignupView> {
                 SignUpButton(
                   label: "Sign Up",
                   color: appColors.buttonYellow,
-                  onPressed: () => ref
-                      .read(authNotifierProvider.notifier)
-                      .signUpWithCredentials(
-                        name: nameCotroller.text,
-                        email: emailController.text,
-                        password: passwordCotroller.text,
-                        context: context,
-                      ),
+                  onPressed: () => {
+                    ref
+                        .read(authNotifierProvider.notifier)
+                        .signUpWithCredentials(
+                          name: nameCotroller.text,
+                          email: emailController.text,
+                          password: passwordCotroller.text,
+                          context: context,
+                        ),
+                    ref.read(createUserProfileProvider).call(
+                          userId: ref.read(authNotifierProvider).userId!,
+                          fullname: nameCotroller.text,
+                          email: emailController.text,
+                        )
+                  },
                 ),
                 YBox(24.dy),
                 TwoPartAuthPages(

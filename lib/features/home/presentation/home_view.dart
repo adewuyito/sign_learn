@@ -6,9 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../common/commons.dart';
 import '../../../core/core.dart';
 import '../../../gen/fonts.gen.dart';
-import '../../../routes/router.dart';
-import '../../profile/presentation/provider/user_payload_provider.dart';
-import '../../profile/presentation/widget/sign_profile_image.dart';
+import '../../profile/presentation/presentation.dart';
 import 'widgets/home_calender.dart';
 import 'widgets/module_buttons.dart';
 
@@ -29,13 +27,14 @@ class _HomeViewState extends ConsumerState<HomeView> {
   @override
   Widget build(BuildContext context) {
     final userName = ref.watch(userNotiferProvider).fullname;
+    final fullname = userName ?? "Welcome Back";
     final _widgetSize = Size(Dims.availableWidth, 141.dy);
     final tt = Theme.of(context).textTheme;
     return SafeArea(
       minimum: safeAreaPadding,
       child: Scaffold(
-        floatingActionButton: FloatingActionButton(onPressed: () {
-          SignNavigator.of(context).push(SignQuizRoute());
+        floatingActionButton: FloatingActionButton(onPressed: () async {
+          // SignNavigator.of(context).push(SignQuizRoute());
         }),
         appBar: AppBar(
           centerTitle: false,
@@ -54,7 +53,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                     ),
                   ),
                   BaseText(
-                    text: userName.isEmpty ? "Welcome Back" : userName,
+                    text: fullname,
                     style: tt.headlineMedium!.copyWith(
                       fontFamily: FontFamily.clashDisplay,
                     ),

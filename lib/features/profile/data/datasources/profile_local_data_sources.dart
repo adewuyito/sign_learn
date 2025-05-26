@@ -1,7 +1,8 @@
+import 'dart:convert';
+
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sign_learn/core/services/services.dart';
 
-import '../../../../common/commons.dart';
 import '../model/model.dart';
 
 const String profileLocation = 'user_profile';
@@ -13,67 +14,38 @@ final profileLocalSourceProvider = Provider<IProfileLocalSource>((ref) {
 });
 
 abstract class IProfileLocalSource {
-  Future<UserInfoModel> getUserData({
-    required UserId userId,
-  });
-
-  Future<bool> saveUserInfo({
-    required UserId userId,
-    required String? fullname,
-    required String? email,
-  });
-
-  Future<bool> isUser({
-    required UserId userId,
-  });
+  Future<void> saveUser(UserInfoModel user);
+  Future<UserInfoModel?> getUser();
+  Future<void> deleteUser();
 }
 
 class ProfileLocalSource implements IProfileLocalSource {
   Ref ref;
   StorageService prefProvider;
   ProfileLocalSource(this.ref, this.prefProvider);
+  static const _key = 'local_user_info';
 
   @override
-  Future<UserInfoModel> getUserData({required userId}) {
-    // TODO: implement getUserData
-    throw UnimplementedError();
+  Future<void> saveUser(UserInfoModel user) async {
+    final jsonString = jsonEncode(user.toJson());
+    await prefProvider.set(_key, jsonString);
   }
 
   @override
-  Future<bool> isUser({required userId}) async {
+  Future<UserInfoModel?> getUser() async {
+    final jsonString = prefProvider.get(_key);
+    if (jsonString == null) return null;
+
     try {
-      final rp = await prefProvider.get(profileLocation);
-      if (rp.isEmpty) {
-        return false;
-      }
-      return true;
-    } catch (e) {
-      throw Exception('');
+      final Map<String, dynamic> json = jsonDecode(jsonString);
+      return UserInfoModel.fromJson(json);
+    } catch (_) {
+      return null;
     }
   }
 
   @override
-  Future<bool> saveUserInfo({
-    required userId,
-    required String? fullname,
-    required String? email,
-  }) async {
-    try {
-      await prefProvider.set(
-        profileLocation,
-        UserInfoPayload(
-          userId: userId,
-          email: email,
-          fullname: fullname,
-        ),
-      );
-      final rp = await prefProvider.get(profileLocation);
-      if (!rp) {
-        return false;
-      }
-      return true;
-    } catch (e) {
-      throw Exception('Unable to save user information');
-    }
+  Future<void> deleteUser() async {
+    await prefProvider.remove(_key);
   }
 }

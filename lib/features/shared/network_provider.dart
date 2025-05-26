@@ -1,14 +1,19 @@
-import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:data_connection_checker_tv/data_connection_checker.dart';
 import 'package:riverpod/riverpod.dart';
 
-/// Correct: Exposes a stream of `ConnectivityResult`
-final networkStatusProvider = StreamProvider<ConnectivityResult>((ref) {
-  // TODO: Fix this imlementation
-  return Connectivity().onConnectivityChanged.where((event) => event.);
-});
-
-
-Future<bool> isOnline() async {
-  final connectivityResult = await Connectivity().checkConnectivity();
-  return connectivityResult != ConnectivityResult.none;
+abstract class NetworkInfo {
+  Future<bool>? get isConnected;
 }
+
+class NetworkInfoImpl implements NetworkInfo {
+  final DataConnectionChecker connectionChecker;
+
+  NetworkInfoImpl(this.connectionChecker);
+
+  @override
+  Future<bool> get isConnected => connectionChecker.hasConnection;
+}
+
+final isConnectedNetworkInfoProvider = FutureProvider<bool>((ref) async {
+  return await NetworkInfoImpl(DataConnectionChecker()).isConnected;
+});

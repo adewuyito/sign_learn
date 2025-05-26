@@ -5,7 +5,7 @@ import '../../../../common/commons.dart' show UserId;
 import '../../../../core/core.dart';
 import '../../../auth/auth.dart';
 import '../../profile.dart'
-    show UserInfoModel, getProfileProvider, setProfileProvider;
+    show UserInfoModel, getProfileProvider, createUserProfileProvider;
 
 class UserPayloadNotifier extends Notifier<UserInfoModel> {
   @override
@@ -17,7 +17,7 @@ class UserPayloadNotifier extends Notifier<UserInfoModel> {
 
   // Getters for all user variables
   UserId? get userId => state.userId;
-  String get fullname => state.fullname;
+  String? get fullname => state.fullname;
   String? get email => state.email;
   String? get displayImage => state.displayImage;
 
@@ -32,7 +32,7 @@ class UserPayloadNotifier extends Notifier<UserInfoModel> {
     String? displayImage,
   }) async {
     try {
-      final userdata = await ref.read(setProfileProvider).call(
+      final userdata = await ref.read(createUserProfileProvider).call(
             userId: id,
             fullname: name,
             email: email,

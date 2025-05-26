@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sign_learn/common/typedefs.dart';
+import 'package:sign_learn/features/profile/data/profile_exceptions.dart';
 
 import '../model/model.dart';
 
@@ -14,97 +15,130 @@ final profileRemoteSourceProvider = Provider<IProfileRemoteSource>(
 );
 
 abstract class IProfileRemoteSource {
-  Future<UserInfoModel> getUserData({
-    required UserId userId,
-  });
+  Future<UserInfoModel> getUser(UserId userId);
 
-  Future<bool> saveUserInfo({
-    required UserId userId,
-    required String? fullname,
-    required String? email,
-  });
+  Future<void> createUser(UserInfoModel user);
 
-  Future<bool> isUser({
-    required UserId userId,
-  });
+  Future<void> updateUser(UserInfoModel user);
+
+  Future<void> deleteUser(UserId userId);
+
+  Future<bool> userExist(UserId userId);
+
+  Future<UserInfoModel?> getUserByEmail(String email);
 }
 
 class ProfileRemoteSource implements IProfileRemoteSource {
-  Ref ref;
   final FirebaseFirestore firestore;
+  Ref ref;
+
   ProfileRemoteSource(this.ref, {required this.firestore});
+  static const String _collectionName = 'users';
+
+  int _mapError(String code) {
+    switch (code) {
+      case 'permission-denied':
+        return 403;
+      case 'not-found':
+        return 404;
+      case 'already-exists':
+        return 409;
+      case 'resource-exhausted':
+        return 429;
+      case 'unauthenticated':
+        return 401;
+      default:
+        return 500;
+    }
+  }
 
   @override
-  Future<bool> isUser({
-    required UserId userId,
-  }) async {
+  Future<void> createUser(UserInfoModel user) async {
     try {
-      // This is a reference to the user's information in the database
-      final userInfo = await firestore
-          .collection(
-            'users',
-          )
-          .where(
-            'uid',
-            isEqualTo: userId,
-          )
+      await firestore
+          .collection(_collectionName)
+          .doc(user.userId)
+          .set(user.toFirestore());
+    } on FirebaseException catch (e) {
+      throw ServerException(
+          message: e.message ?? '', statusCode: _mapError(e.code));
+    }
+  }
+
+  @override
+  Future<void> updateUser(UserInfoModel user) async {
+    try {
+      await firestore
+          .collection(_collectionName)
+          .doc(user.userId)
+          .update(user.toFirestore(forUpdate: true));
+    } on FirebaseException catch (e) {
+      throw ServerException(
+          message: e.message ?? '', statusCode: _mapError(e.code));
+    }
+  }
+
+  @override
+  Future<void> deleteUser(String userId) async {
+    try {
+      await firestore.collection(_collectionName).doc(userId).delete();
+    } on FirebaseException catch (e) {
+      throw ServerException(
+          message: e.message ?? '', statusCode: _mapError(e.code));
+    }
+  }
+
+  @override
+  Future<UserInfoModel> getUser(String userId) async {
+    try {
+      final snapshot =
+          await firestore.collection(_collectionName).doc(userId).get();
+      if (!snapshot.exists) throw UserNotFoundException();
+      return UserInfoModel.fromFirestore(snapshot);
+    } on FirebaseException catch (e) {
+      throw ServerException(
+          message: e.message ?? '', statusCode: _mapError(e.code));
+    }
+  }
+
+  @override
+  Future<UserInfoModel?> getUserByEmail(String email) async {
+    try {
+      final query = await firestore
+          .collection(_collectionName)
+          .where('email', isEqualTo: email)
           .limit(1)
           .get();
 
-      // If the user's information is not found, then we create a new document
-      if (userInfo.docs.isNotEmpty) {
-        return true;
-      } else {
-        return false;
-      }
-    } catch (e) {
-      return false;
+      if (query.docs.isEmpty) return null;
+      return UserInfoModel.fromFirestore(query.docs.first);
+    } on FirebaseException catch (e) {
+      throw ServerException(
+          message: e.message ?? '', statusCode: _mapError(e.code));
     }
   }
 
   @override
-  Future<bool> saveUserInfo({
-    required UserId userId,
-    required String? fullname,
-    required String? email,
-  }) async {
+  Future<bool> userExist(String userId) async {
     try {
-      // This is a reference to the user's information in the database
-      final userInfo = await isUser(userId: userId);
-
-      // If the user's information is not found, then we create a new document
-      if (userInfo) {
-        final payLoad = UserInfoPayload(
-          userId: userId,
-          email: email,
-          fullname: fullname,
-        );
-        await firestore.collection('users').doc(userId).set(payLoad);
-      }
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
-
-  // ~ Get the user data
-  @override
-  Future<UserInfoModel> getUserData({required UserId userId}) async {
-    try {
-      final snapshot = await firestore.collection('users').doc(userId).get();
-      if (!snapshot.exists) {
-        throw UserNotFoundException();
-      }
-      final data =
-          UserInfoModel.fromJson(snapshot.data() as Map<String, dynamic>);
-
-      return data;
-    } catch (e) {
-      throw Exception('Failed to get user data: $e');
+      final doc = await firestore.collection(_collectionName).doc(userId).get();
+      return doc.exists;
+    } on FirebaseException catch (e) {
+      throw ServerException(
+          message: e.message ?? '', statusCode: _mapError(e.code));
     }
   }
 }
 
-class UserNotFoundException implements Exception {
-  static String message = 'User not found';
+class ServerException implements Exception {
+  final String message;
+  final int statusCode;
+
+  const ServerException({
+    required this.message,
+    required this.statusCode,
+  });
+
+  @override
+  String toString() => 'ServerException: $message (Status: $statusCode)';
 }

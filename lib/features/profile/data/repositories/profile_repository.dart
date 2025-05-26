@@ -1,48 +1,41 @@
 import 'package:riverpod/riverpod.dart';
 import 'package:sign_learn/common/typedefs.dart';
-
+import 'package:sign_learn/features/shared/network_provider.dart';
 import '../data.dart';
 
 final profileRepositoryProvider = Provider<IProfileRepository>((ref) {
-  return LessonRepository(
+  return ProfileRepository(
     ref,
+    ref.watch(profileLocalSourceProvider),
+    ref.watch(profileRemoteSourceProvider),
   );
 });
 
 abstract class IProfileRepository {
-  Future<UserInfoModel?> getUserData({
-    required UserId userId,
-  });
-
+  Future<UserInfoModel?> getUserData({required UserId userId});
   Future<bool> saveUserInfo({
     required UserId userId,
     required String? fullname,
     required String? email,
   });
-
-  Future<bool> isUser({
-    required UserId userId,
-  });
+  Future<bool> isUser({required UserId userId});
 }
-
-class LessonRepository implements IProfileRepository {
+class ProfileRepository implements IProfileRepository {
   Ref ref;
+  final IProfileLocalSource localSource;
+  final IProfileRemoteSource remoteSource;
 
-  LessonRepository(this.ref)
-      : lessonLocalSource = ref.watch(profileLocalSourceProvider),
-        lessonRemoteSource = ref.watch(profileRemoteSourceProvider);
-
-  IProfileRemoteSource lessonRemoteSource;
-  IProfileLocalSource lessonLocalSource;
+  ProfileRepository(this.ref, this.localSource, this.remoteSource);
 
   @override
-  Future<UserInfoModel> getUserData({required UserId userId}) async {
-    return await lessonRemoteSource.getUserData(userId: userId);
-  }
-
-  @override
-  Future<bool> isUser({required UserId userId}) async {
-    return await lessonRemoteSource.isUser(userId: userId);
+  Future<UserInfoModel?> getUserData({required UserId userId}) async {
+    if (await ref.watch(isConnectedNetworkInfoProvider.future)) {
+      final remote = await remoteSource.getUser(userId);
+      await localSource.saveUser(remote);
+      return remote;
+    } else {
+      return await localSource.getUser();
+    }
   }
 
   @override
@@ -51,10 +44,30 @@ class LessonRepository implements IProfileRepository {
     required String? fullname,
     required String? email,
   }) async {
-    return await lessonRemoteSource.saveUserInfo(
+    final user = UserInfoModel(
       userId: userId,
       fullname: fullname,
       email: email,
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
     );
+
+
+    if (await ref.watch(isConnectedNetworkInfoProvider.future)) {
+      await remoteSource.createUser(user);
+    }
+
+    await localSource.saveUser(user);
+    return true;
+  }
+
+  @override
+  Future<bool> isUser({required UserId userId}) async {
+    if (await ref.watch(isConnectedNetworkInfoProvider.future)) {
+      return remoteSource.userExist(userId);
+    } else {
+      final localUser = await localSource.getUser();
+      return localUser != null;
+    }
   }
 }

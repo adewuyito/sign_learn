@@ -1,0 +1,2 @@
+/Users/adewuyi/Development/Final_year_project/sign_learn/android/app/.cxx/Debug/384p2zx1/arm64-v8a/CMakeFiles/edit_cache.dir
+/Users/adewuyi/Development/Final_year_project/sign_learn/android/app/.cxx/Debug/384p2zx1/arm64-v8a/CMakeFiles/rebuild_cache.dir

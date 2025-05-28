@@ -1,44 +1,11 @@
 // Notifier to manage the user state
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:sign_learn/features/auth/domain/authenticator.dart';
-import 'package:sign_learn/features/auth/domain/providers/is_logged_provider.dart';
-import 'package:sign_learn/features/features.dart';
-import 'package:sign_learn/features/profile/domain/usecases/get_profile.dart';
 
 import '../../../../common/commons.dart' show UserId;
 import '../../../../core/core.dart';
-import '../../data/model/user_model.dart';
-/* 
-class UserProfileNotifier extends StateNotifier<UserInfoModel> {
-  UserProfileNotifier() : super(const UserInfoModel.unknown());
-
-  UserInfoModel get user => state;
-
-  // Function to set the user (e.g., on login)
-  void setUser(UserInfoModel user) {
-    state = user;
-  }
-
-  // Function to update user information
-  void updateUser({
-    required UserId id,
-    String? name,
-    String? email,
-    String? displayImage,
-  }) {
-    state = state.copyWith(
-      userId: id,
-      email: email ?? state.email,
-      fullname: name ?? state.fullname,
-      displayImage: displayImage ?? state.displayImage,
-    );
-  }
-
-  // Function to clear the user state (e.g., on logout)
-  void clearUser() {
-    state = const UserInfoModel.unknown();
-  }
-} */
+import '../../../auth/auth.dart';
+import '../../profile.dart'
+    show UserInfoModel, getProfileProvider, createUserProfileProvider;
 
 class UserPayloadNotifier extends Notifier<UserInfoModel> {
   @override
@@ -50,7 +17,7 @@ class UserPayloadNotifier extends Notifier<UserInfoModel> {
 
   // Getters for all user variables
   UserId? get userId => state.userId;
-  String get fullname => state.fullname;
+  String? get fullname => state.fullname;
   String? get email => state.email;
   String? get displayImage => state.displayImage;
 
@@ -58,18 +25,30 @@ class UserPayloadNotifier extends Notifier<UserInfoModel> {
     state = user;
   }
 
-  void updateUser({
+  Future<void> updateUser({
     required UserId id,
     String? name,
     String? email,
     String? displayImage,
-  }) {
-    state = state.copyWith(
-      userId: id,
-      email: email ?? state.email,
-      fullname: name ?? state.fullname,
-      displayImage: displayImage ?? state.displayImage,
-    );
+  }) async {
+    try {
+      final userdata = await ref.read(createUserProfileProvider).call(
+            userId: id,
+            fullname: name,
+            email: email,
+          );
+
+      if (userdata) {
+        state = state.copyWith(
+          userId: id,
+          email: email ?? state.email,
+          fullname: name ?? state.fullname,
+          displayImage: displayImage ?? state.displayImage,
+        );
+      }
+    } catch (e) {
+      throw Exception('Unable to update user information');
+    }
   }
 
   void clearUser() {

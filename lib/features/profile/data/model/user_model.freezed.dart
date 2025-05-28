@@ -19,7 +19,7 @@ UserInfoModel _$UserInfoModelFromJson(Map<String, dynamic> json) {
     case 'default':
       return _UserInfoModel.fromJson(json);
     case 'unknown':
-      return _UserInfoModelUnkown.fromJson(json);
+      return _UserInfoModelUnknown.fromJson(json);
 
     default:
       throw CheckedFromJsonException(json, 'runtimeType', 'UserInfoModel',
@@ -30,36 +30,70 @@ UserInfoModel _$UserInfoModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$UserInfoModel {
   String get userId => throw _privateConstructorUsedError;
-  String get fullname => throw _privateConstructorUsedError;
+  String? get fullname => throw _privateConstructorUsedError;
   String? get email => throw _privateConstructorUsedError;
   String? get displayImage => throw _privateConstructorUsedError;
+  @TimestampConverter()
+  DateTime? get createdAt => throw _privateConstructorUsedError;
+  @TimestampConverter()
+  DateTime? get updatedAt => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
     TResult Function(
-            String userId, String fullname, String? email, String? displayImage)
+            String userId,
+            String? fullname,
+            String? email,
+            String? displayImage,
+            @TimestampConverter() DateTime? createdAt,
+            @TimestampConverter() DateTime? updatedAt)
         $default, {
     required TResult Function(
-            String userId, String fullname, String? email, String? displayImage)
+            String userId,
+            String? fullname,
+            String? email,
+            String? displayImage,
+            @TimestampConverter() DateTime? createdAt,
+            @TimestampConverter() DateTime? updatedAt)
         unknown,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(String userId, String fullname, String? email,
-            String? displayImage)?
+    TResult? Function(
+            String userId,
+            String? fullname,
+            String? email,
+            String? displayImage,
+            @TimestampConverter() DateTime? createdAt,
+            @TimestampConverter() DateTime? updatedAt)?
         $default, {
-    TResult? Function(String userId, String fullname, String? email,
-            String? displayImage)?
+    TResult? Function(
+            String userId,
+            String? fullname,
+            String? email,
+            String? displayImage,
+            @TimestampConverter() DateTime? createdAt,
+            @TimestampConverter() DateTime? updatedAt)?
         unknown,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(String userId, String fullname, String? email,
-            String? displayImage)?
+    TResult Function(
+            String userId,
+            String? fullname,
+            String? email,
+            String? displayImage,
+            @TimestampConverter() DateTime? createdAt,
+            @TimestampConverter() DateTime? updatedAt)?
         $default, {
-    TResult Function(String userId, String fullname, String? email,
-            String? displayImage)?
+    TResult Function(
+            String userId,
+            String? fullname,
+            String? email,
+            String? displayImage,
+            @TimestampConverter() DateTime? createdAt,
+            @TimestampConverter() DateTime? updatedAt)?
         unknown,
     required TResult orElse(),
   }) =>
@@ -67,19 +101,19 @@ mixin _$UserInfoModel {
   @optionalTypeArgs
   TResult map<TResult extends Object?>(
     TResult Function(_UserInfoModel value) $default, {
-    required TResult Function(_UserInfoModelUnkown value) unknown,
+    required TResult Function(_UserInfoModelUnknown value) unknown,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>(
     TResult? Function(_UserInfoModel value)? $default, {
-    TResult? Function(_UserInfoModelUnkown value)? unknown,
+    TResult? Function(_UserInfoModelUnknown value)? unknown,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>(
     TResult Function(_UserInfoModel value)? $default, {
-    TResult Function(_UserInfoModelUnkown value)? unknown,
+    TResult Function(_UserInfoModelUnknown value)? unknown,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -101,7 +135,12 @@ abstract class $UserInfoModelCopyWith<$Res> {
       _$UserInfoModelCopyWithImpl<$Res, UserInfoModel>;
   @useResult
   $Res call(
-      {String userId, String fullname, String? email, String? displayImage});
+      {String userId,
+      String? fullname,
+      String? email,
+      String? displayImage,
+      @TimestampConverter() DateTime? createdAt,
+      @TimestampConverter() DateTime? updatedAt});
 }
 
 /// @nodoc
@@ -120,19 +159,21 @@ class _$UserInfoModelCopyWithImpl<$Res, $Val extends UserInfoModel>
   @override
   $Res call({
     Object? userId = null,
-    Object? fullname = null,
+    Object? fullname = freezed,
     Object? email = freezed,
     Object? displayImage = freezed,
+    Object? createdAt = freezed,
+    Object? updatedAt = freezed,
   }) {
     return _then(_value.copyWith(
       userId: null == userId
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
               as String,
-      fullname: null == fullname
+      fullname: freezed == fullname
           ? _value.fullname
           : fullname // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       email: freezed == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
@@ -141,6 +182,14 @@ class _$UserInfoModelCopyWithImpl<$Res, $Val extends UserInfoModel>
           ? _value.displayImage
           : displayImage // ignore: cast_nullable_to_non_nullable
               as String?,
+      createdAt: freezed == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      updatedAt: freezed == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ) as $Val);
   }
 }
@@ -154,7 +203,12 @@ abstract class _$$UserInfoModelImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String userId, String fullname, String? email, String? displayImage});
+      {String userId,
+      String? fullname,
+      String? email,
+      String? displayImage,
+      @TimestampConverter() DateTime? createdAt,
+      @TimestampConverter() DateTime? updatedAt});
 }
 
 /// @nodoc
@@ -171,19 +225,21 @@ class __$$UserInfoModelImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? userId = null,
-    Object? fullname = null,
+    Object? fullname = freezed,
     Object? email = freezed,
     Object? displayImage = freezed,
+    Object? createdAt = freezed,
+    Object? updatedAt = freezed,
   }) {
     return _then(_$UserInfoModelImpl(
       userId: null == userId
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
               as String,
-      fullname: null == fullname
+      fullname: freezed == fullname
           ? _value.fullname
           : fullname // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       email: freezed == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
@@ -192,20 +248,31 @@ class __$$UserInfoModelImplCopyWithImpl<$Res>
           ? _value.displayImage
           : displayImage // ignore: cast_nullable_to_non_nullable
               as String?,
+      createdAt: freezed == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      updatedAt: freezed == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$UserInfoModelImpl implements _UserInfoModel {
+class _$UserInfoModelImpl extends _UserInfoModel {
   const _$UserInfoModelImpl(
       {required this.userId,
-      required this.fullname,
-      required this.email,
-      required this.displayImage,
+      this.fullname,
+      this.email,
+      this.displayImage,
+      @TimestampConverter() this.createdAt,
+      @TimestampConverter() this.updatedAt,
       final String? $type})
-      : $type = $type ?? 'default';
+      : $type = $type ?? 'default',
+        super._();
 
   factory _$UserInfoModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserInfoModelImplFromJson(json);
@@ -213,18 +280,24 @@ class _$UserInfoModelImpl implements _UserInfoModel {
   @override
   final String userId;
   @override
-  final String fullname;
+  final String? fullname;
   @override
   final String? email;
   @override
   final String? displayImage;
+  @override
+  @TimestampConverter()
+  final DateTime? createdAt;
+  @override
+  @TimestampConverter()
+  final DateTime? updatedAt;
 
   @JsonKey(name: 'runtimeType')
   final String $type;
 
   @override
   String toString() {
-    return 'UserInfoModel(userId: $userId, fullname: $fullname, email: $email, displayImage: $displayImage)';
+    return 'UserInfoModel(userId: $userId, fullname: $fullname, email: $email, displayImage: $displayImage, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -237,13 +310,17 @@ class _$UserInfoModelImpl implements _UserInfoModel {
                 other.fullname == fullname) &&
             (identical(other.email, email) || other.email == email) &&
             (identical(other.displayImage, displayImage) ||
-                other.displayImage == displayImage));
+                other.displayImage == displayImage) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.updatedAt, updatedAt) ||
+                other.updatedAt == updatedAt));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, userId, fullname, email, displayImage);
+  int get hashCode => Object.hash(
+      runtimeType, userId, fullname, email, displayImage, createdAt, updatedAt);
 
   /// Create a copy of UserInfoModel
   /// with the given fields replaced by the non-null parameter values.
@@ -257,41 +334,74 @@ class _$UserInfoModelImpl implements _UserInfoModel {
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
     TResult Function(
-            String userId, String fullname, String? email, String? displayImage)
+            String userId,
+            String? fullname,
+            String? email,
+            String? displayImage,
+            @TimestampConverter() DateTime? createdAt,
+            @TimestampConverter() DateTime? updatedAt)
         $default, {
     required TResult Function(
-            String userId, String fullname, String? email, String? displayImage)
+            String userId,
+            String? fullname,
+            String? email,
+            String? displayImage,
+            @TimestampConverter() DateTime? createdAt,
+            @TimestampConverter() DateTime? updatedAt)
         unknown,
   }) {
-    return $default(userId, fullname, email, displayImage);
+    return $default(
+        userId, fullname, email, displayImage, createdAt, updatedAt);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(String userId, String fullname, String? email,
-            String? displayImage)?
+    TResult? Function(
+            String userId,
+            String? fullname,
+            String? email,
+            String? displayImage,
+            @TimestampConverter() DateTime? createdAt,
+            @TimestampConverter() DateTime? updatedAt)?
         $default, {
-    TResult? Function(String userId, String fullname, String? email,
-            String? displayImage)?
+    TResult? Function(
+            String userId,
+            String? fullname,
+            String? email,
+            String? displayImage,
+            @TimestampConverter() DateTime? createdAt,
+            @TimestampConverter() DateTime? updatedAt)?
         unknown,
   }) {
-    return $default?.call(userId, fullname, email, displayImage);
+    return $default?.call(
+        userId, fullname, email, displayImage, createdAt, updatedAt);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(String userId, String fullname, String? email,
-            String? displayImage)?
+    TResult Function(
+            String userId,
+            String? fullname,
+            String? email,
+            String? displayImage,
+            @TimestampConverter() DateTime? createdAt,
+            @TimestampConverter() DateTime? updatedAt)?
         $default, {
-    TResult Function(String userId, String fullname, String? email,
-            String? displayImage)?
+    TResult Function(
+            String userId,
+            String? fullname,
+            String? email,
+            String? displayImage,
+            @TimestampConverter() DateTime? createdAt,
+            @TimestampConverter() DateTime? updatedAt)?
         unknown,
     required TResult orElse(),
   }) {
     if ($default != null) {
-      return $default(userId, fullname, email, displayImage);
+      return $default(
+          userId, fullname, email, displayImage, createdAt, updatedAt);
     }
     return orElse();
   }
@@ -300,7 +410,7 @@ class _$UserInfoModelImpl implements _UserInfoModel {
   @optionalTypeArgs
   TResult map<TResult extends Object?>(
     TResult Function(_UserInfoModel value) $default, {
-    required TResult Function(_UserInfoModelUnkown value) unknown,
+    required TResult Function(_UserInfoModelUnknown value) unknown,
   }) {
     return $default(this);
   }
@@ -309,7 +419,7 @@ class _$UserInfoModelImpl implements _UserInfoModel {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>(
     TResult? Function(_UserInfoModel value)? $default, {
-    TResult? Function(_UserInfoModelUnkown value)? unknown,
+    TResult? Function(_UserInfoModelUnknown value)? unknown,
   }) {
     return $default?.call(this);
   }
@@ -318,7 +428,7 @@ class _$UserInfoModelImpl implements _UserInfoModel {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>(
     TResult Function(_UserInfoModel value)? $default, {
-    TResult Function(_UserInfoModelUnkown value)? unknown,
+    TResult Function(_UserInfoModelUnknown value)? unknown,
     required TResult orElse(),
   }) {
     if ($default != null) {
@@ -335,12 +445,15 @@ class _$UserInfoModelImpl implements _UserInfoModel {
   }
 }
 
-abstract class _UserInfoModel implements UserInfoModel {
+abstract class _UserInfoModel extends UserInfoModel {
   const factory _UserInfoModel(
       {required final String userId,
-      required final String fullname,
-      required final String? email,
-      required final String? displayImage}) = _$UserInfoModelImpl;
+      final String? fullname,
+      final String? email,
+      final String? displayImage,
+      @TimestampConverter() final DateTime? createdAt,
+      @TimestampConverter() final DateTime? updatedAt}) = _$UserInfoModelImpl;
+  const _UserInfoModel._() : super._();
 
   factory _UserInfoModel.fromJson(Map<String, dynamic> json) =
       _$UserInfoModelImpl.fromJson;
@@ -348,11 +461,17 @@ abstract class _UserInfoModel implements UserInfoModel {
   @override
   String get userId;
   @override
-  String get fullname;
+  String? get fullname;
   @override
   String? get email;
   @override
   String? get displayImage;
+  @override
+  @TimestampConverter()
+  DateTime? get createdAt;
+  @override
+  @TimestampConverter()
+  DateTime? get updatedAt;
 
   /// Create a copy of UserInfoModel
   /// with the given fields replaced by the non-null parameter values.
@@ -363,23 +482,28 @@ abstract class _UserInfoModel implements UserInfoModel {
 }
 
 /// @nodoc
-abstract class _$$UserInfoModelUnkownImplCopyWith<$Res>
+abstract class _$$UserInfoModelUnknownImplCopyWith<$Res>
     implements $UserInfoModelCopyWith<$Res> {
-  factory _$$UserInfoModelUnkownImplCopyWith(_$UserInfoModelUnkownImpl value,
-          $Res Function(_$UserInfoModelUnkownImpl) then) =
-      __$$UserInfoModelUnkownImplCopyWithImpl<$Res>;
+  factory _$$UserInfoModelUnknownImplCopyWith(_$UserInfoModelUnknownImpl value,
+          $Res Function(_$UserInfoModelUnknownImpl) then) =
+      __$$UserInfoModelUnknownImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
-      {String userId, String fullname, String? email, String? displayImage});
+      {String userId,
+      String? fullname,
+      String? email,
+      String? displayImage,
+      @TimestampConverter() DateTime? createdAt,
+      @TimestampConverter() DateTime? updatedAt});
 }
 
 /// @nodoc
-class __$$UserInfoModelUnkownImplCopyWithImpl<$Res>
-    extends _$UserInfoModelCopyWithImpl<$Res, _$UserInfoModelUnkownImpl>
-    implements _$$UserInfoModelUnkownImplCopyWith<$Res> {
-  __$$UserInfoModelUnkownImplCopyWithImpl(_$UserInfoModelUnkownImpl _value,
-      $Res Function(_$UserInfoModelUnkownImpl) _then)
+class __$$UserInfoModelUnknownImplCopyWithImpl<$Res>
+    extends _$UserInfoModelCopyWithImpl<$Res, _$UserInfoModelUnknownImpl>
+    implements _$$UserInfoModelUnknownImplCopyWith<$Res> {
+  __$$UserInfoModelUnknownImplCopyWithImpl(_$UserInfoModelUnknownImpl _value,
+      $Res Function(_$UserInfoModelUnknownImpl) _then)
       : super(_value, _then);
 
   /// Create a copy of UserInfoModel
@@ -388,132 +512,188 @@ class __$$UserInfoModelUnkownImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? userId = null,
-    Object? fullname = null,
+    Object? fullname = freezed,
     Object? email = freezed,
     Object? displayImage = freezed,
+    Object? createdAt = freezed,
+    Object? updatedAt = freezed,
   }) {
-    return _then(_$UserInfoModelUnkownImpl(
-      null == userId
+    return _then(_$UserInfoModelUnknownImpl(
+      userId: null == userId
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
               as String,
-      null == fullname
+      fullname: freezed == fullname
           ? _value.fullname
           : fullname // ignore: cast_nullable_to_non_nullable
-              as String,
-      freezed == email
+              as String?,
+      email: freezed == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
               as String?,
-      freezed == displayImage
+      displayImage: freezed == displayImage
           ? _value.displayImage
           : displayImage // ignore: cast_nullable_to_non_nullable
               as String?,
+      createdAt: freezed == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      updatedAt: freezed == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$UserInfoModelUnkownImpl implements _UserInfoModelUnkown {
-  const _$UserInfoModelUnkownImpl(
-      [this.userId = '',
+class _$UserInfoModelUnknownImpl extends _UserInfoModelUnknown {
+  const _$UserInfoModelUnknownImpl(
+      {this.userId = '',
       this.fullname = '',
       this.email = '',
       this.displayImage = '',
-      final String? $type])
-      : $type = $type ?? 'unknown';
+      @TimestampConverter() this.createdAt,
+      @TimestampConverter() this.updatedAt,
+      final String? $type})
+      : $type = $type ?? 'unknown',
+        super._();
 
-  factory _$UserInfoModelUnkownImpl.fromJson(Map<String, dynamic> json) =>
-      _$$UserInfoModelUnkownImplFromJson(json);
+  factory _$UserInfoModelUnknownImpl.fromJson(Map<String, dynamic> json) =>
+      _$$UserInfoModelUnknownImplFromJson(json);
 
   @override
   @JsonKey()
   final String userId;
   @override
   @JsonKey()
-  final String fullname;
+  final String? fullname;
   @override
   @JsonKey()
   final String? email;
   @override
   @JsonKey()
   final String? displayImage;
+  @override
+  @TimestampConverter()
+  final DateTime? createdAt;
+  @override
+  @TimestampConverter()
+  final DateTime? updatedAt;
 
   @JsonKey(name: 'runtimeType')
   final String $type;
 
   @override
   String toString() {
-    return 'UserInfoModel.unknown(userId: $userId, fullname: $fullname, email: $email, displayImage: $displayImage)';
+    return 'UserInfoModel.unknown(userId: $userId, fullname: $fullname, email: $email, displayImage: $displayImage, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$UserInfoModelUnkownImpl &&
+            other is _$UserInfoModelUnknownImpl &&
             (identical(other.userId, userId) || other.userId == userId) &&
             (identical(other.fullname, fullname) ||
                 other.fullname == fullname) &&
             (identical(other.email, email) || other.email == email) &&
             (identical(other.displayImage, displayImage) ||
-                other.displayImage == displayImage));
+                other.displayImage == displayImage) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.updatedAt, updatedAt) ||
+                other.updatedAt == updatedAt));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, userId, fullname, email, displayImage);
+  int get hashCode => Object.hash(
+      runtimeType, userId, fullname, email, displayImage, createdAt, updatedAt);
 
   /// Create a copy of UserInfoModel
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$UserInfoModelUnkownImplCopyWith<_$UserInfoModelUnkownImpl> get copyWith =>
-      __$$UserInfoModelUnkownImplCopyWithImpl<_$UserInfoModelUnkownImpl>(
-          this, _$identity);
+  _$$UserInfoModelUnknownImplCopyWith<_$UserInfoModelUnknownImpl>
+      get copyWith =>
+          __$$UserInfoModelUnknownImplCopyWithImpl<_$UserInfoModelUnknownImpl>(
+              this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
     TResult Function(
-            String userId, String fullname, String? email, String? displayImage)
+            String userId,
+            String? fullname,
+            String? email,
+            String? displayImage,
+            @TimestampConverter() DateTime? createdAt,
+            @TimestampConverter() DateTime? updatedAt)
         $default, {
     required TResult Function(
-            String userId, String fullname, String? email, String? displayImage)
+            String userId,
+            String? fullname,
+            String? email,
+            String? displayImage,
+            @TimestampConverter() DateTime? createdAt,
+            @TimestampConverter() DateTime? updatedAt)
         unknown,
   }) {
-    return unknown(userId, fullname, email, displayImage);
+    return unknown(userId, fullname, email, displayImage, createdAt, updatedAt);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(String userId, String fullname, String? email,
-            String? displayImage)?
+    TResult? Function(
+            String userId,
+            String? fullname,
+            String? email,
+            String? displayImage,
+            @TimestampConverter() DateTime? createdAt,
+            @TimestampConverter() DateTime? updatedAt)?
         $default, {
-    TResult? Function(String userId, String fullname, String? email,
-            String? displayImage)?
+    TResult? Function(
+            String userId,
+            String? fullname,
+            String? email,
+            String? displayImage,
+            @TimestampConverter() DateTime? createdAt,
+            @TimestampConverter() DateTime? updatedAt)?
         unknown,
   }) {
-    return unknown?.call(userId, fullname, email, displayImage);
+    return unknown?.call(
+        userId, fullname, email, displayImage, createdAt, updatedAt);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(String userId, String fullname, String? email,
-            String? displayImage)?
+    TResult Function(
+            String userId,
+            String? fullname,
+            String? email,
+            String? displayImage,
+            @TimestampConverter() DateTime? createdAt,
+            @TimestampConverter() DateTime? updatedAt)?
         $default, {
-    TResult Function(String userId, String fullname, String? email,
-            String? displayImage)?
+    TResult Function(
+            String userId,
+            String? fullname,
+            String? email,
+            String? displayImage,
+            @TimestampConverter() DateTime? createdAt,
+            @TimestampConverter() DateTime? updatedAt)?
         unknown,
     required TResult orElse(),
   }) {
     if (unknown != null) {
-      return unknown(userId, fullname, email, displayImage);
+      return unknown(
+          userId, fullname, email, displayImage, createdAt, updatedAt);
     }
     return orElse();
   }
@@ -522,7 +702,7 @@ class _$UserInfoModelUnkownImpl implements _UserInfoModelUnkown {
   @optionalTypeArgs
   TResult map<TResult extends Object?>(
     TResult Function(_UserInfoModel value) $default, {
-    required TResult Function(_UserInfoModelUnkown value) unknown,
+    required TResult Function(_UserInfoModelUnknown value) unknown,
   }) {
     return unknown(this);
   }
@@ -531,7 +711,7 @@ class _$UserInfoModelUnkownImpl implements _UserInfoModelUnkown {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>(
     TResult? Function(_UserInfoModel value)? $default, {
-    TResult? Function(_UserInfoModelUnkown value)? unknown,
+    TResult? Function(_UserInfoModelUnknown value)? unknown,
   }) {
     return unknown?.call(this);
   }
@@ -540,7 +720,7 @@ class _$UserInfoModelUnkownImpl implements _UserInfoModelUnkown {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>(
     TResult Function(_UserInfoModel value)? $default, {
-    TResult Function(_UserInfoModelUnkown value)? unknown,
+    TResult Function(_UserInfoModelUnknown value)? unknown,
     required TResult orElse(),
   }) {
     if (unknown != null) {
@@ -551,35 +731,45 @@ class _$UserInfoModelUnkownImpl implements _UserInfoModelUnkown {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$UserInfoModelUnkownImplToJson(
+    return _$$UserInfoModelUnknownImplToJson(
       this,
     );
   }
 }
 
-abstract class _UserInfoModelUnkown implements UserInfoModel {
-  const factory _UserInfoModelUnkown(
-      [final String userId,
-      final String fullname,
-      final String? email,
-      final String? displayImage]) = _$UserInfoModelUnkownImpl;
+abstract class _UserInfoModelUnknown extends UserInfoModel {
+  const factory _UserInfoModelUnknown(
+          {final String userId,
+          final String? fullname,
+          final String? email,
+          final String? displayImage,
+          @TimestampConverter() final DateTime? createdAt,
+          @TimestampConverter() final DateTime? updatedAt}) =
+      _$UserInfoModelUnknownImpl;
+  const _UserInfoModelUnknown._() : super._();
 
-  factory _UserInfoModelUnkown.fromJson(Map<String, dynamic> json) =
-      _$UserInfoModelUnkownImpl.fromJson;
+  factory _UserInfoModelUnknown.fromJson(Map<String, dynamic> json) =
+      _$UserInfoModelUnknownImpl.fromJson;
 
   @override
   String get userId;
   @override
-  String get fullname;
+  String? get fullname;
   @override
   String? get email;
   @override
   String? get displayImage;
+  @override
+  @TimestampConverter()
+  DateTime? get createdAt;
+  @override
+  @TimestampConverter()
+  DateTime? get updatedAt;
 
   /// Create a copy of UserInfoModel
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$UserInfoModelUnkownImplCopyWith<_$UserInfoModelUnkownImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$UserInfoModelUnknownImplCopyWith<_$UserInfoModelUnknownImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }

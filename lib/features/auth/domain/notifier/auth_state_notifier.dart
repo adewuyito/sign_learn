@@ -196,6 +196,7 @@ class AuthStateNotifier extends StateNotifier<AuthState> {
     // }
   }
 
+// TODO: Fix to edit user name and not the entire profile
   Future<void> updateUserName({
     required String name,
     required BuildContext context,

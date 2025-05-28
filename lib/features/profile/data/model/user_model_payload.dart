@@ -1,4 +1,4 @@
-import 'dart:collection';
+/* import 'dart:collection';
 
 import 'package:flutter/foundation.dart';
 
@@ -18,3 +18,9 @@ class UserInfoPayload extends MapView<String, String> { // ! Not used for this g
           'fullname': fullname ?? '',
         });
 }
+
+extension UserInfoPayloadX on UserInfoPayload {
+  String get id => this['id']!;
+}
+
+ */

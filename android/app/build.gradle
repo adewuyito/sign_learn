@@ -31,9 +31,18 @@ android {
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+
+  compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17  // Change from VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_17  // Change from VERSION_1_8
+    }
+    // compileOptions {
+    //     sourceCompatibility = JavaVersion.VERSION_1_8
+    //     targetCompatibility = JavaVersion.VERSION_1_8
+    // }
+
+      kotlinOptions {
+        jvmTarget = "17"  // This should already be 17, but make sure
     }
 
     defaultConfig {
@@ -41,7 +50,7 @@ android {
         applicationId = "come.qbase.sign_learn"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdk = flutter.minSdkVersion
+        minSdk = 23
         targetSdk = flutter.targetSdkVersion
         versionCode = flutterVersionCode.toInteger()
         versionName = flutterVersionName
@@ -54,6 +63,11 @@ android {
             signingConfig = signingConfigs.debug
         }
     }
+
+    java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }}
 }
 
 flutter {

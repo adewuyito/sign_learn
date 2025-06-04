@@ -25,7 +25,7 @@ class AuthGuard extends AutoRouteGuard {
       final result = await router.replace<bool>(const LoginRoute());
       if (result == true) {
         resolver.next(true);
-        _ref.read(userNotiferProvider.notifier).initUser();
+        // _ref.read(userNotiferProvider.notifier).initUser();
       } else {
         resolver.next(false);
       }

@@ -13,11 +13,11 @@ final profileRepositoryProvider = Provider<IProfileRepository>((ref) {
 
 abstract class IProfileRepository {
   Future<UserInfoModel?> getUserData({required UserId userId});
-  Future<bool> saveUserInfo({
-    required UserId userId,
-    required String? fullname,
-    required String? email,
-  });
+  // Future<bool> saveUserInfo({
+  //   required UserId userId,
+  //   required String? fullname,
+  //   required String? email,
+  // });
   Future<bool> isUser({required UserId userId});
 }
 
@@ -39,32 +39,32 @@ class ProfileRepository implements IProfileRepository {
     }
   }
 
-  @override
-  Future<bool> saveUserInfo({
-    required UserId userId,
-    required String? fullname,
-    required String? email,
-  }) async {
-    final user = UserInfoModel(
-      userId: userId,
-      displayName: fullname,
-      email: email,
-      createdAt: DateTime.now(),
-      updatedAt: DateTime.now(),
-    );
+  // @override
+  // Future<bool> saveUserInfo({
+  //   required UserId userId,
+  //   required String? fullname,
+  //   required String? email,
+  // }) async {
+  //   final user = UserInfoModel(
+  //     userId: userId,
+  //     displayName: fullname,
+  //     email: email,
+  //     createdAt: DateTime.now(),
+  //     updatedAt: DateTime.now(),
+  //   );
 
-    if (await ref.watch(isConnectedNetworkInfoProvider.future)) {
-      await remoteSource.createUser(user);
-      return true;
-    }
-    try {
-      await localSource.saveUser(user);
-    } catch (_) {
-      return false;
-    }
+  //   if (await ref.watch(isConnectedNetworkInfoProvider.future)) {
+  //     await remoteSource.createUser(user);
+  //     return true;
+  //   }
+  //   try {
+  //     await localSource.saveUser(user);
+  //   } catch (_) {
+  //     return false;
+  //   }
 
-    return true;
-  }
+  //   return true;
+  // }
 
   @override
   Future<bool> isUser({required UserId userId}) async {

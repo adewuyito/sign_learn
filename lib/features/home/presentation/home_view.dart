@@ -2,7 +2,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:sign_learn/features/features.dart';
 import 'package:sign_learn/features/profile/profile.dart';
 
 import '../../../common/commons.dart';
@@ -10,6 +9,7 @@ import '../../../core/core.dart';
 import '../../../gen/fonts.gen.dart';
 
 import 'widgets/home_calender.dart';
+import 'widgets/module_buttons.dart';
 
 @RoutePage()
 class HomeView extends ConsumerStatefulWidget {
@@ -34,15 +34,16 @@ class _HomeViewState extends ConsumerState<HomeView> {
     return SafeArea(
       minimum: safeAreaPadding,
       child: Scaffold(
-        floatingActionButton: FloatingActionButton(onPressed: () async {
-          // debugPrint("User Profile ==> ${ref.watch(userNotiferProvider)}");
-          // debugPrint("User Profile ==> ${ref.watch(authNotifierProvider)}");
+        // floatingActionButton: FloatingActionButton(onPressed: () async {
+        //   // debugPrint("User Profile ==> ${ref.watch(userNotiferProvider)}");
+        //   // debugPrint("User Profile ==> ${ref.watch(authNotifierProvider)}");
 
-          final user = ref.watch(authNotifierProvider).userId!;
+        //   final lessonLocks = ref.watch(lessonLocksProvider);
+        //   await ref.read(lessonLocksProvider.notifier).unlockLesson(3);
 
-          debugPrint(user.toString());
-          // SignNavigator.of(context).push(SignQuizRoute());
-        }),
+        //   debugPrint("Lesson lock ${lessonLocks}");
+        //   // SignNavigator.of(context).push(SignQuizRoute());
+        // }),
         appBar: AppBar(
           centerTitle: false,
           title: Row(
@@ -84,7 +85,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
               ),
             ),
             YBox(padding.dy),
-            // ModuleButtons(),
+            ModuleButtons(),
           ],
         ),
       ),

@@ -137,7 +137,7 @@ class AuthNotifier extends Notifier<AuthState> {
             }
 
             return AuthState(
-              result: AuthResult.success(),
+              result: AuthResult.accountCreated(),
               isLoading: false,
               userId: userId,
             );

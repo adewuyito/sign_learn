@@ -8,17 +8,20 @@ import '../../../../core/core.dart';
 import '../../../../gen/assets.gen.dart';
 import '../../../../routes/router.dart';
 import '../../../../common/commons.dart';
+import '../../../profile/presentation/provider/lesson_locks_provider.dart';
 
 class ModuleButtons extends ConsumerWidget {
   const ModuleButtons({
     super.key,
   });
 
+  // TODO: This button is getting the different users data correctly - REPRODUCTION: Login to an account and change the lessonLock remote then check another account lesson lock.
   @override
   Widget build(context, ref) {
     final tt = Theme.of(context).textTheme;
-    final lL = ref.read(sharedPrefStorageProvider).get(lessonLock);
-    var getASLLock = lL.map((e) => e == 'open').toList();
+    // final lL = ref.read(sharedPrefStorageProvider).get(lessonLock);
+    final lessonLocks = ref.watch(lessonLocksProvider);
+    var getASLLock = lessonLocks.map((e) => e == 'open').toList();
 
     return SizedBox(
       height: .4.dyPercent,

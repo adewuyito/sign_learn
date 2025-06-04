@@ -2,7 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sign_learn/common/typedefs.dart';
+import 'package:sign_learn/features/auth/domain/providers/auth_state_provider.dart';
+
 import 'package:sign_learn/features/profile/data/profile_exceptions.dart';
+import 'package:sign_learn/features/profile/presentation/provider/lesson_locks_provider.dart';
 
 import '../model/model.dart';
 
@@ -18,8 +21,7 @@ final profileRemoteSourceProvider = Provider<IProfileRemoteSource>(
 abstract class IProfileRemoteSource {
   Future<UserInfoModel> getUser(UserId userId);
 
-  Future<void> createUser(UserInfoModel user);
-
+  // Future<void> createUser(UserInfoModel user);
 
   Future<void> deleteUser(UserId userId);
 
@@ -28,6 +30,12 @@ abstract class IProfileRemoteSource {
   Future<UserInfoModel?> getUserByEmail(String email);
 
   Future<bool> saveUserInfo({required UserInfoModel userInfo});
+
+  Future<List<String>> getLessonLocks(UserId userId);
+
+  Future<void> updateLessonLocks(UserId userId, List<String> locks);
+
+  Future<void> initializeLessonLocks(UserId userId);
 }
 
 class ProfileRemoteSource implements IProfileRemoteSource {
@@ -36,6 +44,8 @@ class ProfileRemoteSource implements IProfileRemoteSource {
 
   ProfileRemoteSource(this.ref, {required this.firestore});
   static const String _collectionName = 'users';
+  static const String _lessonLocksField = 'lessonLocks';
+  static const List<String> _defaultLocks = ['open', 'lock', 'lock', 'lock'];
 
   int _mapError(String code) {
     switch (code) {
@@ -72,6 +82,8 @@ class ProfileRemoteSource implements IProfileRemoteSource {
           if (_userInfo.exists) {
             // User exists, update the document
             await _userInfo.reference.update(userInfo.toFirestore());
+            ref.read(lessonLocksProvider.notifier).initializeLocks();
+            ref.read(authNotifierProvider.notifier).setSuccessState();
             return true;
           } else {
             // Check if user exists using userExist method
@@ -82,6 +94,7 @@ class ProfileRemoteSource implements IProfileRemoteSource {
                   .collection(_collectionName)
                   .doc(userInfo.userId)
                   .update(userInfo.toFirestore());
+              ref.read(authNotifierProvider.notifier).setSuccessState();
               return true;
             } else {
               // User doesn't exist yet, wait and retry
@@ -96,6 +109,7 @@ class ProfileRemoteSource implements IProfileRemoteSource {
                   .collection(_collectionName)
                   .doc(userInfo.userId)
                   .set(userInfo.toFirestore());
+              ref.read(authNotifierProvider.notifier).setSuccessState();
               return true;
             }
           }
@@ -115,20 +129,20 @@ class ProfileRemoteSource implements IProfileRemoteSource {
     }
   }
 
-  @override
-  Future<void> createUser(UserInfoModel user) async {
-    try {
-      await firestore
-          .collection(_collectionName)
-          .doc(user.userId)
-          .set(user.toFirestore());
-    } on FirebaseException catch (e) {
-      throw ServerException(
-        message: e.message ?? '',
-        statusCode: _mapError(e.code),
-      );
-    }
-  }
+  // @override
+  // Future<void> createUser(UserInfoModel user) async {
+  //   try {
+  //     await firestore
+  //         .collection(_collectionName)
+  //         .doc(user.userId)
+  //         .set(user.toFirestore());
+  //   } on FirebaseException catch (e) {
+  //     throw ServerException(
+  //       message: e.message ?? '',
+  //       statusCode: _mapError(e.code),
+  //     );
+  //   }
+  // }
 
   @override
   Future<void> deleteUser(String userId) async {
@@ -178,6 +192,56 @@ class ProfileRemoteSource implements IProfileRemoteSource {
     } on FirebaseException catch (e) {
       throw ServerException(
           message: e.message ?? '', statusCode: _mapError(e.code));
+    }
+  }
+
+  @override
+  Future<List<String>> getLessonLocks(UserId userId) async {
+    try {
+      final doc = await firestore.collection(_collectionName).doc(userId).get();
+      final data = doc.data();
+
+      if (!data!.containsKey(_lessonLocksField)) {
+        await initializeLessonLocks(userId);
+        return _defaultLocks;
+      }
+
+      final List<dynamic> locks = data[_lessonLocksField];
+      return locks.map((e) => e.toString()).toList();
+    } on FirebaseException catch (e) {
+      throw ServerException(
+        message: e.message ?? 'Failed to get lesson locks',
+        statusCode: _mapError(e.code),
+      );
+    }
+  }
+
+  @override
+  Future<void> updateLessonLocks(UserId userId, List<String> locks) async {
+    try {
+      await firestore
+          .collection(_collectionName)
+          .doc(userId)
+          .update({_lessonLocksField: locks});
+    } on FirebaseException catch (e) {
+      throw ServerException(
+        message: e.message ?? 'Failed to update lesson locks',
+        statusCode: _mapError(e.code),
+      );
+    }
+  }
+
+  @override
+  Future<void> initializeLessonLocks(UserId userId) async {
+    try {
+      await firestore.collection(_collectionName).doc(userId).set({
+        _lessonLocksField: _defaultLocks,
+      }, SetOptions(merge: true));
+    } on FirebaseException catch (e) {
+      throw ServerException(
+        message: e.message ?? 'Failed to initialize lesson locks',
+        statusCode: _mapError(e.code),
+      );
     }
   }
 }

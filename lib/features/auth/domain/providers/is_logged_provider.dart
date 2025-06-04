@@ -6,6 +6,7 @@ final isLoggedInProvider = Provider<bool>((ref) {
   final authState = ref.watch(authNotifierProvider);
   // final authStateFromProvider = ref.watch(authStateProvider); // TODO: Remove this part if Notifier is working
 
-  return authState.result == AuthResult.success();
+  return authState.result == AuthResult.success() ||
+      authState.result == AuthResult.accountCreated();
   //  || authStateFromProvider.result == AuthResult.success();
 });

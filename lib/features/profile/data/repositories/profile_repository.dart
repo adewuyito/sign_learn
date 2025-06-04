@@ -20,6 +20,7 @@ abstract class IProfileRepository {
   });
   Future<bool> isUser({required UserId userId});
 }
+
 class ProfileRepository implements IProfileRepository {
   Ref ref;
   final IProfileLocalSource localSource;
@@ -46,18 +47,22 @@ class ProfileRepository implements IProfileRepository {
   }) async {
     final user = UserInfoModel(
       userId: userId,
-      fullname: fullname,
+      displayName: fullname,
       email: email,
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
     );
 
-
     if (await ref.watch(isConnectedNetworkInfoProvider.future)) {
       await remoteSource.createUser(user);
+      return true;
+    }
+    try {
+      await localSource.saveUser(user);
+    } catch (_) {
+      return false;
     }
 
-    await localSource.saveUser(user);
     return true;
   }
 

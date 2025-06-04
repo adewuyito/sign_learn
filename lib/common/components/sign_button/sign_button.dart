@@ -72,8 +72,8 @@ class SignUpButton extends StatelessWidget {
           size: Size.copy(_size),
           child: FilledButton(
             style: FilledButton.styleFrom(
-              // fixedSize: Size(_size.width, _size.height),
-              maximumSize: Size.copy(_size),
+              fixedSize: Size(_size.width, _size.height),
+              // maximumSize: Size.copy(_size),
               backgroundColor: role == ButtonRole.destructive
                   ? ButtonRole.destructive.activeColor
                   : color,

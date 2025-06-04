@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sign_learn/common/typedefs.dart';
 import 'package:sign_learn/features/profile/data/profile_exceptions.dart';
@@ -26,6 +27,8 @@ abstract class IProfileRemoteSource {
   Future<bool> userExist(UserId userId);
 
   Future<UserInfoModel?> getUserByEmail(String email);
+
+  Future<bool> saveUserInfo({required UserInfoModel userInfo});
 }
 
 class ProfileRemoteSource implements IProfileRemoteSource {
@@ -53,6 +56,67 @@ class ProfileRemoteSource implements IProfileRemoteSource {
   }
 
   @override
+  Future<bool> saveUserInfo({required UserInfoModel userInfo}) async {
+    try {
+      // Add retry logic to handle race condition with Firebase function
+      int retryCount = 0;
+      const maxRetries = 3;
+      const retryDelay = Duration(seconds: 1);
+
+      while (retryCount < maxRetries) {
+        try {
+          final _userInfo = await firestore
+              .collection(_collectionName)
+              .doc(userInfo.userId)
+              .get();
+
+          if (_userInfo.exists) {
+            // User exists, update the document
+            await _userInfo.reference.update(userInfo.toFirestore());
+            return true;
+          } else {
+            // Check if user exists using userExist method
+            final exists = await userExist(userInfo.userId);
+            if (exists) {
+              // User was created by Firebase function, update it
+              await firestore
+                  .collection(_collectionName)
+                  .doc(userInfo.userId)
+                  .update(userInfo.toFirestore());
+              return true;
+            } else {
+              // User doesn't exist yet, wait and retry
+              if (retryCount < maxRetries - 1) {
+                await Future.delayed(retryDelay);
+                retryCount++;
+                continue;
+              }
+
+              // If we've exhausted retries, create the user
+              await firestore
+                  .collection(_collectionName)
+                  .doc(userInfo.userId)
+                  .set(userInfo.toFirestore());
+              return true;
+            }
+          }
+        } on FirebaseException catch (e) {
+          if (e.code == 'not-found' && retryCount < maxRetries - 1) {
+            await Future.delayed(retryDelay);
+            retryCount++;
+            continue;
+          }
+          rethrow;
+        }
+      }
+      return false;
+    } catch (e) {
+      debugPrint('Error saving user info: $e');
+      return false;
+    }
+  }
+
+  @override
   Future<void> createUser(UserInfoModel user) async {
     try {
       await firestore
@@ -61,7 +125,9 @@ class ProfileRemoteSource implements IProfileRemoteSource {
           .set(user.toFirestore());
     } on FirebaseException catch (e) {
       throw ServerException(
-          message: e.message ?? '', statusCode: _mapError(e.code));
+        message: e.message ?? '',
+        statusCode: _mapError(e.code),
+      );
     }
   }
 
@@ -74,7 +140,9 @@ class ProfileRemoteSource implements IProfileRemoteSource {
           .update(user.toFirestore(forUpdate: true));
     } on FirebaseException catch (e) {
       throw ServerException(
-          message: e.message ?? '', statusCode: _mapError(e.code));
+        message: e.message ?? '',
+        statusCode: _mapError(e.code),
+      );
     }
   }
 

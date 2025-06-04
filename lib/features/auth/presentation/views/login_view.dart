@@ -13,7 +13,6 @@ import '../../domain/domain.dart';
 import '../../../../gen/assets.gen.dart';
 import '../../../../common/commons.dart';
 import '../../../../gen/fonts.gen.dart';
-import '../../domain/providers/is_logged_provider.dart';
 
 @RoutePage()
 class LoginView extends StatefulHookConsumerWidget {
@@ -40,6 +39,15 @@ class _LoginViewState extends ConsumerState<LoginView> {
     final passwordCotroller = useTextEditingController();
 
     return Scaffold(
+      floatingActionButton: FloatingActionButton(onPressed: () async {
+        // debugPrint("User Profile ==> ${ref.watch(userNotiferProvider)}");
+        // debugPrint("User Profile ==> ${ref.watch(authNotifierProvider)}");
+
+        final user = ref.watch(authNotifierProvider).userId!;
+
+        debugPrint(user.toString());
+        // SignNavigator.of(context).push(SignQuizRoute());
+      }),
       body: SafeArea(
         bottom: false,
         minimum: safeAreaPadding,

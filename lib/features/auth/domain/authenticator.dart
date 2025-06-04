@@ -1,36 +1,31 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:riverpod/riverpod.dart';
 
 import '../../../common/commons.dart' show UserId;
 import 'providers/states/auth_state.dart';
+import 'providers/auth_state_provider.dart';
 
 class Authenticator {
-  // Singleton instance
-  static final Authenticator _instance = Authenticator._internal();
+  Authenticator(this.ref);
 
-  // Factory constructor to return the same instance
-  factory Authenticator() => _instance;
+  final Ref ref;
 
-  // Private constructor for singleton pattern
-  Authenticator._internal();
-
-  User? user = FirebaseAuth.instance.currentUser;
-  UserId? get userId => user?.uid ?? _id;
+  User? get _currentUser => ref.read(firebaseAuthProvider).currentUser;
+  UserId? get userId => _currentUser?.uid;
 
   bool get isAlreadyLoggedIn => userId != null;
-  String? get email => FirebaseAuth.instance.currentUser?.email;
-  String? get displayImage => FirebaseAuth.instance.currentUser?.photoURL;
+  String? get email => _currentUser?.email;
+  String? get displayImage => _currentUser?.photoURL;
   String? get profileDefaultImage => _staticDisplay;
-  String get displayName =>
-      FirebaseAuth.instance.currentUser?.displayName ?? '';
-
-  UserId? _id;
+  String get displayName => _currentUser?.displayName ?? '';
 
   String? _staticDisplay;
+
   Future<void> logOut() async {
     // Sign out of all possible account forms
-    await FirebaseAuth.instance.signOut();
+    await ref.read(firebaseAuthProvider).signOut();
   }
 
   Future<AuthResult> loginWithCredential({
@@ -38,12 +33,10 @@ class Authenticator {
     required String password,
   }) async {
     try {
-      final _userCred = await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-
-      _id = _userCred.user?.uid;
+      await ref.read(firebaseAuthProvider).signInWithEmailAndPassword(
+            email: email,
+            password: password,
+          );
 
       return AuthResult.success();
     } catch (e) {
@@ -56,11 +49,10 @@ class Authenticator {
     required String password,
   }) async {
     try {
-      final UserCredential _userCred =
-          await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
+      await ref.read(firebaseAuthProvider).createUserWithEmailAndPassword(
+            email: email,
+            password: password,
+          );
 
       return AuthResult.accountCreated();
     } catch (e) {
@@ -70,11 +62,10 @@ class Authenticator {
 
   Future<bool> updateUserName({required String newName}) async {
     try {
-      final _user = user;
+      final _user = _currentUser;
       if (_user != null) {
         await _user.updateProfile(displayName: newName);
         await _user.reload();
-        user = FirebaseAuth.instance.currentUser; // Refresh user instance
       }
       return true;
     } catch (e) {

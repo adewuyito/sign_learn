@@ -30,7 +30,7 @@ UserInfoModel _$UserInfoModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$UserInfoModel {
   String get userId => throw _privateConstructorUsedError;
-  String? get fullname => throw _privateConstructorUsedError;
+  String? get displayName => throw _privateConstructorUsedError;
   String? get email => throw _privateConstructorUsedError;
   String? get displayImage => throw _privateConstructorUsedError;
   @TimestampConverter()
@@ -41,7 +41,7 @@ mixin _$UserInfoModel {
   TResult when<TResult extends Object?>(
     TResult Function(
             String userId,
-            String? fullname,
+            String? displayName,
             String? email,
             String? displayImage,
             @TimestampConverter() DateTime? createdAt,
@@ -49,7 +49,7 @@ mixin _$UserInfoModel {
         $default, {
     required TResult Function(
             String userId,
-            String? fullname,
+            String? displayName,
             String? email,
             String? displayImage,
             @TimestampConverter() DateTime? createdAt,
@@ -61,7 +61,7 @@ mixin _$UserInfoModel {
   TResult? whenOrNull<TResult extends Object?>(
     TResult? Function(
             String userId,
-            String? fullname,
+            String? displayName,
             String? email,
             String? displayImage,
             @TimestampConverter() DateTime? createdAt,
@@ -69,7 +69,7 @@ mixin _$UserInfoModel {
         $default, {
     TResult? Function(
             String userId,
-            String? fullname,
+            String? displayName,
             String? email,
             String? displayImage,
             @TimestampConverter() DateTime? createdAt,
@@ -81,7 +81,7 @@ mixin _$UserInfoModel {
   TResult maybeWhen<TResult extends Object?>(
     TResult Function(
             String userId,
-            String? fullname,
+            String? displayName,
             String? email,
             String? displayImage,
             @TimestampConverter() DateTime? createdAt,
@@ -89,7 +89,7 @@ mixin _$UserInfoModel {
         $default, {
     TResult Function(
             String userId,
-            String? fullname,
+            String? displayName,
             String? email,
             String? displayImage,
             @TimestampConverter() DateTime? createdAt,
@@ -136,7 +136,7 @@ abstract class $UserInfoModelCopyWith<$Res> {
   @useResult
   $Res call(
       {String userId,
-      String? fullname,
+      String? displayName,
       String? email,
       String? displayImage,
       @TimestampConverter() DateTime? createdAt,
@@ -159,7 +159,7 @@ class _$UserInfoModelCopyWithImpl<$Res, $Val extends UserInfoModel>
   @override
   $Res call({
     Object? userId = null,
-    Object? fullname = freezed,
+    Object? displayName = freezed,
     Object? email = freezed,
     Object? displayImage = freezed,
     Object? createdAt = freezed,
@@ -170,9 +170,9 @@ class _$UserInfoModelCopyWithImpl<$Res, $Val extends UserInfoModel>
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
               as String,
-      fullname: freezed == fullname
-          ? _value.fullname
-          : fullname // ignore: cast_nullable_to_non_nullable
+      displayName: freezed == displayName
+          ? _value.displayName
+          : displayName // ignore: cast_nullable_to_non_nullable
               as String?,
       email: freezed == email
           ? _value.email
@@ -204,7 +204,7 @@ abstract class _$$UserInfoModelImplCopyWith<$Res>
   @useResult
   $Res call(
       {String userId,
-      String? fullname,
+      String? displayName,
       String? email,
       String? displayImage,
       @TimestampConverter() DateTime? createdAt,
@@ -225,7 +225,7 @@ class __$$UserInfoModelImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? userId = null,
-    Object? fullname = freezed,
+    Object? displayName = freezed,
     Object? email = freezed,
     Object? displayImage = freezed,
     Object? createdAt = freezed,
@@ -236,9 +236,9 @@ class __$$UserInfoModelImplCopyWithImpl<$Res>
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
               as String,
-      fullname: freezed == fullname
-          ? _value.fullname
-          : fullname // ignore: cast_nullable_to_non_nullable
+      displayName: freezed == displayName
+          ? _value.displayName
+          : displayName // ignore: cast_nullable_to_non_nullable
               as String?,
       email: freezed == email
           ? _value.email
@@ -265,7 +265,7 @@ class __$$UserInfoModelImplCopyWithImpl<$Res>
 class _$UserInfoModelImpl extends _UserInfoModel {
   const _$UserInfoModelImpl(
       {required this.userId,
-      this.fullname,
+      this.displayName,
       this.email,
       this.displayImage,
       @TimestampConverter() this.createdAt,
@@ -280,7 +280,7 @@ class _$UserInfoModelImpl extends _UserInfoModel {
   @override
   final String userId;
   @override
-  final String? fullname;
+  final String? displayName;
   @override
   final String? email;
   @override
@@ -297,7 +297,7 @@ class _$UserInfoModelImpl extends _UserInfoModel {
 
   @override
   String toString() {
-    return 'UserInfoModel(userId: $userId, fullname: $fullname, email: $email, displayImage: $displayImage, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'UserInfoModel(userId: $userId, displayName: $displayName, email: $email, displayImage: $displayImage, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -306,8 +306,8 @@ class _$UserInfoModelImpl extends _UserInfoModel {
         (other.runtimeType == runtimeType &&
             other is _$UserInfoModelImpl &&
             (identical(other.userId, userId) || other.userId == userId) &&
-            (identical(other.fullname, fullname) ||
-                other.fullname == fullname) &&
+            (identical(other.displayName, displayName) ||
+                other.displayName == displayName) &&
             (identical(other.email, email) || other.email == email) &&
             (identical(other.displayImage, displayImage) ||
                 other.displayImage == displayImage) &&
@@ -319,8 +319,8 @@ class _$UserInfoModelImpl extends _UserInfoModel {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, userId, fullname, email, displayImage, createdAt, updatedAt);
+  int get hashCode => Object.hash(runtimeType, userId, displayName, email,
+      displayImage, createdAt, updatedAt);
 
   /// Create a copy of UserInfoModel
   /// with the given fields replaced by the non-null parameter values.
@@ -335,7 +335,7 @@ class _$UserInfoModelImpl extends _UserInfoModel {
   TResult when<TResult extends Object?>(
     TResult Function(
             String userId,
-            String? fullname,
+            String? displayName,
             String? email,
             String? displayImage,
             @TimestampConverter() DateTime? createdAt,
@@ -343,7 +343,7 @@ class _$UserInfoModelImpl extends _UserInfoModel {
         $default, {
     required TResult Function(
             String userId,
-            String? fullname,
+            String? displayName,
             String? email,
             String? displayImage,
             @TimestampConverter() DateTime? createdAt,
@@ -351,7 +351,7 @@ class _$UserInfoModelImpl extends _UserInfoModel {
         unknown,
   }) {
     return $default(
-        userId, fullname, email, displayImage, createdAt, updatedAt);
+        userId, displayName, email, displayImage, createdAt, updatedAt);
   }
 
   @override
@@ -359,7 +359,7 @@ class _$UserInfoModelImpl extends _UserInfoModel {
   TResult? whenOrNull<TResult extends Object?>(
     TResult? Function(
             String userId,
-            String? fullname,
+            String? displayName,
             String? email,
             String? displayImage,
             @TimestampConverter() DateTime? createdAt,
@@ -367,7 +367,7 @@ class _$UserInfoModelImpl extends _UserInfoModel {
         $default, {
     TResult? Function(
             String userId,
-            String? fullname,
+            String? displayName,
             String? email,
             String? displayImage,
             @TimestampConverter() DateTime? createdAt,
@@ -375,7 +375,7 @@ class _$UserInfoModelImpl extends _UserInfoModel {
         unknown,
   }) {
     return $default?.call(
-        userId, fullname, email, displayImage, createdAt, updatedAt);
+        userId, displayName, email, displayImage, createdAt, updatedAt);
   }
 
   @override
@@ -383,7 +383,7 @@ class _$UserInfoModelImpl extends _UserInfoModel {
   TResult maybeWhen<TResult extends Object?>(
     TResult Function(
             String userId,
-            String? fullname,
+            String? displayName,
             String? email,
             String? displayImage,
             @TimestampConverter() DateTime? createdAt,
@@ -391,7 +391,7 @@ class _$UserInfoModelImpl extends _UserInfoModel {
         $default, {
     TResult Function(
             String userId,
-            String? fullname,
+            String? displayName,
             String? email,
             String? displayImage,
             @TimestampConverter() DateTime? createdAt,
@@ -401,7 +401,7 @@ class _$UserInfoModelImpl extends _UserInfoModel {
   }) {
     if ($default != null) {
       return $default(
-          userId, fullname, email, displayImage, createdAt, updatedAt);
+          userId, displayName, email, displayImage, createdAt, updatedAt);
     }
     return orElse();
   }
@@ -448,7 +448,7 @@ class _$UserInfoModelImpl extends _UserInfoModel {
 abstract class _UserInfoModel extends UserInfoModel {
   const factory _UserInfoModel(
       {required final String userId,
-      final String? fullname,
+      final String? displayName,
       final String? email,
       final String? displayImage,
       @TimestampConverter() final DateTime? createdAt,
@@ -461,7 +461,7 @@ abstract class _UserInfoModel extends UserInfoModel {
   @override
   String get userId;
   @override
-  String? get fullname;
+  String? get displayName;
   @override
   String? get email;
   @override
@@ -491,7 +491,7 @@ abstract class _$$UserInfoModelUnknownImplCopyWith<$Res>
   @useResult
   $Res call(
       {String userId,
-      String? fullname,
+      String? displayName,
       String? email,
       String? displayImage,
       @TimestampConverter() DateTime? createdAt,
@@ -512,7 +512,7 @@ class __$$UserInfoModelUnknownImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? userId = null,
-    Object? fullname = freezed,
+    Object? displayName = freezed,
     Object? email = freezed,
     Object? displayImage = freezed,
     Object? createdAt = freezed,
@@ -523,9 +523,9 @@ class __$$UserInfoModelUnknownImplCopyWithImpl<$Res>
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
               as String,
-      fullname: freezed == fullname
-          ? _value.fullname
-          : fullname // ignore: cast_nullable_to_non_nullable
+      displayName: freezed == displayName
+          ? _value.displayName
+          : displayName // ignore: cast_nullable_to_non_nullable
               as String?,
       email: freezed == email
           ? _value.email
@@ -552,7 +552,7 @@ class __$$UserInfoModelUnknownImplCopyWithImpl<$Res>
 class _$UserInfoModelUnknownImpl extends _UserInfoModelUnknown {
   const _$UserInfoModelUnknownImpl(
       {this.userId = '',
-      this.fullname = '',
+      this.displayName = '',
       this.email = '',
       this.displayImage = '',
       @TimestampConverter() this.createdAt,
@@ -569,7 +569,7 @@ class _$UserInfoModelUnknownImpl extends _UserInfoModelUnknown {
   final String userId;
   @override
   @JsonKey()
-  final String? fullname;
+  final String? displayName;
   @override
   @JsonKey()
   final String? email;
@@ -588,7 +588,7 @@ class _$UserInfoModelUnknownImpl extends _UserInfoModelUnknown {
 
   @override
   String toString() {
-    return 'UserInfoModel.unknown(userId: $userId, fullname: $fullname, email: $email, displayImage: $displayImage, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'UserInfoModel.unknown(userId: $userId, displayName: $displayName, email: $email, displayImage: $displayImage, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -597,8 +597,8 @@ class _$UserInfoModelUnknownImpl extends _UserInfoModelUnknown {
         (other.runtimeType == runtimeType &&
             other is _$UserInfoModelUnknownImpl &&
             (identical(other.userId, userId) || other.userId == userId) &&
-            (identical(other.fullname, fullname) ||
-                other.fullname == fullname) &&
+            (identical(other.displayName, displayName) ||
+                other.displayName == displayName) &&
             (identical(other.email, email) || other.email == email) &&
             (identical(other.displayImage, displayImage) ||
                 other.displayImage == displayImage) &&
@@ -610,8 +610,8 @@ class _$UserInfoModelUnknownImpl extends _UserInfoModelUnknown {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, userId, fullname, email, displayImage, createdAt, updatedAt);
+  int get hashCode => Object.hash(runtimeType, userId, displayName, email,
+      displayImage, createdAt, updatedAt);
 
   /// Create a copy of UserInfoModel
   /// with the given fields replaced by the non-null parameter values.
@@ -628,7 +628,7 @@ class _$UserInfoModelUnknownImpl extends _UserInfoModelUnknown {
   TResult when<TResult extends Object?>(
     TResult Function(
             String userId,
-            String? fullname,
+            String? displayName,
             String? email,
             String? displayImage,
             @TimestampConverter() DateTime? createdAt,
@@ -636,14 +636,15 @@ class _$UserInfoModelUnknownImpl extends _UserInfoModelUnknown {
         $default, {
     required TResult Function(
             String userId,
-            String? fullname,
+            String? displayName,
             String? email,
             String? displayImage,
             @TimestampConverter() DateTime? createdAt,
             @TimestampConverter() DateTime? updatedAt)
         unknown,
   }) {
-    return unknown(userId, fullname, email, displayImage, createdAt, updatedAt);
+    return unknown(
+        userId, displayName, email, displayImage, createdAt, updatedAt);
   }
 
   @override
@@ -651,7 +652,7 @@ class _$UserInfoModelUnknownImpl extends _UserInfoModelUnknown {
   TResult? whenOrNull<TResult extends Object?>(
     TResult? Function(
             String userId,
-            String? fullname,
+            String? displayName,
             String? email,
             String? displayImage,
             @TimestampConverter() DateTime? createdAt,
@@ -659,7 +660,7 @@ class _$UserInfoModelUnknownImpl extends _UserInfoModelUnknown {
         $default, {
     TResult? Function(
             String userId,
-            String? fullname,
+            String? displayName,
             String? email,
             String? displayImage,
             @TimestampConverter() DateTime? createdAt,
@@ -667,7 +668,7 @@ class _$UserInfoModelUnknownImpl extends _UserInfoModelUnknown {
         unknown,
   }) {
     return unknown?.call(
-        userId, fullname, email, displayImage, createdAt, updatedAt);
+        userId, displayName, email, displayImage, createdAt, updatedAt);
   }
 
   @override
@@ -675,7 +676,7 @@ class _$UserInfoModelUnknownImpl extends _UserInfoModelUnknown {
   TResult maybeWhen<TResult extends Object?>(
     TResult Function(
             String userId,
-            String? fullname,
+            String? displayName,
             String? email,
             String? displayImage,
             @TimestampConverter() DateTime? createdAt,
@@ -683,7 +684,7 @@ class _$UserInfoModelUnknownImpl extends _UserInfoModelUnknown {
         $default, {
     TResult Function(
             String userId,
-            String? fullname,
+            String? displayName,
             String? email,
             String? displayImage,
             @TimestampConverter() DateTime? createdAt,
@@ -693,7 +694,7 @@ class _$UserInfoModelUnknownImpl extends _UserInfoModelUnknown {
   }) {
     if (unknown != null) {
       return unknown(
-          userId, fullname, email, displayImage, createdAt, updatedAt);
+          userId, displayName, email, displayImage, createdAt, updatedAt);
     }
     return orElse();
   }
@@ -740,7 +741,7 @@ class _$UserInfoModelUnknownImpl extends _UserInfoModelUnknown {
 abstract class _UserInfoModelUnknown extends UserInfoModel {
   const factory _UserInfoModelUnknown(
           {final String userId,
-          final String? fullname,
+          final String? displayName,
           final String? email,
           final String? displayImage,
           @TimestampConverter() final DateTime? createdAt,
@@ -754,7 +755,7 @@ abstract class _UserInfoModelUnknown extends UserInfoModel {
   @override
   String get userId;
   @override
-  String? get fullname;
+  String? get displayName;
   @override
   String? get email;
   @override

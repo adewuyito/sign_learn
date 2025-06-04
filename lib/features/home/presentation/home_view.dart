@@ -2,14 +2,14 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:sign_learn/features/features.dart';
+import 'package:sign_learn/features/profile/profile.dart';
 
 import '../../../common/commons.dart';
 import '../../../core/core.dart';
 import '../../../gen/fonts.gen.dart';
-import '../../profile/presentation/presentation.dart';
 
 import 'widgets/home_calender.dart';
-import 'widgets/module_buttons.dart';
 
 @RoutePage()
 class HomeView extends ConsumerStatefulWidget {
@@ -27,7 +27,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    final userName = ref.watch(userNotiferProvider).fullname;
+    final userName = ref.watch(userNotiferProvider).displayName;
     final fullname = userName ?? "Welcome Back";
     final _widgetSize = Size(Dims.availableWidth, 141.dy);
     final tt = Theme.of(context).textTheme;
@@ -35,6 +35,12 @@ class _HomeViewState extends ConsumerState<HomeView> {
       minimum: safeAreaPadding,
       child: Scaffold(
         floatingActionButton: FloatingActionButton(onPressed: () async {
+          // debugPrint("User Profile ==> ${ref.watch(userNotiferProvider)}");
+          // debugPrint("User Profile ==> ${ref.watch(authNotifierProvider)}");
+
+          final user = ref.watch(authNotifierProvider).userId!;
+
+          debugPrint(user.toString());
           // SignNavigator.of(context).push(SignQuizRoute());
         }),
         appBar: AppBar(
@@ -78,7 +84,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
               ),
             ),
             YBox(padding.dy),
-            ModuleButtons(),
+            // ModuleButtons(),
           ],
         ),
       ),

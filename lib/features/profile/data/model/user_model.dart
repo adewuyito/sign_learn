@@ -11,7 +11,7 @@ class UserInfoModel with _$UserInfoModel {
   const UserInfoModel._();
   const factory UserInfoModel({
     required UserId userId,
-    String? fullname,
+    String? displayName,
     String? email,
     String? displayImage,
     @TimestampConverter() DateTime? createdAt,
@@ -20,7 +20,7 @@ class UserInfoModel with _$UserInfoModel {
 
   const factory UserInfoModel.unknown({
     @Default('') UserId userId,
-    @Default('') String? fullname,
+    @Default('') String? displayName,
     @Default('') String? email,
     @Default('') String? displayImage,
     @TimestampConverter() DateTime? createdAt,
@@ -43,7 +43,7 @@ class UserInfoModel with _$UserInfoModel {
     final map = toJson();
     if (!forUpdate) map['createdAt'] = FieldValue.serverTimestamp();
     map['updatedAt'] = FieldValue.serverTimestamp();
-    map.remove('id'); // Firestore uses doc ID as the identifier
+    map.remove('userId'); // Firestore uses doc ID as the identifier
     return map;
   }
 }

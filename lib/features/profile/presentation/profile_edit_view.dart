@@ -25,7 +25,7 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
   Widget build(BuildContext context) {
     final user = ref.read(userNotiferProvider);
 
-    final _nameController = useTextEditingController(text: user.fullname);
+    final _nameController = useTextEditingController(text: user.displayName);
     final _emailController = useTextEditingController(text: user.email ?? "");
 
     final hasChanged = useState(false); // Track whether the text has changed
@@ -88,7 +88,7 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
             // Updates the user profile
             ref.read(userNotiferProvider.notifier).updateUser(
                   id: user.userId,
-                  name: _nameController.text,
+                  displayName: _nameController.text,
                   email: _emailController.text,
                 );
           }

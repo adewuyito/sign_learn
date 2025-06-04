@@ -3,6 +3,7 @@ import 'package:riverpod/riverpod.dart';
 
 import '../../../../core/core.dart' show SnackbarUtils;
 import '../../../profile/presentation/provider/provider.dart';
+import '../../../profile/profile.dart';
 import '../../auth.dart';
 import '../authenticator.dart';
 
@@ -18,7 +19,21 @@ class AuthNotifier extends Notifier<AuthState> {
         : AuthState.unknown();
   }
 
-  final _authenticator = Authenticator();
+  late final _authenticator = Authenticator(ref);
+
+  String get displayName => _authenticator.displayName;
+  String get email => _authenticator.email ?? '';
+
+  void setSuccessState() {
+    state = state.copiedWithIsLoading(true);
+    if (state.result == AuthResult.accountCreated()) {
+      state = AuthState(
+        result: AuthResult.success(),
+        isLoading: false,
+        userId: state.userId,
+      );
+    }
+  }
 
   /// Provider created to use riverpod for logout
   Future<void> logOut({required BuildContext context}) async {
@@ -102,11 +117,17 @@ class AuthNotifier extends Notifier<AuthState> {
       AuthAccountCreated() => Future(
           () async {
             final userId = _authenticator.userId;
-            await _authenticator.user!.updateDisplayName(name);
-            _authenticator.user!.reload();
+            final currentUser = ref.read(firebaseAuthProvider).currentUser;
+            if (currentUser != null) {
+              await currentUser.updateDisplayName(name);
+              currentUser.reload();
+            } else {
+              debugPrint("No current user");
+            }
+
             ref.read(userNotiferProvider.notifier).updateUser(
                   id: userId!,
-                  name: _authenticator.displayName,
+                  displayName: _authenticator.displayName,
                   email: _authenticator.email,
                   displayImage: _authenticator.displayImage ??
                       _authenticator.profileDefaultImage,
@@ -114,7 +135,7 @@ class AuthNotifier extends Notifier<AuthState> {
             if (context.mounted) {
               SnackbarUtils.of(context).signSnackBar("Account Created", false);
             }
-          
+
             return AuthState(
               result: AuthResult.success(),
               isLoading: false,
@@ -168,6 +189,19 @@ class AuthNotifier extends Notifier<AuthState> {
 
     state = state.copiedWithIsLoading(false);
   }
+
+  // Future<void> saveUserInfo({
+  //   required userId,
+  // }) async {
+  //   final result = await ref.read(profileRemoteSourceProvider).saveUserInfo(
+  //         userInfo: UserInfoModel(
+  //           userId: userId,
+  //           displayName: displayName,
+  //           email: email,
+  //         ),
+  //       );
+  //   debugPrint("Ran profile Storage: RESULT ==> $result");
+  // }
 
   // ~ UnUsed because all profile is gotten from firebase auth
   // Future<void> _saveUserInfo({

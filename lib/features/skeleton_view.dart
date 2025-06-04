@@ -6,7 +6,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../core/core.dart';
 import '../gen/fonts.gen.dart';
 import '../routes/sign_learn_router.gr.dart';
-import 'profile/presentation/provider/provider.dart';
 
 @RoutePage()
 class SkeletonTabView extends ConsumerStatefulWidget {
@@ -18,15 +17,6 @@ class SkeletonTabView extends ConsumerStatefulWidget {
 }
 
 class _SkeletonTabViewState extends ConsumerState<SkeletonTabView> {
-  @override
-  void initState() {
-    Future(() {
-      ref.read(userNotiferProvider.notifier).initUser();
-    });
-
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return AutoTabsRouter.tabBar(

@@ -1,23 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sign_learn/common/commons.dart';
 import 'package:sign_learn/gen/assets.gen.dart';
+import 'package:sign_learn/gen/fonts.gen.dart';
 
 import '../../../core/core.dart';
 import '../../enums.dart';
-
+// ! TODO: Unfinished Work
 class InputModel extends StatefulWidget {
   final TextEditingController controller;
   final String label;
   final TextFieldRole role;
   final TextInputType? keyBoardType;
+  final bool withFloatingLabel;
+  final FormFieldValidator<String>? validator;
 
   const InputModel({
     super.key,
     required this.controller,
     required this.label,
     this.keyBoardType,
+    this.withFloatingLabel = false,
     this.role = TextFieldRole.inputField,
+    this.validator,
   });
 
   @override
@@ -25,7 +31,11 @@ class InputModel extends StatefulWidget {
 }
 
 class _InputModelState extends State<InputModel> {
+  late TextEditingController _controller;
+  final _focusNode = FocusNode();
   bool _obscureText = true;
+  bool _hasError = false;
+  String? _errorText;
 
   void _toggleObscurity() {
     setState(() {
@@ -34,9 +44,50 @@ class _InputModelState extends State<InputModel> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _controller = widget.controller;
+    _focusNode.addListener(_onFocusChange);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  void _onFocusChange() {
+    if (!_focusNode.hasFocus && _controller.text.isNotEmpty) {
+      _validateEmail();
+    }
+  }
+
+  void _validateEmail() {
+    final error = (widget.validator ??
+        InputValidatorUtils.validEmailAddress)(_controller.text);
+    setState(() {
+      _hasError = error != null;
+      _errorText = error;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final InputDecoration _decoration = InputDecoration(
+      hintText: !widget.withFloatingLabel ? widget.label : null,
+      label: widget.withFloatingLabel
+          ? Container(
+              padding: const EdgeInsets.symmetric(horizontal: 3),
+              decoration: BoxDecoration(color: appColors.white),
+              child: Text(widget.label),
+            )
+          : null,
+      labelStyle: TextTheme.of(context).labelMedium!.copyWith(
+            fontFamily: FontFamily.satoshi,
+          ),
+      floatingLabelBehavior: FloatingLabelBehavior.always,
+    );
     // ignore: no_leading_underscores_for_local_identifiers
-    final _focusNode = FocusNode();
+
     final _size = Size(398.dx, 62.dy);
 
     return switch (widget.role) {
@@ -69,9 +120,7 @@ class _InputModelState extends State<InputModel> {
                 keyboardType: widget.keyBoardType,
                 focusNode: _focusNode,
                 onTapOutside: (event) => _focusNode.unfocus(),
-                decoration: InputDecoration(
-                  hintText: widget.label,
-                ),
+                decoration: _decoration,
                 controller: widget.controller,
                 expands: true,
                 maxLength: null,
@@ -155,18 +204,17 @@ class _InputModelState extends State<InputModel> {
                 border: Border.all(color: Colors.black, width: 2),
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: TextField(
+              child: TextFormField(
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                inputFormatters: [
+                  FilteringTextInputFormatter.deny(RegExp(r'\s')),
+                  LengthLimitingTextInputFormatter(254)
+                ],
                 keyboardType: widget.keyBoardType,
                 autocorrect: false,
                 focusNode: _focusNode,
                 onTapOutside: (event) => _focusNode.unfocus(),
-                decoration: InputDecoration(
-                  hintText: widget.label,
-                  /*  suffixIcon: Padding(
-                padding: const EdgeInsetsDirectional.only(end: 24),
-                child: Icon(Icons.remove_red_eye), // ? fix with the role
-              ), */
-                ),
+                decoration: _decoration.copyWith(),
                 controller: widget.controller,
                 expands: true,
                 maxLength: null,

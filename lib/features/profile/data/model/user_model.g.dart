@@ -9,7 +9,7 @@ part of 'user_model.dart';
 _$UserInfoModelImpl _$$UserInfoModelImplFromJson(Map<String, dynamic> json) =>
     _$UserInfoModelImpl(
       userId: json['userId'] as String,
-      fullname: json['fullname'] as String?,
+      displayName: json['displayName'] as String?,
       email: json['email'] as String?,
       displayImage: json['displayImage'] as String?,
       createdAt: const TimestampConverter().fromJson(json['createdAt']),
@@ -20,7 +20,7 @@ _$UserInfoModelImpl _$$UserInfoModelImplFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$$UserInfoModelImplToJson(_$UserInfoModelImpl instance) =>
     <String, dynamic>{
       'userId': instance.userId,
-      'fullname': instance.fullname,
+      'displayName': instance.displayName,
       'email': instance.email,
       'displayImage': instance.displayImage,
       'createdAt': const TimestampConverter().toJson(instance.createdAt),
@@ -32,7 +32,7 @@ _$UserInfoModelUnknownImpl _$$UserInfoModelUnknownImplFromJson(
         Map<String, dynamic> json) =>
     _$UserInfoModelUnknownImpl(
       userId: json['userId'] as String? ?? '',
-      fullname: json['fullname'] as String? ?? '',
+      displayName: json['displayName'] as String? ?? '',
       email: json['email'] as String? ?? '',
       displayImage: json['displayImage'] as String? ?? '',
       createdAt: const TimestampConverter().fromJson(json['createdAt']),
@@ -44,7 +44,7 @@ Map<String, dynamic> _$$UserInfoModelUnknownImplToJson(
         _$UserInfoModelUnknownImpl instance) =>
     <String, dynamic>{
       'userId': instance.userId,
-      'fullname': instance.fullname,
+      'displayName': instance.displayName,
       'email': instance.email,
       'displayImage': instance.displayImage,
       'createdAt': const TimestampConverter().toJson(instance.createdAt),

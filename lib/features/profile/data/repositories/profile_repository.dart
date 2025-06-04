@@ -32,7 +32,7 @@ class ProfileRepository implements IProfileRepository {
   Future<UserInfoModel?> getUserData({required UserId userId}) async {
     if (await ref.watch(isConnectedNetworkInfoProvider.future)) {
       final remote = await remoteSource.getUser(userId);
-      await localSource.saveUser(remote);
+      // await localSource.saveUser(remote);
       return remote;
     } else {
       return await localSource.getUser();

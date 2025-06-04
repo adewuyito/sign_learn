@@ -20,7 +20,6 @@ abstract class IProfileRemoteSource {
 
   Future<void> createUser(UserInfoModel user);
 
-  Future<void> updateUser(UserInfoModel user);
 
   Future<void> deleteUser(UserId userId);
 
@@ -123,21 +122,6 @@ class ProfileRemoteSource implements IProfileRemoteSource {
           .collection(_collectionName)
           .doc(user.userId)
           .set(user.toFirestore());
-    } on FirebaseException catch (e) {
-      throw ServerException(
-        message: e.message ?? '',
-        statusCode: _mapError(e.code),
-      );
-    }
-  }
-
-  @override
-  Future<void> updateUser(UserInfoModel user) async {
-    try {
-      await firestore
-          .collection(_collectionName)
-          .doc(user.userId)
-          .update(user.toFirestore(forUpdate: true));
     } on FirebaseException catch (e) {
       throw ServerException(
         message: e.message ?? '',

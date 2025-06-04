@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sign_learn/routes/sign_learn_router.gr.dart';
 
 import '../features/auth/domain/providers/is_logged_provider.dart';
+import '../features/profile/profile.dart';
 
 final authGuardProvider = Provider<AuthGuard>((ref) {
   return AuthGuard(ref);
@@ -19,10 +20,12 @@ class AuthGuard extends AutoRouteGuard {
 
     if (isLoggedIn) {
       resolver.next();
+      _ref.read(userNotiferProvider.notifier).initUser();
     } else {
       final result = await router.replace<bool>(const LoginRoute());
       if (result == true) {
         resolver.next(true);
+        _ref.read(userNotiferProvider.notifier).initUser();
       } else {
         resolver.next(false);
       }

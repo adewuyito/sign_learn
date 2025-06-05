@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:sign_learn/features/profile/presentation/presentation.dart';
 
 import '../../../common/commons.dart';
 import '../../auth/domain/domain.dart';
@@ -9,8 +10,6 @@ import '../../../core/core.dart';
 import '../../../gen/assets.gen.dart';
 import '../../../gen/fonts.gen.dart';
 import '../../../routes/router.dart';
-import 'widget/profile_option_button.dart';
-import 'widget/sign_profile_image.dart';
 
 @RoutePage()
 class ProfileView extends ConsumerWidget {
@@ -33,9 +32,9 @@ class ProfileView extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             YBox(padding),
-            ProfileImage(image: "image"),
+            ProfileImage(),
             Text(
-              "Name",
+              ref.watch(userNotiferProvider).displayName ?? "Hello",
               style:
                   tt.headlineMedium!.copyWith(fontFamily: FontFamily.satoshi),
             ),
@@ -82,4 +81,3 @@ class ProfileView extends ConsumerWidget {
     );
   }
 }
-

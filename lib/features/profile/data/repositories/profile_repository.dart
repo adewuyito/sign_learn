@@ -30,7 +30,7 @@ class ProfileRepository implements IProfileRepository {
 
   @override
   Future<UserInfoModel?> getUserData({required UserId userId}) async {
-    if (await ref.watch(isConnectedNetworkInfoProvider.future)) {
+    if (await ref.watch(isConnectedProvider.future)) {
       final remote = await remoteSource.getUser(userId);
       // await localSource.saveUser(remote);
       return remote;
@@ -68,7 +68,7 @@ class ProfileRepository implements IProfileRepository {
 
   @override
   Future<bool> isUser({required UserId userId}) async {
-    if (await ref.watch(isConnectedNetworkInfoProvider.future)) {
+    if (await ref.watch(isConnectedProvider.future)) {
       return remoteSource.userExist(userId);
     } else {
       final localUser = await localSource.getUser();

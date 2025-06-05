@@ -124,8 +124,8 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 26),
                       child: ProfileImage(
-                        image:
-                            ref.watch(userNotiferProvider).displayImage ?? "",
+                        // image:
+                        //     ref.watch(userNotiferProvider).displayImage ?? "",
                         editImage: () async {
                           // _uploadImage(ref.watch(userNotiferProvider).userId);
                         },

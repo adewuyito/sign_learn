@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:sign_learn/gen/assets.gen.dart';
 import '../../../../core/core.dart' show appColors; // TODO: Work On this file
 
 class ProfileImage extends StatelessWidget {
-  final String image;
   final Size size;
   const ProfileImage({
     super.key,
     this.editImage,
-    required this.image,
     this.size = const Size(125, 125),
   });
 
@@ -15,6 +14,7 @@ class ProfileImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final String _dafualtProfile = Assets.defaultProfile.path;
     return GestureDetector(
       onTap: editImage,
       child: Stack(
@@ -41,7 +41,10 @@ class ProfileImage extends StatelessWidget {
                   strokeAlign: BorderSide.strokeAlignOutside,
                 ),
               ),
-              child: null,
+              child: Image.asset(
+                _dafualtProfile,
+                fit: BoxFit.cover,
+              ),
               // CachedNetworkImage( // TODO: Fix with better implementation
               //   imageUrl: image,
               //   fit: BoxFit.cover,

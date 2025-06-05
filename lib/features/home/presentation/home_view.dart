@@ -48,7 +48,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
           centerTitle: false,
           title: Row(
             children: [
-              ProfileImage(image: "image", size: Size.square(32)),
+              ProfileImage(size: Size.square(32)),
               XBox(padding),
               RichTextWidget(
                 styleForAll: TextStyle(color: appColors.black),

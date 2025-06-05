@@ -8,7 +8,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 // part 'sign_learn_router.gr.dart';
 
 final signRouteProvider = Provider<SignRouter>((ref) {
-  return SignRouter(signAuthGuard: ref.watch(authGuardProvider));
+  return SignRouter(
+      signAuthGuard: ref.watch(authGuardProvider),
+      connectionGuard: ref.watch(connectionGuardProvider));
 });
 
 class TransitionsBuilder {
@@ -32,8 +34,9 @@ class TransitionsBuilder {
 
 @AutoRouterConfig(replaceInRouteName: 'Page|View|Screen,Route')
 class SignRouter extends RootStackRouter {
-  SignRouter({required this.signAuthGuard});
+  SignRouter({required this.signAuthGuard, required this.connectionGuard});
   AuthGuard signAuthGuard;
+  ConnectionGuard connectionGuard;
 
   @override
   List<AutoRoute> get routes => [
@@ -57,7 +60,6 @@ class SignRouter extends RootStackRouter {
         // ~ Login Routes
         routeWithTransition(
           initial: false,
-          // initial: true,
           page: LoginRoute.page,
         ),
         routeWithTransition(
@@ -73,32 +75,54 @@ class SignRouter extends RootStackRouter {
             routeWithTransition(page: DictionaryRoute.page),
             routeWithTransition(page: ProfileRoute.page),
           ],
-          guards: [signAuthGuard],
+          guards: [
+            connectionGuard,
+            signAuthGuard,
+          ],
         ),
 
         // ~ Settings Routes
-        routeWithTransition(initial: false, page: SettingsRoute.page),
+        routeWithTransition(
+          initial: false,
+          page: SettingsRoute.page,
+          guards: [connectionGuard],
+        ),
 
         // ~ Lesson Routes
         routeWithTransition(
           initial: false,
           page: LessonListRoute.page,
           transitionsBuilder: TransitionsBuilder.cupertino,
+          guards: [connectionGuard],
         ),
 
-        routeWithTransition(initial: false, page: LessonDetailRoute.page),
+        routeWithTransition(
+          initial: false,
+          page: LessonDetailRoute.page,
+          guards: [connectionGuard],
+        ),
 
         // ~ Dictionary View
         routeWithTransition(
           page: DictionaryEntryDetailRoute.page,
           transitionsBuilder: TransitionsBuilder.cupertino,
+          guards: [connectionGuard],
         ),
 
         //  ~ Profile EditView
-        routeWithTransition(page: ProfileEditRoute.page),
+        routeWithTransition(
+          page: ProfileEditRoute.page,
+          guards: [connectionGuard],
+        ),
 
         // Quiz
-        routeWithTransition(page: SignQuizRoute.page),
+        routeWithTransition(
+          page: SignQuizRoute.page,
+          guards: [connectionGuard],
+        ),
+
+        // ~ No Connection View
+        routeWithTransition(page: NoConnectionRoute.page),
       ];
 
   CustomRoute routeWithTransition({

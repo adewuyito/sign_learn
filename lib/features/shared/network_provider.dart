@@ -1,19 +1,28 @@
-import 'package:data_connection_checker_tv/data_connection_checker.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:riverpod/riverpod.dart';
 
 abstract class NetworkInfo {
-  Future<bool>? get isConnected;
+  Stream<bool> get connectionStream;
 }
 
 class NetworkInfoImpl implements NetworkInfo {
-  final DataConnectionChecker connectionChecker;
+  final Connectivity connectivity;
 
-  NetworkInfoImpl(this.connectionChecker);
+  NetworkInfoImpl(this.connectivity);
 
   @override
-  Future<bool> get isConnected => connectionChecker.hasConnection;
+  Stream<bool> get connectionStream => connectivity.onConnectivityChanged
+      .map((result) => !result.contains(ConnectivityResult.none));
 }
 
-final isConnectedNetworkInfoProvider = FutureProvider<bool>((ref) async {
-  return await NetworkInfoImpl(DataConnectionChecker()).isConnected;
+final connectivityProvider = Provider<Connectivity>((ref) {
+  return Connectivity();
+});
+
+final networkInfoProvider = Provider<NetworkInfo>((ref) {
+  return NetworkInfoImpl(ref.watch(connectivityProvider));
+});
+
+final isConnectedProvider = StreamProvider<bool>((ref) {
+  return ref.watch(networkInfoProvider).connectionStream;
 });

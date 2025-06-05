@@ -66,6 +66,9 @@ flutter:
     - assets/Icons/social_icons/
     - assets/Icons/profile_icons/
 
+    # Default Profile
+    - assets/default_profile.png
+
   fonts:
     - family: Clash display
       fonts:

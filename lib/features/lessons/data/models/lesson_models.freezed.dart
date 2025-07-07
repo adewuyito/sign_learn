@@ -22,6 +22,7 @@ Lesson _$LessonFromJson(Map<String, dynamic> json) {
 mixin _$Lesson {
   String get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
+  List<String> get videoTitles => throw _privateConstructorUsedError;
   int get unit =>
       throw _privateConstructorUsedError; // ignore: invalid_annotation_target
   @JsonKey(fromJson: categoryLevelFromJson, toJson: categoryLevelToJson)
@@ -46,6 +47,7 @@ abstract class $LessonCopyWith<$Res> {
   $Res call(
       {String id,
       String title,
+      List<String> videoTitles,
       int unit,
       @JsonKey(fromJson: categoryLevelFromJson, toJson: categoryLevelToJson)
       CategoryLevel categoryLevel,
@@ -70,6 +72,7 @@ class _$LessonCopyWithImpl<$Res, $Val extends Lesson>
   $Res call({
     Object? id = null,
     Object? title = null,
+    Object? videoTitles = null,
     Object? unit = null,
     Object? categoryLevel = null,
     Object? videoUrl = null,
@@ -84,6 +87,10 @@ class _$LessonCopyWithImpl<$Res, $Val extends Lesson>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
+      videoTitles: null == videoTitles
+          ? _value.videoTitles
+          : videoTitles // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       unit: null == unit
           ? _value.unit
           : unit // ignore: cast_nullable_to_non_nullable
@@ -114,6 +121,7 @@ abstract class _$$LessonImplCopyWith<$Res> implements $LessonCopyWith<$Res> {
   $Res call(
       {String id,
       String title,
+      List<String> videoTitles,
       int unit,
       @JsonKey(fromJson: categoryLevelFromJson, toJson: categoryLevelToJson)
       CategoryLevel categoryLevel,
@@ -136,6 +144,7 @@ class __$$LessonImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? title = null,
+    Object? videoTitles = null,
     Object? unit = null,
     Object? categoryLevel = null,
     Object? videoUrl = null,
@@ -150,6 +159,10 @@ class __$$LessonImplCopyWithImpl<$Res>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
+      videoTitles: null == videoTitles
+          ? _value._videoTitles
+          : videoTitles // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       unit: null == unit
           ? _value.unit
           : unit // ignore: cast_nullable_to_non_nullable
@@ -176,12 +189,14 @@ class _$LessonImpl implements _Lesson {
   const _$LessonImpl(
       {required this.id,
       required this.title,
+      required final List<String> videoTitles,
       required this.unit,
       @JsonKey(fromJson: categoryLevelFromJson, toJson: categoryLevelToJson)
       required this.categoryLevel,
       required final List<String> videoUrl,
       this.isCompleted = false})
-      : _videoUrl = videoUrl;
+      : _videoTitles = videoTitles,
+        _videoUrl = videoUrl;
 
   factory _$LessonImpl.fromJson(Map<String, dynamic> json) =>
       _$$LessonImplFromJson(json);
@@ -190,6 +205,14 @@ class _$LessonImpl implements _Lesson {
   final String id;
   @override
   final String title;
+  final List<String> _videoTitles;
+  @override
+  List<String> get videoTitles {
+    if (_videoTitles is EqualUnmodifiableListView) return _videoTitles;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_videoTitles);
+  }
+
   @override
   final int unit;
 // ignore: invalid_annotation_target
@@ -210,7 +233,7 @@ class _$LessonImpl implements _Lesson {
 
   @override
   String toString() {
-    return 'Lesson(id: $id, title: $title, unit: $unit, categoryLevel: $categoryLevel, videoUrl: $videoUrl, isCompleted: $isCompleted)';
+    return 'Lesson(id: $id, title: $title, videoTitles: $videoTitles, unit: $unit, categoryLevel: $categoryLevel, videoUrl: $videoUrl, isCompleted: $isCompleted)';
   }
 
   @override
@@ -220,6 +243,8 @@ class _$LessonImpl implements _Lesson {
             other is _$LessonImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title) &&
+            const DeepCollectionEquality()
+                .equals(other._videoTitles, _videoTitles) &&
             (identical(other.unit, unit) || other.unit == unit) &&
             (identical(other.categoryLevel, categoryLevel) ||
                 other.categoryLevel == categoryLevel) &&
@@ -230,8 +255,15 @@ class _$LessonImpl implements _Lesson {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, title, unit, categoryLevel,
-      const DeepCollectionEquality().hash(_videoUrl), isCompleted);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      title,
+      const DeepCollectionEquality().hash(_videoTitles),
+      unit,
+      categoryLevel,
+      const DeepCollectionEquality().hash(_videoUrl),
+      isCompleted);
 
   /// Create a copy of Lesson
   /// with the given fields replaced by the non-null parameter values.
@@ -253,6 +285,7 @@ abstract class _Lesson implements Lesson {
   const factory _Lesson(
       {required final String id,
       required final String title,
+      required final List<String> videoTitles,
       required final int unit,
       @JsonKey(fromJson: categoryLevelFromJson, toJson: categoryLevelToJson)
       required final CategoryLevel categoryLevel,
@@ -265,6 +298,8 @@ abstract class _Lesson implements Lesson {
   String get id;
   @override
   String get title;
+  @override
+  List<String> get videoTitles;
   @override
   int get unit; // ignore: invalid_annotation_target
   @override

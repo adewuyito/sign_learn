@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sign_learn/routes/sign_learn_router.gr.dart';
 import 'package:sign_learn/features/shared/network_provider.dart';
@@ -50,7 +49,7 @@ class ConnectionGuard extends AutoRouteGuard {
     final isConnected = await _ref.watch(isConnectedProvider.future);
 
     if (isConnected) {
-      debugPrint("There is an active connection");
+      // debugPrint("There is an active connection");
       resolver.next();
     } else {
       final result = await router.push<bool>(const NoConnectionRoute());

@@ -6,8 +6,6 @@ import 'package:sign_learn/core/core.dart';
 import 'package:sign_learn/features/lessons/data/models/models.dart';
 import 'package:sign_learn/gen/fonts.gen.dart';
 
-import '../domain/domain.dart';
-import 'providers/lessons_provider.dart';
 
 @RoutePage()
 class LessonDetailScreen extends ConsumerWidget {
@@ -17,7 +15,7 @@ class LessonDetailScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final lesson = ref.watch(lessonDetailProvider(lessonId));
+    // final lesson = ref.watch(lessonDetailProvider(lessonId)); // ~ this is what would be used 
 
     final mockLesson = Lesson(
       id: "asl_lesson1",
@@ -25,6 +23,7 @@ class LessonDetailScreen extends ConsumerWidget {
       unit: 1,
       categoryLevel: CategoryLevel.ASL1,
       videoUrl: [""],
+      videoTitles: [],
     );
 
     Set<String> buildAppbarTitle(CategoryLevel category, int unit) {
@@ -97,17 +96,6 @@ class LessonDetailScreen extends ConsumerWidget {
                 Spacer(),
                 // Complete Button
 
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    SignActionButton(
-                      label: "Next Lesson",
-                      onPressed: () {
-                        ref.read(completeLessonProvider).call(lesson.id);
-                      },
-                    ),
-                  ],
-                ),
               ],
             );
           },

@@ -42,7 +42,8 @@ class ProfileView extends ConsumerWidget {
             Divider(),
             // ~ Account Info
             ProfileOptionButton(
-              onTap: () => SignNavigator.of(context).push(ProfileEditRoute()),
+              onTap: () => {SignNavigator.of(context).push(ProfileEditRoute())},
+              // onTap: () => SignNavigator.of(context).push(ProfileEditRoute()),
               iconAsset: Assets.icons.profileIcons.profileAccountInfoIcon,
               label: "Account Information",
               subLabel: "Get information about your account",

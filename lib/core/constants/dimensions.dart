@@ -4,6 +4,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
+final screenWidth = buttonSize(ButtonSize.full).width;
+
 enum ButtonSize {
   half,
   full;

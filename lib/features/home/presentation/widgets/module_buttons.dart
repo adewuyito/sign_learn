@@ -37,8 +37,12 @@ class ModuleButtons extends ConsumerWidget {
             onPressed: () {
               getASLLock[index]
                   ? SignNavigator.of(context).push(
-                      LessonListRoute(
-                        categoryLevel: CategoryLevel.values[index],
+                      // LessonListRoute(
+                      //   categoryLevel: CategoryLevel.values[index],
+                      // ),
+
+                      LessonsByLevelRoute(
+                        levelId: CategoryLevel.values[index].toString(),
                       ),
                     )
                   : NextMouleDialog().present(context);

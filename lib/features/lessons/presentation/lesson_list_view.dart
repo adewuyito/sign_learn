@@ -1,79 +1,64 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:sign_learn/routes/router.dart';
 
 import '../data/data.dart';
-import 'providers/lessons_provider.dart';
+import '../domain/domain.dart';
+import '../../../core/core.dart';
 
 @RoutePage()
-class LessonListScreen extends ConsumerWidget {
+class LessonListScreen extends HookConsumerWidget {
   final CategoryLevel categoryLevel;
   const LessonListScreen({super.key, required this.categoryLevel});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final lessons = ref.watch(lessonsByCategoryProvider(categoryLevel));
+    final lessonsAsync = ref.watch(
+      fetchLessonsByCategoryProvider((
+        levelId: categoryLevel.levelId,
+        unitId: 'unit1',
+      )),
+    );
 
     return Scaffold(
-      appBar: AppBar(title: Text('Lessons')),
-      body: Column(
-        children: [
-          Expanded(
-            child: lessons.when(
-              data: (lessonList) => ListView.builder(
-                itemCount: lessonList.length,
-                itemBuilder: (context, index) {
-                  final lesson = lessonList[index];
-                  return ListTile(
-                    title: Text(lesson.title),
-                    subtitle: Text('Unit: ${lesson.unit}'),
-                    trailing: Icon(
-                      lesson.isCompleted ? Icons.check_circle : Icons.circle,
-                      color: lesson.isCompleted ? Colors.green : Colors.red,
-                    ),
-                    onTap: () {
-                      // Navigate to lesson details screen
-                      SignNavigator.of(context).push(
-                        LessonDetailRoute(lessonId: lesson.id),
-                      );
-                    },
-                  );
-                },
-              ),
-              loading: () => Center(child: CircularProgressIndicator()),
-              error: (e, stack) {
-                debugPrint("Error message => ${e.toString()}");
-                debugPrint("Error message => ${stack.toString()}");
-                return Center(child: Text('Error loading lessons'));
-              },
+      appBar: AppBar(
+        title: Text('Lessons'),
+      ),
+      body: SafeArea(
+        minimum: safeAreaPadding,
+        child: lessonsAsync.when(
+          data: (data) => ListView.builder(
+            itemCount: data.length,
+            itemBuilder: (context, count) {
+              final lesson = data[count];
+              return Card(
+                child: ListTile(
+                  leading: CircleAvatar(
+                    child: Text('${count + 1}'),
+                  ),
+                  title: Text('Lesson ${count + 1}'),
+                  subtitle: Text(lesson.title),
+                  trailing: Icon(Icons.play_arrow),
+                  onTap: () {
+                    // TODO: Build this widget
+                    // ~ Navigate to the view
+                  },
+                ),
+              );
+            },
+          ),
+          error: (error, stackTrace) => Center(
+            child: Column(
+              children: [
+                Icon(Icons.error),
+                Text('An error occured'),
+              ],
             ),
           ),
-        ],
+          loading: () => Center(
+            child: CircularProgressIndicator(),
+          ),
+        ),
       ),
     );
   }
 }
-
-/* 
-lessons.when(
-              data: (lessonList) => ListView.builder(
-                itemCount: lessonList.length,
-                itemBuilder: (context, index) {
-                  final lesson = lessonList[index];
-                  return ListTile(
-                    title: Text(lesson.title),
-                    subtitle: Text('Unit: ${lesson.unit}'),
-                    trailing: Icon(
-                      lesson.isCompleted ? Icons.check_circle : Icons.circle,
-                      color: lesson.isCompleted ? Colors.green : Colors.red,
-                    ),
-                    onTap: () {
-                      // Navigate to lesson details screen
-                    },
-                  );
-                },
-              ),
-              loading: () => CircularProgressIndicator(),
-              error: (e, stack) => Center(child: Text('Error loading lessons')),
-            ),
- */

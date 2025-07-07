@@ -1,20 +1,27 @@
 import 'package:riverpod/riverpod.dart';
 
 import '../datasources/datasources.dart';
-import '../models/models.dart';
+import '../models/lesson_model.dart';
 
 final lessonRepositoryProvider = Provider<ILessonRepository>((ref) {
-  return LessonRepository(
-    ref,
-  );
+  return LessonRepository(ref);
 });
 
 abstract class ILessonRepository {
-  Future<List<Lesson>> getLessonsByCategory(String categoryLevel);
-  Future<void> markLessonCompleted(String lessonId);
-  Future<Lesson> getLessonById(String lessonId);
-}
+  Future<List<LessonModel>> getLessonsByLevel(String levelId);
 
+  Future<List<LessonModel>> loadUnitLessons({
+    required String levelId,
+    required String unitId,
+  });
+
+  /// Get a single lesson document
+  Future<LessonModel> getLesson({
+    required String levelId,
+    required String unitId,
+    required String lessonId,
+  });
+}
 
 class LessonRepository implements ILessonRepository {
   Ref ref;
@@ -27,17 +34,28 @@ class LessonRepository implements ILessonRepository {
   ILessonLocalSource lessonLocalSource;
 
   @override
-  Future<Lesson> getLessonById(String lessonId) async {
-    return await lessonRemoteSource.getLessonById(lessonId);
+  Future<LessonModel> getLesson({
+    required String levelId,
+    required String unitId,
+    required String lessonId,
+  }) {
+    return lessonRemoteSource.getLesson(
+      levelId: levelId,
+      unitId: unitId,
+      lessonId: lessonId,
+    );
   }
 
   @override
-  Future<List<Lesson>> getLessonsByCategory(String categoryLevel) async {
-    return await lessonRemoteSource.fetchLessonsByCategory(categoryLevel);
+  Future<List<LessonModel>> loadUnitLessons({
+    required String levelId,
+    required String unitId,
+  }) {
+    return lessonRemoteSource.getLessons(levelId: levelId, unitId: unitId);
   }
 
   @override
-  Future<void> markLessonCompleted(String lessonId) async {
-    return await lessonRemoteSource.markLessonCompleted(lessonId);
+  Future<List<LessonModel>> getLessonsByLevel(String levelId) {
+    return lessonRemoteSource.getLessonsByLevel(levelId);
   }
 }

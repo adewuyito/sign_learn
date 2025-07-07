@@ -6,13 +6,19 @@ import '../../data/repository/dictionary_repository.dart';
 
 final dictionaryEntriesProvider = FutureProvider<List<DictionaryEntries>>(
   (ref) async {
-    return await GetDictionaryEntries(ref.watch(dictionaryRepositoryProvider)).call();
+    return await GetDictionaryEntries(ref.watch(dictionaryRepositoryProvider))
+        .call();
   },
 );
 
 final dictionaryEntryByIdProvider =
-    FutureProvider.family<DictionaryEntries?, String>((ref, id) async {
-  final dictionaryEntry =
-      GetDictionaryEntriesById(ref.watch(dictionaryRepositoryProvider), id: id);
+    FutureProvider.family<DictionaryEntries?, String>((
+  ref,
+  id,
+) async {
+  final dictionaryEntry = GetDictionaryEntriesById(
+    ref.watch(dictionaryRepositoryProvider),
+    id: id,
+  );
   return await dictionaryEntry();
 });

@@ -1,3 +1,4 @@
+import 'package:sign_learn/features/lessons/presentation/gpt_lesson_view.dart';
 import 'package:sign_learn/routes/sign_learn_router.gr.dart';
 
 import 'route_guard.dart';
@@ -115,14 +116,32 @@ class SignRouter extends RootStackRouter {
           guards: [connectionGuard],
         ),
 
-        // Quiz
+        //~ Quiz
         routeWithTransition(
           page: SignQuizRoute.page,
           guards: [connectionGuard],
         ),
 
+        routeWithTransition(page: SignQuizVideoOptionRoute.page),
+
         // ~ No Connection View
         routeWithTransition(page: NoConnectionRoute.page),
+
+        // ~ Exess routes
+        // ~ Firebase Firestore Upload
+        routeWithTransition(page: FirebaseFirestoreUpload.page),
+
+        // ~ Advanced Video Player
+        routeWithTransition(page: LessonListWidget.page),
+
+        // ~ GPT Lesson View
+        routeWithTransition(page: LessonRoute.page),
+
+        // ~
+        // routeWithTransition(page: GptLessonListRoute.page),
+
+        // ~
+        routeWithTransition(page: LessonsByLevelRoute.page),
       ];
 
   CustomRoute routeWithTransition({

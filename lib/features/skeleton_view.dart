@@ -1,6 +1,5 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../core/core.dart';
@@ -19,79 +18,16 @@ class SkeletonTabView extends ConsumerStatefulWidget {
 class _SkeletonTabViewState extends ConsumerState<SkeletonTabView> {
   @override
   Widget build(BuildContext context) {
-    return AutoTabsRouter.tabBar(
-      physics: NeverScrollableScrollPhysics(),
-      builder: (context, child, tabController) {
-        final tabsRouter = AutoTabsRouter.of(context);
-        return Scaffold(
-          body: child,
-          bottomNavigationBar: DashBoardNavigationBar(tabsRouter: tabsRouter),
-        );
-      },
-      homeIndex: 0,
+    return AutoTabsScaffold(
+      // homeIndex: 0,
       routes: [
         HomeRoute(),
         DictionaryRoute(),
         ProfileRoute(),
       ],
-    );
-  }
-}
 
-class KNavigationDestination extends StatefulWidget {
-  final String? inActiveIcon;
-  final String label;
-  final String activeIcon;
-
-  const KNavigationDestination({
-    super.key,
-    this.inActiveIcon,
-    required this.label,
-    required this.activeIcon,
-  });
-
-  @override
-  State<KNavigationDestination> createState() => _KNavigationDestinationState();
-}
-
-class _KNavigationDestinationState extends State<KNavigationDestination> {
-  bool isActive = false;
-  @override
-  Widget build(BuildContext context) {
-    return OutlinedButton(
-      onPressed: () => setState(() {
-        isActive = !isActive;
-      }),
-      style: OutlinedButton.styleFrom(
-        splashFactory: NoSplash.splashFactory,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
-        side: BorderSide(
-          width: 2,
-          color: isActive ? appColors.black : appColors.transparent,
-        ),
-      ),
-      child: Row(
-        mainAxisAlignment:
-            isActive ? MainAxisAlignment.start : MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          isActive
-              ? SvgPicture.asset(widget.activeIcon)
-              : SvgPicture.asset(widget.inActiveIcon ?? widget.activeIcon),
-          XBox(isActive ? padding.dx : 0),
-          isActive
-              ? Text(
-                  widget.label,
-                  style: TextTheme.of(context).labelMedium!.copyWith(
-                        fontWeight: FontWeight.bold,
-                        fontFamily: FontFamily.satoshi,
-                      ),
-                )
-              : SizedBox.shrink(),
-        ],
-      ),
+      bottomNavigationBuilder: (_, tabsRouter) =>
+          DashBoardNavigationBar(tabsRouter: tabsRouter),
     );
   }
 }
@@ -140,3 +76,96 @@ class DashBoardNavigationBar extends StatelessWidget {
     );
   }
 }
+
+class CustomBottomNavBar extends StatelessWidget{
+  final TabsRouter tabsRouter;
+
+  const CustomBottomNavBar({
+    super.key,
+    required this.tabsRouter,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final items = [
+      _NavItem(icon: Icons.home, label: 'Home'),
+      _NavItem(icon: Icons.school, label: 'Learn'),
+      _NavItem(icon: Icons.book, label: 'Dictionary'),
+    ];
+
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 20, left: 16, right: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: appColors.black, width: 2),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: List.generate(items.length, (index) {
+            final selected = tabsRouter.activeIndex == index;
+            final item = items[index];
+            return GestureDetector(
+              onTap: () => tabsRouter.setActiveIndex(index),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 8,
+                ),
+                decoration: BoxDecoration(
+                  color: selected ? Color(0xFFFFE4C7) : Colors.transparent,
+                  borderRadius: BorderRadius.circular(8),
+                  border: selected
+                      ? Border.all(
+                          width: 2,
+                          color: appColors.black,
+                        )
+                      : null,
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      item.icon,
+                      color: selected
+                          ? Colors.black
+                          : Colors
+                              .grey, // ~ Change the color of the selected item
+                    ),
+                    AnimatedSize(
+                      duration: const Duration(milliseconds: 200),
+                      curve: Curves.easeInOut,
+                      child: selected
+                          ? Padding(
+                              padding: const EdgeInsets.only(left: 8),
+                              child: Text(
+                                item.label,
+                                style:
+                                    TextTheme.of(context).labelMedium!.copyWith(
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: FontFamily.satoshi,
+                                        ),
+                              ),
+                            )
+                          : const SizedBox.shrink(),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }),
+        ),
+      ),
+    );
+  }
+}
+
+class _NavItem {
+  final IconData icon;
+  final String label;
+  const _NavItem({required this.icon, required this.label});
+}
+

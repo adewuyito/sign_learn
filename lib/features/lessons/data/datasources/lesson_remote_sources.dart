@@ -1,71 +1,119 @@
-import 'package:flutter/foundation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../models/models.dart' show Lesson;
+import '../models/lesson_model.dart';
 
 final firestoreProvider = Provider((ref) => FirebaseFirestore.instance);
 
 final lessonRemoteSourceProvider = Provider<ILessonRemoteSource>(
   (ref) {
     final firestore = ref.watch(firestoreProvider);
-    return LessonRemoteSources(ref, firestore: firestore);
+    return FirebaseLessonRemoteSource(firestore: firestore);
   },
 );
 
 abstract class ILessonRemoteSource {
-  Future<List<Lesson>> fetchLessonsByCategory(String categoryLevel);
-  Future<void> markLessonCompleted(String lessonId);
-  Future<Lesson> getLessonById(String lessonId);
+  /// Get every lesson in a unit  (e.g. ASL1 → Unit1 → all lessons)
+
+  Future<List<LessonModel>> getLessonsByLevel(String levelId);
+
+  Future<List<LessonModel>> getLessons({
+    required String levelId,
+    required String unitId,
+  });
+
+  /// Get a single lesson document
+  Future<LessonModel> getLesson({
+    required String levelId,
+    required String unitId,
+    required String lessonId,
+  });
+
+  /// Create or overwrite a lesson
+  Future<void> upsertLesson({
+    required String levelId,
+    required String unitId,
+    required LessonModel lesson,
+  });
+
+  /// Delete a lesson
+  Future<void> deleteLesson({
+    required String levelId,
+    required String unitId,
+    required String lessonId,
+  });
 }
 
-class LessonRemoteSources implements ILessonRemoteSource {
+class FirebaseLessonRemoteSource implements ILessonRemoteSource {
   final FirebaseFirestore firestore;
-  Ref ref;
-  LessonRemoteSources(this.ref, {required this.firestore});
+  FirebaseLessonRemoteSource({required this.firestore});
 
-  @override
-  Future<List<Lesson>> fetchLessonsByCategory(String categoryLevel) async {
-    try {
-      final query = await firestore
+  /// Reusable helper to point to …/lessons/…
+  CollectionReference<Map<String, dynamic>> _lessonCollection(
+    String levelId,
+    String unitId,
+  ) =>
+      firestore
           .collection('lessons')
-          .where('categoryLevel', isEqualTo: categoryLevel)
-          .get();
+          .doc(levelId)
+          .collection('units')
+          .doc(unitId)
+          .collection('lessons');
 
-      return query.docs
-          .map((doc) => Lesson.fromJson({...doc.data(), 'id': doc.id}))
-          .toList();
-    } on Exception catch (e) {
-      // TODO: Work on this error state
-      debugPrint(e.toString());
-      throw UnimplementedError(
-        "FirebaseLessonRepository<getLessonByCategory>: This Error has not been come accross hence it has not been initialised.",
-      );
-    }
+  @override
+  Future<List<LessonModel>> getLessonsByLevel(String levelId) async {
+    // Pull every lesson document in all units under this level
+    final querySnap = await firestore
+        .collectionGroup('lessons')
+        .where('parentLesson', isEqualTo: levelId)
+        .orderBy('unitOrder') // unit1, unit2, …
+        .orderBy('order') // lesson order inside the unit
+        .get();
+
+    return querySnap.docs
+        .map((d) => LessonModel.fromJson({...d.data(), 'lessonId': d.id}))
+        .toList();
   }
 
   @override
-  Future<Lesson> getLessonById(String lessonId) async {
-    try {
-      final docSnapshot =
-          await firestore.collection('lessons').doc(lessonId).get();
-
-      if (!docSnapshot.exists) {
-        throw Exception('Lesson not found');
-      }
-
-      final result = {...docSnapshot.data()!, 'id': docSnapshot.id};
-
-      return Lesson.fromJson(result);
-    } catch (e) {
-      throw Exception('Failed to get lesson: ${e.toString()}');
-    }
+  Future<List<LessonModel>> getLessons({
+    required String levelId,
+    required String unitId,
+  }) async {
+    final snap = await _lessonCollection(levelId, unitId).get();
+    return snap.docs
+        .map((d) => LessonModel.fromJson({'lessonId': d.id, ...d.data()}))
+        .toList();
   }
 
   @override
-  Future<void> markLessonCompleted(String lessonId) async {
-    await firestore.collection('lessons').doc(lessonId).update({
-      'isCompleted': true,
-    });
+  Future<LessonModel> getLesson({
+    required String levelId,
+    required String unitId,
+    required String lessonId,
+  }) async {
+    final doc = await _lessonCollection(levelId, unitId).doc(lessonId).get();
+    if (!doc.exists) throw Exception('Lesson not found');
+    return LessonModel.fromJson({'lessonId': doc.id, ...doc.data()!});
+  }
+
+  @override
+  Future<void> upsertLesson({
+    required String levelId,
+    required String unitId,
+    required LessonModel lesson,
+  }) {
+    return _lessonCollection(levelId, unitId)
+        .doc(lesson.lessonId)
+        .set(lesson.toJson());
+  }
+
+  @override
+  Future<void> deleteLesson({
+    required String levelId,
+    required String unitId,
+    required String lessonId,
+  }) {
+    return _lessonCollection(levelId, unitId).doc(lessonId).delete();
   }
 }

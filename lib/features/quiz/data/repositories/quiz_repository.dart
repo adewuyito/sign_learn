@@ -1,8 +1,5 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../data/datasources/quiz_remote_datasource.dart';
-import '../domain/entities/quiz.dart';
-import '../domain/repositories/quiz_repository.dart';
 
 import '../datasources/quiz_remote_data_source.dart';
 import '../datasources/quiz_local_data_source.dart';

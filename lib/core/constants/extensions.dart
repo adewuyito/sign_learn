@@ -1,3 +1,5 @@
+import 'package:sign_learn/features/lessons/data/models/category_levels.dart';
+
 extension StringExtensions on String {
   String get capitalize {
     return '${this[0].toUpperCase()}${substring(1)}';
@@ -15,4 +17,8 @@ extension IndexedIterable<E> on Iterable<E> {
     var index = 0;
     return map((e) => f(e, index++));
   }
+}
+
+extension LevelId on CategoryLevel {
+  String get levelId => 'asl_lesson${index + 1}';
 }

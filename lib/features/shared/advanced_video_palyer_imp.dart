@@ -28,6 +28,7 @@ class FirebaseStorageService {
 }
 
 
+
 // Lesson Screen that manages the entire lesson
 class LessonScreen extends HookWidget {
   final String course;
@@ -59,18 +60,18 @@ class LessonScreen extends HookWidget {
             Card(
               child: Padding(
                 padding: EdgeInsets.all(8),
-                child: LessonVideoPlayer(
-                  course: course,
-                  unit: unit,
-                  lesson: lesson,
-                  onVideoStart: () {
-                    videoStarted.value = true;
-                  },
-                  onVideoComplete: () {
-                    isVideoCompleted.value = true;
-                    // Mark lesson as completed, update progress, etc.
-                  },
-                ),
+                // child: LessonVideoPlayer(
+                //   course: course,
+                //   unit: unit,
+                //   lesson: lesson,
+                //   onVideoStart: () {
+                //     videoStarted.value = true;
+                //   },
+                //   onVideoComplete: () {
+                //     isVideoCompleted.value = true;
+                //     // Mark lesson as completed, update progress, etc.
+                //   },
+                // ),
               ),
             ),
 

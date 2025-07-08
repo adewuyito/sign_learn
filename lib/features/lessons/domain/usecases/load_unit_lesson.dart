@@ -1,5 +1,6 @@
 import 'package:riverpod/riverpod.dart';
 
+import '../../../../common/typedefs.dart';
 import '../../data/data.dart';
 
 class FetchLessonsByCategory {
@@ -14,8 +15,6 @@ class FetchLessonsByCategory {
     return _repository.loadUnitLessons(levelId: levelId, unitId: unitId);
   }
 }
-
-typedef LevelUnit = ({String levelId, String unitId});
 
 final fetchLessonsByCategoryProvider = FutureProvider.autoDispose
     .family<List<LessonModel>, LevelUnit>((ref, params) {

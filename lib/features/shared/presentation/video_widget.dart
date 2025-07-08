@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:sign_learn/features/lessons/data/data.dart';
 import 'package:sign_learn/features/shared/advanced_video_palyer_imp.dart';
 
 import '../../../common/commons.dart';
@@ -42,17 +43,13 @@ class _LessonVideoWidgetState extends ConsumerState<VideoWidget> {
 
 //~ Lesson Video Player Widget - Manages Firebase + Video Player
 class LessonVideoPlayer extends HookWidget {
-  final String course;
-  final String unit;
-  final String lesson;
+  final String? lessonVideoUrl;
   final VoidCallback? onVideoComplete;
   final VoidCallback? onVideoStart;
 
   const LessonVideoPlayer({
     super.key,
-    required this.course,
-    required this.unit,
-    required this.lesson,
+    required this.lessonVideoUrl,
     this.onVideoComplete,
     this.onVideoStart,
   });
@@ -68,11 +65,7 @@ class LessonVideoPlayer extends HookWidget {
         isLoading.value = true;
         errorMessage.value = null;
 
-        String? url = await FirebaseStorageService.getLessonVideo(
-          course: course,
-          unit: unit,
-          lesson: lesson,
-        );
+        String? url = lessonVideoUrl;
 
         if (url != null) {
           videoUrl.value = url;
@@ -89,10 +82,10 @@ class LessonVideoPlayer extends HookWidget {
     useEffect(() {
       loadVideo();
       return null;
-    }, [course, unit, lesson]);
+    }, []);
 
     if (isLoading.value) {
-      return Container(
+      return SizedBox(
         height: 200,
         child: Center(
           child: Column(
@@ -108,7 +101,7 @@ class LessonVideoPlayer extends HookWidget {
     }
 
     if (errorMessage.value != null) {
-      return Container(
+      return SizedBox(
         height: 200,
         child: Center(
           child: Column(
@@ -138,7 +131,7 @@ class LessonVideoPlayer extends HookWidget {
       );
     }
 
-    return Container(
+    return SizedBox(
       height: 200,
       child: Center(child: Text('No video available')),
     );

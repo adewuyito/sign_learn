@@ -97,11 +97,6 @@ class SignRouter extends RootStackRouter {
           guards: [connectionGuard],
         ),
 
-        routeWithTransition(
-          initial: false,
-          page: LessonDetailRoute.page,
-          guards: [connectionGuard],
-        ),
 
         // ~ Dictionary View
         routeWithTransition(
@@ -124,6 +119,11 @@ class SignRouter extends RootStackRouter {
 
         routeWithTransition(page: SignQuizVideoOptionRoute.page),
 
+        routeWithTransition(
+          page: QuizScoreScreenRoute.page,
+          guards: [connectionGuard],
+        ),
+
         // ~ No Connection View
         routeWithTransition(page: NoConnectionRoute.page),
 
@@ -138,7 +138,7 @@ class SignRouter extends RootStackRouter {
         routeWithTransition(page: LessonRoute.page),
 
         // ~
-        // routeWithTransition(page: GptLessonListRoute.page),
+        routeWithTransition(page: SecondLessonDetailRoute.page),
 
         // ~
         routeWithTransition(page: LessonsByLevelRoute.page),

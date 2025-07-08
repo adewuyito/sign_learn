@@ -1,14 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../models/lesson_model.dart';
 
 final firestoreProvider = Provider((ref) => FirebaseFirestore.instance);
+final storageProvider = Provider((ref) => FirebaseStorage.instance);
 
 final lessonRemoteSourceProvider = Provider<ILessonRemoteSource>(
   (ref) {
-    final firestore = ref.watch(firestoreProvider);
-    return FirebaseLessonRemoteSource(firestore: firestore);
+    final _firestore = ref.watch(firestoreProvider);
+    final _storage = ref.watch(storageProvider);
+    return FirebaseLessonRemoteSource(
+      firestore: _firestore,
+      storage: _storage,
+    );
   },
 );
 
@@ -16,6 +22,8 @@ abstract class ILessonRemoteSource {
   /// Get every lesson in a unit  (e.g. ASL1 → Unit1 → all lessons)
 
   Future<List<LessonModel>> getLessonsByLevel(String levelId);
+
+  Future<List<String>> fetchVideoUrl(LessonModel lesson);
 
   Future<List<LessonModel>> getLessons({
     required String levelId,
@@ -46,7 +54,10 @@ abstract class ILessonRemoteSource {
 
 class FirebaseLessonRemoteSource implements ILessonRemoteSource {
   final FirebaseFirestore firestore;
-  FirebaseLessonRemoteSource({required this.firestore});
+  final FirebaseStorage storage;
+  FirebaseLessonRemoteSource({required this.firestore, required this.storage});
+
+  final _storage = FirebaseStorage.instance;
 
   /// Reusable helper to point to …/lessons/…
   CollectionReference<Map<String, dynamic>> _lessonCollection(
@@ -115,5 +126,12 @@ class FirebaseLessonRemoteSource implements ILessonRemoteSource {
     required String lessonId,
   }) {
     return _lessonCollection(levelId, unitId).doc(lessonId).delete();
+  }
+
+  @override
+  Future<List<String>> fetchVideoUrl(LessonModel lesson) async {
+    return Future.wait(
+      lesson.videoUrls.map((path) => _storage.ref(path).getDownloadURL()),
+    );
   }
 }

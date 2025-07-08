@@ -17,7 +17,3 @@ const _categoryLevelEnumMap = {
 CategoryLevel categoryLevelFromJson(String value) => _categoryLevelEnumMap[value]!;
 
 String categoryLevelToJson(CategoryLevel level) => _categoryLevelEnumMap.entries.firstWhere((e) => e.value == level).key;
-
-extension LevelId on CategoryLevel {
-  String get levelId => 'asl_lesson${index + 1}';
-}

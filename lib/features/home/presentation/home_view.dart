@@ -1,10 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:auto_route/auto_route.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import "package:sign_learn/features/lessons/data/models/fake_model_lesson.dart";
-import 'package:sign_learn/features/lessons/domain/domain.dart';
 import 'package:sign_learn/features/profile/profile.dart';
 
 import '../../../common/commons.dart';
@@ -40,38 +40,17 @@ class _HomeViewState extends ConsumerState<HomeView> {
       minimum: safeAreaPadding,
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
-          // onPressed: () async {
-          // },
-          // onPressed: () => SignNavigator.of(context).push(
-          //   GptLessonListRoute(levelId: 'asl_lesson1', unitId: 'unit1'),
-          // ),
-          // onPressed: () => SignNavigator.of(context).push(LessonRoute(
-          //   lessonId: '1',
-          //   clipUrls: [
-          //     'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-          //     'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-          //     'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
-          //   ],
-          // )),
-          onPressed: () => SignNavigator.of(context).push(
-            LessonListWidget(
-              course: 'ASL1',
-              unit: 'unit1',
-              lessons: ['lesson1', 'lesson2', 'lesson3', 'lesson4', 'lesson5'],
-            ),
-          ),
-          // onPressed: () => SignNavigator.of(context).push(SignQuizVideoOptionRoute()),
-          // onPressed: () => SignNavigator.of(context).push(SignQuizRoute()),
+          onPressed: () async {
+            final fb = FirebaseStorage.instance;
+
+            final downloadPath = await fb
+                .ref("/lessons/ASL1/unit1/lesson1/260397_tiny.mp4")
+                .getDownloadURL();
+
+            debugPrint(downloadPath.toString());
+          },
         ),
-        // floatingActionButton: FloatingActionButton(onPressed: () async {
-        //   // debugPrint("User Profile ==> ${ref.watch(userNotiferProvider)}");
-        //   // debugPrint("User Profile ==> ${ref.watch(authNotifierProvider)}");
 
-        //   final lessonLocks = ref.watch(lessonLocksProvider);
-        //   await ref.read(lessonLocksProvider.notifier).unlockLesson(3);
-
-        //   debugPrint("Lesson lock ${lessonLocks}");
-        //   // SignNavigator.of(context).push(SignQuizRoute());
         // }),
         appBar: AppBar(
           centerTitle: false,
@@ -115,7 +94,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
             ),
             YBox(padding.dy),
             ModuleButtons(),
-            UploadMockLessonsButton(),
+            // UploadMockLessonsButton(),
           ],
         ),
       ),

@@ -21,6 +21,8 @@ abstract class ILessonRepository {
     required String unitId,
     required String lessonId,
   });
+
+  Future<List<String>> fetchVideoUrl(LessonModel lesson);
 }
 
 class LessonRepository implements ILessonRepository {
@@ -57,5 +59,10 @@ class LessonRepository implements ILessonRepository {
   @override
   Future<List<LessonModel>> getLessonsByLevel(String levelId) {
     return lessonRemoteSource.getLessonsByLevel(levelId);
+  }
+
+  @override
+  Future<List<String>> fetchVideoUrl(LessonModel lesson) {
+    return lessonRemoteSource.fetchVideoUrl(lesson);
   }
 }

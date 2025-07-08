@@ -10,6 +10,10 @@ class QuizController extends StateNotifier<QuizSession?> {
   QuizController() : super(null);
 
   void initializeQuiz(List<QuizQuestion> questions) {
+    if (questions.isEmpty) {
+      throw ArgumentError('Questions list cannot be empty');
+    }
+    
     state = QuizSession(
       id: DateTime.now().toIso8601String(), // TODO: Get from backend
       questions: questions,
@@ -18,6 +22,11 @@ class QuizController extends StateNotifier<QuizSession?> {
 
   void answerQuestion(int selectedAnswerIndex) {
     if (state == null) return;
+
+    final currentQuestion = state!.currentQuestion;
+    if (selectedAnswerIndex < 0 || selectedAnswerIndex >= currentQuestion.options.length) {
+      return; // Invalid answer index
+    }
 
     final newAnswers = List<int>.from(state!.answers);
     newAnswers[state!.currentQuestionIndex] = selectedAnswerIndex;
@@ -46,5 +55,19 @@ class QuizController extends StateNotifier<QuizSession?> {
 
     state = state!.copyWith(isCompleted: true);
     // TODO: Submit results to backend
+  }
+
+  void resetQuiz() {
+    if (state == null) return;
+
+    state = state!.copyWith(
+      currentQuestionIndex: 0,
+      answers: List.filled(state!.questions.length, -1),
+      isCompleted: false,
+    );
+  }
+
+  void clearQuiz() {
+    state = null;
   }
 }

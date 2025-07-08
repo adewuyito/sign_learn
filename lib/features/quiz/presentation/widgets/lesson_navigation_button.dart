@@ -21,7 +21,7 @@ class LessonsNavigationButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = ref.read(quizControllerProvider.notifier);
     final session = ref.watch(currentQuizSessionProvider);
-    
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -31,34 +31,34 @@ class LessonsNavigationButton extends ConsumerWidget {
           child: Row(
             children: [
               Icon(
-                Icons.arrow_back, 
-                color: onPrevious != null 
-                    ? appColors.grey767676 
+                Icons.arrow_back,
+                color: onPrevious != null
+                    ? appColors.grey767676
                     : appColors.grey767676.withOpacity(0.5),
               ),
               Text(
                 'Previous',
-                style: TextTheme.of(context)
-                    .labelMedium!
-                    .copyWith(
-                      color: onPrevious != null 
-                          ? appColors.grey767676 
+                style: TextTheme.of(context).labelMedium!.copyWith(
+                      color: onPrevious != null
+                          ? appColors.grey767676
                           : appColors.grey767676.withOpacity(0.5),
                     ),
               ),
             ],
           ),
         ),
-        
+
         // Submit/Next button
         SignActionButton(
           onPressed: onSubmit,
           labelWidget: Text(
-            session?.isLastQuestion ?? false ? 'Finish' : 'Submit',
+            (session != null &&
+                    (session.currentQuestionIndex ==
+                        session.questions.length - 1))
+                ? 'Finish'
+                : 'Submit',
           ),
-          backgroundColor: selectedIndex != null 
-              ? appColors.blue 
-              : appColors.grey767676,
+          color: selectedIndex != null ? appColors.blue : appColors.grey767676,
         ),
       ],
     );
@@ -96,8 +96,7 @@ class LegacyLessonsNavigationButton extends ConsumerWidget {
         SignActionButton(
           onPressed: () {
             // ~ Next logic
-            final selectedIndex =
-                boolOptions.indexWhere((v) => v == true);
+            final selectedIndex = boolOptions.indexWhere((v) => v == true);
             if (selectedIndex != -1) {
               print('Selected option: Option ${selectedIndex + 1}');
             } else {

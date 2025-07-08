@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../../../../core/core.dart';
-import '../../../../common/commons.dart';
 import '../../../../features/shared/presentation/video_player_widget/advanced_video_player.dart';
 import '../../data/data.dart';
 import 'accessibility_helper.dart';
@@ -203,9 +202,9 @@ class EnhancedOptionsWidget extends ConsumerWidget {
 
     if (showCorrectAnswer) {
       if (isCorrect) {
-        borderColor = appColors.green;
-        backgroundColor = appColors.green.withOpacity(0.1);
-        textColor = appColors.green;
+        borderColor = appColors.paleGreen;
+        backgroundColor = appColors.paleGreen.withOpacity(0.1);
+        textColor = appColors.paleGreen;
       } else if (isSelected && !isCorrect) {
         borderColor = appColors.red;
         backgroundColor = appColors.red.withOpacity(0.1);
@@ -311,7 +310,7 @@ class EnhancedOptionsWidget extends ConsumerWidget {
                       : (isSelected && !isCorrect) 
                           ? Icons.close 
                           : null,
-                  color: isCorrect ? appColors.green : appColors.red,
+                  color: isCorrect ? appColors.paleGreen : appColors.red,
                   size: 20,
                 ),
               ),

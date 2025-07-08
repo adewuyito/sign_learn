@@ -119,10 +119,10 @@ class SignRouter extends RootStackRouter {
 
         routeWithTransition(page: SignQuizVideoOptionRoute.page),
 
-        routeWithTransition(
-          page: QuizScoreScreenRoute.page,
-          guards: [connectionGuard],
-        ),
+        // routeWithTransition(
+        //   page: QuizScoreScreenRoute.page,
+        //   guards: [connectionGuard],
+        // ),
 
         // ~ No Connection View
         routeWithTransition(page: NoConnectionRoute.page),

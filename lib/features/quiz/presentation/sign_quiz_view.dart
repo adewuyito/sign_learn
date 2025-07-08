@@ -7,18 +7,11 @@ import '../../../routes/router.dart';
 import '../../shared/presentation/linear_progress_bar.dart';
 
 import '../domain/entities/quiz_session.dart';
+import 'providers/quiz_controller.dart';
 import 'providers/quiz_state_provider.dart';
 import 'widgets/quiz_option_widget.dart';
 import 'widgets/answer_feedback_widget.dart';
 import 'widgets/quiz_completion_widget.dart';
-
-import '../data/data.dart';
-import 'providers/quiz_controller.dart';
-import 'widgets/quiz_question_widget.dart';
-import 'widgets/feedback_overlay.dart';
-import 'widgets/accessibility_helper.dart';
-import 'quiz_score_screen.dart';
-
 
 @RoutePage()
 class SignQuizView extends ConsumerStatefulWidget {
@@ -43,33 +36,33 @@ class _SignQuizViewState extends ConsumerState<SignQuizView> {
   void _initializeMockQuiz() {
     // Using the enhanced repository-based initialization
     ref.read(quizControllerProvider.notifier).initializeQuizFromLesson(
-      userId: 'current_user_id',
-      lessonId: 'lesson_1',
-      forceRefresh: false,
-    );
-    
+          userId: 'current_user_id',
+          lessonId: 'lesson_1',
+          forceRefresh: false,
+        );
+
     // Start the quiz once initialized
     Future.delayed(const Duration(milliseconds: 500), () {
       ref.read(quizControllerProvider.notifier).startQuiz();
     });
   }
 
-  @override
-  void initState() {
-    super.initState();
-    // Start the quiz when the view loads
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(quizStateNotifierProvider.notifier).startQuiz(
-        levelId: 'level1',
-        unitId: 'unit1',
-        lessonId: 'lesson1',
-      );
-    });
-  }
+  // TODO: Understand this implementation
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   // Start the quiz when the view loads
+  //   WidgetsBinding.instance.addPostFrameCallback((_) {
+  //     ref.read(quizStateNotifierProvider.notifier).startQuiz(
+  //       levelId: 'level1',
+  //       unitId: 'unit1',
+  //       lessonId: 'lesson1',
+  //     );
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
-
     final quizState = ref.watch(quizStateNotifierProvider);
     final quizNotifier = ref.read(quizStateNotifierProvider.notifier);
 
@@ -79,7 +72,8 @@ class _SignQuizViewState extends ConsumerState<SignQuizView> {
     );
   }
 
-  PreferredSizeWidget _buildAppBar(QuizState quizState, QuizStateNotifier quizNotifier) {
+  PreferredSizeWidget _buildAppBar(
+      QuizState quizState, QuizStateNotifier quizNotifier) {
     return AppBar(
       leading: BackButton(
         onPressed: () {
@@ -176,7 +170,8 @@ class _SignQuizViewState extends ConsumerState<SignQuizView> {
       );
     }
 
-    if (quizState.status == QuizStatus.inProgress && quizNotifier.currentQuestion != null) {
+    if (quizState.status == QuizStatus.inProgress &&
+        quizNotifier.currentQuestion != null) {
       return SafeArea(
         minimum: safeAreaPadding,
         child: Column(
@@ -231,7 +226,7 @@ class _SignQuizViewState extends ConsumerState<SignQuizView> {
                 ],
               ),
             ),
-            
+
             // Answer options
             Expanded(
               child: Padding(
@@ -243,10 +238,13 @@ class _SignQuizViewState extends ConsumerState<SignQuizView> {
                         itemCount: quizNotifier.currentQuestion!.answers.length,
                         separatorBuilder: (context, index) => YBox(12.dy),
                         itemBuilder: (context, index) {
-                          final answer = quizNotifier.currentQuestion!.answers[index];
-                          final isSelected = quizState.selectedAnswerId == answer.id;
-                          final isCorrectAnswer = answer.id == quizNotifier.currentQuestion!.correctAnswerId;
-                          
+                          final answer =
+                              quizNotifier.currentQuestion!.answers[index];
+                          final isSelected =
+                              quizState.selectedAnswerId == answer.id;
+                          final isCorrectAnswer = answer.id ==
+                              quizNotifier.currentQuestion!.correctAnswerId;
+
                           return QuizOptionWidget(
                             answer: answer,
                             isSelected: isSelected,
@@ -258,31 +256,36 @@ class _SignQuizViewState extends ConsumerState<SignQuizView> {
                         },
                       ),
                     ),
-                    
+
                     // Feedback section
                     if (quizState.showFeedback) ...[
                       YBox(16.dy),
                       AnswerFeedbackWidget(
                         isCorrect: quizNotifier.isAnswerCorrect,
                         correctAnswer: quizNotifier.currentQuestion!.answers
-                            .firstWhere((a) => a.id == quizNotifier.currentQuestion!.correctAnswerId)
+                            .firstWhere((a) =>
+                                a.id ==
+                                quizNotifier.currentQuestion!.correctAnswerId)
                             .text,
                         selectedAnswer: quizNotifier.currentQuestion!.answers
-                            .firstWhere((a) => a.id == quizState.selectedAnswerId!)
+                            .firstWhere(
+                                (a) => a.id == quizState.selectedAnswerId!)
                             .text,
                         onContinue: quizNotifier.nextQuestion,
-                        onRetry: quizNotifier.isAnswerCorrect ? null : quizNotifier.retryQuestion,
+                        onRetry: quizNotifier.isAnswerCorrect
+                            ? null
+                            : quizNotifier.retryQuestion,
                       ),
                     ],
-                    
+
                     // Submit button
                     if (!quizState.showFeedback) ...[
                       YBox(16.dy),
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed: quizState.selectedAnswerId != null 
-                              ? quizNotifier.submitAnswer 
+                          onPressed: quizState.selectedAnswerId != null
+                              ? quizNotifier.submitAnswer
                               : null,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.green,
@@ -302,7 +305,7 @@ class _SignQuizViewState extends ConsumerState<SignQuizView> {
                         ),
                       ),
                     ],
-                    
+
                     YBox(16.dy),
                   ],
                 ),
@@ -315,7 +318,7 @@ class _SignQuizViewState extends ConsumerState<SignQuizView> {
 
     return const Center(child: CircularProgressIndicator());
 
-    final controllerState = ref.watch(quizControllerProvider);
+    /*    final controllerState = ref.watch(quizControllerProvider);
     final controller = ref.read(quizControllerProvider.notifier);
     final session = controllerState.session;
     final currentQuestion = session?.currentQuestion;
@@ -515,5 +518,6 @@ class _SignQuizViewState extends ConsumerState<SignQuizView> {
       ),
     );
 
+  } */
   }
 }

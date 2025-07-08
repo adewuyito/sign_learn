@@ -1,57 +1,49 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
+import 'package:sign_learn/core/services/storage/shared_pref_storage_service.dart';
+import 'package:sign_learn/core/api/http/dio_http_api.dart';
 
 import '../datasources/quiz_remote_data_source.dart';
 import '../datasources/quiz_local_data_source.dart';
 import '../models/models.dart';
 
+final quizLocalDataSourceProvider = Provider<QuizLocalDataSource>((ref) {
+  final prefs = ref.read(sharedPreferencesProvider);
+  return QuizLocalDataSourceImpl(prefs);
+});
 
 final quizRemoteDataSourceProvider = Provider<QuizRemoteDataSource>((ref) {
-  return QuizRemoteDataSourceImpl();
+  final httpApi = ref.read(dioHttpApiProvider);
+  return QuizRemoteDataSourceImpl(httpApi);
 });
 
+/// Provider for quiz repository
 final quizRepositoryProvider = Provider<QuizRepository>((ref) {
-  return QuizRepositoryImpl(ref.watch(quizRemoteDataSourceProvider));
+  final remoteDataSource = ref.read(quizRemoteDataSourceProvider);
+  final localDataSource = ref.read(quizLocalDataSourceProvider);
+  return QuizRepositoryImpl(remoteDataSource, localDataSource);
 });
-
-class QuizRepositoryImpl implements QuizRepository {
-  final QuizRemoteDataSource _remoteDataSource;
-
-  QuizRepositoryImpl(this._remoteDataSource);
-
-  @override
-  Future<List<Quiz>> getQuizzesByLesson(String lessonId) async {
-    final quizDTOs = await _remoteDataSource.getQuizzesByLesson(lessonId);
-    return quizDTOs.map((dto) => dto.toDomain()).toList();
-  }
-
-  @override
-  Future<String> getMediaUrl(String mediaPath) {
-    return _remoteDataSource.getMediaUrl(mediaPath);
-  }
-}
-
 
 /// Repository interface for quiz operations
 abstract class QuizRepository {
   /// Get quiz questions for a lesson
-  Future<List<QuizQuestion>> getQuizQuestions(String lessonId, {bool forceRefresh = false});
-  
+  Future<List<QuizQuestion>> getQuizQuestions(String lessonId,
+      {bool forceRefresh = false});
+
   /// Submit quiz response
   Future<void> submitQuizResponse(QuizResponse response);
-  
+
   /// Save quiz session
   Future<void> saveQuizSession(QuizSession session);
-  
+
   /// Get quiz session
   Future<QuizSession?> getQuizSession(String sessionId);
-  
+
   /// Get user quiz history
   Future<List<QuizSession>> getUserQuizHistory(String userId);
-  
+
   /// Sync pending sessions to server
   Future<void> syncPendingSessions();
-  
+
   /// Clear cached data
   Future<void> clearCache();
 }
@@ -64,11 +56,13 @@ class QuizRepositoryImpl implements QuizRepository {
   QuizRepositoryImpl(this._remoteDataSource, this._localDataSource);
 
   @override
-  Future<List<QuizQuestion>> getQuizQuestions(String lessonId, {bool forceRefresh = false}) async {
+  Future<List<QuizQuestion>> getQuizQuestions(String lessonId,
+      {bool forceRefresh = false}) async {
     try {
       if (!forceRefresh) {
         // Try to get cached questions first
-        final cachedQuestions = await _localDataSource.getCachedQuizQuestions(lessonId);
+        final cachedQuestions =
+            await _localDataSource.getCachedQuizQuestions(lessonId);
         if (cachedQuestions != null && cachedQuestions.isNotEmpty) {
           return cachedQuestions;
         }
@@ -80,11 +74,11 @@ class QuizRepositoryImpl implements QuizRepository {
       return questions;
     } catch (e) {
       // If remote fails, try to return cached data
-      final cachedQuestions = await _localDataSource.getCachedQuizQuestions(lessonId);
+      final cachedQuestions =
+          await _localDataSource.getCachedQuizQuestions(lessonId);
       if (cachedQuestions != null && cachedQuestions.isNotEmpty) {
         return cachedQuestions;
       }
-      
       // If no cached data, return mock data for demo purposes
       return _getMockQuizQuestions(lessonId);
     }
@@ -106,7 +100,6 @@ class QuizRepositoryImpl implements QuizRepository {
   Future<void> saveQuizSession(QuizSession session) async {
     // Always save locally first
     await _localDataSource.saveQuizSessionLocally(session);
-    
     try {
       // Try to save remotely
       await _remoteDataSource.saveQuizSession(session);
@@ -125,7 +118,6 @@ class QuizRepositoryImpl implements QuizRepository {
     if (localSession != null) {
       return localSession;
     }
-
     try {
       // Try remote
       final remoteSession = await _remoteDataSource.getQuizSession(sessionId);
@@ -154,7 +146,6 @@ class QuizRepositoryImpl implements QuizRepository {
   Future<void> syncPendingSessions() async {
     try {
       final pendingSessions = await _localDataSource.getPendingQuizSessions();
-      
       for (final session in pendingSessions) {
         try {
           await _remoteDataSource.saveQuizSession(session);
@@ -195,7 +186,8 @@ class QuizRepositoryImpl implements QuizRepository {
       ),
       QuizQuestion(
         questionId: 'mock_2',
-        questionText: 'Which option shows the correct fingerspelling for "CAT"?',
+        questionText:
+            'Which option shows the correct fingerspelling for "CAT"?',
         type: QuestionType.text,
         options: [
           const QuizOption(optionId: '5', text: 'C-A-T', order: 0),
@@ -227,11 +219,3 @@ class QuizRepositoryImpl implements QuizRepository {
     ];
   }
 }
-
-/// Provider for quiz repository
-final quizRepositoryProvider = Provider<QuizRepository>((ref) {
-  final remoteDataSource = ref.read(quizRemoteDataSourceProvider);
-  final localDataSource = ref.read(quizLocalDataSourceProvider);
-  return QuizRepositoryImpl(remoteDataSource, localDataSource);
-});
-

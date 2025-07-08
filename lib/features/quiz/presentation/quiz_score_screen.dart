@@ -4,8 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../../core/core.dart';
 import '../../../../common/commons.dart';
 import '../../../../routes/router.dart';
-import '../../data/data.dart';
-import '../providers/quiz_controller.dart';
+import '../presentation/providers/quiz_controller.dart';
 
 @RoutePage()
 class QuizScoreScreen extends ConsumerWidget {
@@ -38,7 +37,7 @@ class QuizScoreScreen extends ConsumerWidget {
             child: Column(
               children: [
                 const SizedBox(height: 32),
-                
+
                 // Celebration/Score Icon
                 Container(
                   width: 120,
@@ -53,31 +52,31 @@ class QuizScoreScreen extends ConsumerWidget {
                     size: 60,
                   ),
                 ),
-                
+
                 const SizedBox(height: 24),
-                
+
                 // Congratulations message
                 Text(
                   _getScoreMessage(session.accuracyPercentage),
                   style: TextTheme.of(context).headlineMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: appColors.black,
-                  ),
+                        fontWeight: FontWeight.bold,
+                        color: appColors.black,
+                      ),
                   textAlign: TextAlign.center,
                 ),
-                
+
                 const SizedBox(height: 8),
-                
+
                 Text(
                   _getScoreSubtitle(session.accuracyPercentage),
                   style: TextTheme.of(context).bodyLarge?.copyWith(
-                    color: appColors.grey767676,
-                  ),
+                        color: appColors.grey767676,
+                      ),
                   textAlign: TextAlign.center,
                 ),
-                
+
                 const SizedBox(height: 40),
-                
+
                 // Score Card
                 Container(
                   width: double.infinity,
@@ -100,22 +99,22 @@ class QuizScoreScreen extends ConsumerWidget {
                       Text(
                         '${(session.accuracyPercentage * 100).round()}%',
                         style: TextTheme.of(context).displayLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: _getScoreColor(session.accuracyPercentage),
-                        ),
+                              fontWeight: FontWeight.bold,
+                              color: _getScoreColor(session.accuracyPercentage),
+                            ),
                       ),
-                      
+
                       const SizedBox(height: 8),
-                      
+
                       Text(
                         'Accuracy',
                         style: TextTheme.of(context).bodyMedium?.copyWith(
-                          color: appColors.grey767676,
-                        ),
+                              color: appColors.grey767676,
+                            ),
                       ),
-                      
+
                       const SizedBox(height: 24),
-                      
+
                       // Score breakdown
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -123,26 +122,26 @@ class QuizScoreScreen extends ConsumerWidget {
                           _buildScoreStat(
                             'Correct',
                             '${session.correctAnswers}',
-                            appColors.green,
+                            Colors.green,
                           ),
                           _buildScoreStat(
                             'Total',
                             '${session.totalQuestions}',
-                            appColors.blue,
+                            Colors.blue,
                           ),
                           _buildScoreStat(
                             'Points',
                             '${session.totalScore}',
-                            appColors.orange,
+                            Colors.orange,
                           ),
                         ],
                       ),
                     ],
                   ),
                 ),
-                
+
                 const SizedBox(height: 32),
-                
+
                 // Progress indicator
                 Container(
                   width: double.infinity,
@@ -159,29 +158,31 @@ class QuizScoreScreen extends ConsumerWidget {
                           Text(
                             'Quiz Progress',
                             style: TextTheme.of(context).bodyMedium?.copyWith(
-                              fontWeight: FontWeight.w500,
-                            ),
+                                  fontWeight: FontWeight.w500,
+                                ),
                           ),
                           Text(
                             '${session.responses.length}/${session.totalQuestions}',
                             style: TextTheme.of(context).bodyMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
+                                  fontWeight: FontWeight.bold,
+                                ),
                           ),
                         ],
                       ),
                       const SizedBox(height: 8),
                       LinearProgressIndicator(
-                        value: session.responses.length / session.totalQuestions,
+                        value:
+                            session.responses.length / session.totalQuestions,
                         backgroundColor: Colors.grey[300],
-                        valueColor: AlwaysStoppedAnimation<Color>(appColors.green),
+                        valueColor:
+                            AlwaysStoppedAnimation<Color>(appColors.paleGreen),
                       ),
                     ],
                   ),
                 ),
-                
+
                 const SizedBox(height: 40),
-                
+
                 // Action buttons
                 Column(
                   children: [
@@ -194,28 +195,28 @@ class QuizScoreScreen extends ConsumerWidget {
                           SignNavigator.of(context).pop();
                         },
                         labelWidget: const Text('Retry Quiz'),
-                        backgroundColor: appColors.blue,
+                        color: appColors.blue,
                       ),
                     ),
-                    
+
                     const SizedBox(height: 16),
-                    
+
                     // Return to lessons button
                     SizedBox(
                       width: double.infinity,
                       child: SignActionButton(
                         onPressed: () {
                           controller.resetQuiz();
-                          // Navigate back to lessons or home
-                          SignNavigator.of(context).popUntil((route) => route.isFirst);
+                          Navigator.of(context)
+                              .popUntil((route) => route.isFirst);
                         },
                         labelWidget: const Text('Back to Lessons'),
-                        backgroundColor: appColors.grey767676,
+                        color: appColors.grey767676,
                       ),
                     ),
                   ],
                 ),
-                
+
                 const SizedBox(height: 24),
               ],
             ),
@@ -249,8 +250,8 @@ class QuizScoreScreen extends ConsumerWidget {
   }
 
   Color _getScoreColor(double accuracy) {
-    if (accuracy >= 0.8) return appColors.green;
-    if (accuracy >= 0.6) return appColors.orange;
+    if (accuracy >= 0.8) return appColors.paleGreen;
+    if (accuracy >= 0.6) return appColors.paleOrange;
     return appColors.red;
   }
 

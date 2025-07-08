@@ -96,7 +96,7 @@ class FeedbackOverlay extends ConsumerWidget {
                         child: SignActionButton(
                           onPressed: () => controller.retryQuestion(),
                           labelWidget: const Text('Try Again'),
-                          backgroundColor: appColors.orange,
+                          color: appColors.blue,
                         ),
                       ),
                     ] else ...[
@@ -105,7 +105,7 @@ class FeedbackOverlay extends ConsumerWidget {
                         child: SignActionButton(
                           onPressed: () => controller.nextQuestion(),
                           labelWidget: const Text('Continue'),
-                          backgroundColor: appColors.green,
+                          color: appColors.buttonYellow,
                         ),
                       ),
                     ],
@@ -123,7 +123,7 @@ class FeedbackOverlay extends ConsumerWidget {
   Color _getIconBackgroundColor(QuizFeedbackState state) {
     switch (state) {
       case QuizFeedbackState.correct:
-        return appColors.green;
+        return appColors.paleGreen;
       case QuizFeedbackState.incorrect:
         return appColors.red;
       case QuizFeedbackState.none:
@@ -253,7 +253,7 @@ class AnimatedFeedbackOverlay extends ConsumerWidget {
   Color _getBackgroundColor(QuizFeedbackState state) {
     switch (state) {
       case QuizFeedbackState.correct:
-        return appColors.green;
+        return appColors.paleGreen;
       case QuizFeedbackState.incorrect:
         return appColors.red;
       case QuizFeedbackState.none:

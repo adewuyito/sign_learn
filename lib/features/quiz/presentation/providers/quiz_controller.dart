@@ -60,10 +60,10 @@ class QuizController extends StateNotifier<QuizControllerState> {
 
     try {
       final questions = await _repository.getQuizQuestions(
-        lessonId, 
+        lessonId,
         forceRefresh: forceRefresh,
       );
-      
+
       if (questions.isEmpty) {
         state = state.copyWith(
           isLoading: false,
@@ -148,7 +148,7 @@ class QuizController extends StateNotifier<QuizControllerState> {
 
     final currentQuestion = session.currentQuestion!;
     final isCorrect = selectedOptionIndex == currentQuestion.correctAnswerIndex;
-    
+
     // Create response
     final response = QuizResponse(
       responseId: _uuid.v4(),
@@ -180,10 +180,12 @@ class QuizController extends StateNotifier<QuizControllerState> {
     // Show feedback
     state = state.copyWith(
       session: updatedSession,
-      feedbackState: isCorrect ? QuizFeedbackState.correct : QuizFeedbackState.incorrect,
-      feedbackMessage: isCorrect 
-          ? 'Correct! Great job!' 
-          : currentQuestion.explanation ?? 'That\'s not quite right. Try again!',
+      feedbackState:
+          isCorrect ? QuizFeedbackState.correct : QuizFeedbackState.incorrect,
+      feedbackMessage: isCorrect
+          ? 'Correct! Great job!'
+          : currentQuestion.explanation ??
+              'That\'s not quite right. Try again!',
       showingFeedback: true,
     );
 
@@ -200,7 +202,7 @@ class QuizController extends StateNotifier<QuizControllerState> {
     if (session == null) return;
 
     final nextIndex = session.currentQuestionIndex + 1;
-    
+
     if (nextIndex >= session.questions.length) {
       // Quiz completed
       _completeQuiz();
@@ -209,7 +211,7 @@ class QuizController extends StateNotifier<QuizControllerState> {
       final updatedSession = session.copyWith(
         currentQuestionIndex: nextIndex,
       );
-      
+
       state = state.copyWith(
         session: updatedSession,
         feedbackState: QuizFeedbackState.none,
@@ -334,17 +336,18 @@ class QuizController extends StateNotifier<QuizControllerState> {
   bool get canGoNext {
     final session = state.session;
     if (session == null) return false;
-    
+
     final currentQuestionId = session.currentQuestion?.questionId;
     if (currentQuestionId == null) return false;
-    
-    return session.isQuestionAnswered(currentQuestionId) && 
-           state.feedbackState == QuizFeedbackState.correct;
+
+    return session.isQuestionAnswered(currentQuestionId) &&
+        state.feedbackState == QuizFeedbackState.correct;
   }
 
-  /// Check if can go to previous question  
+  /// Check if can go to previous question
   bool get canGoPrevious {
-    return state.session?.currentQuestionIndex ?? 0 > 0;
+    final idx = state.session?.currentQuestionIndex ?? 0;
+    return idx > 0;
   }
 
   /// Sync pending sessions to server
@@ -357,8 +360,16 @@ class QuizController extends StateNotifier<QuizControllerState> {
   }
 }
 
+extension QuizSessionAccuracy on QuizSession {
+  double get accuracyPercentage {
+    if (totalQuestions == 0) return 0.0;
+    return correctAnswers / totalQuestions;
+  }
+}
+
 /// Provider for the quiz controller
-final quizControllerProvider = StateNotifierProvider<QuizController, QuizControllerState>((ref) {
+final quizControllerProvider =
+    StateNotifierProvider<QuizController, QuizControllerState>((ref) {
   final repository = ref.read(quizRepositoryProvider);
   return QuizController(repository);
 });

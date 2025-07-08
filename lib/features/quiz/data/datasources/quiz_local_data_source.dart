@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import '../../../../core/core.dart' show sharedPreferencesProvider;
 import '../models/models.dart';
 
 /// Local data source for quiz operations (offline support)
@@ -125,11 +126,6 @@ class QuizLocalDataSourceImpl implements QuizLocalDataSource {
     }
   }
 }
-
-/// Provider for SharedPreferences
-final sharedPreferencesProvider = Provider<SharedPreferences>((ref) {
-  throw UnimplementedError('SharedPreferences provider must be initialized');
-});
 
 /// Provider for quiz local data source
 final quizLocalDataSourceProvider = Provider<QuizLocalDataSource>((ref) {

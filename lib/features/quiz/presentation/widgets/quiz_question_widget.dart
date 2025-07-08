@@ -5,6 +5,7 @@ import '../../../../core/core.dart';
 import '../../../../common/commons.dart';
 import '../../../../features/shared/presentation/video_player_widget/advanced_video_player.dart';
 import '../../data/data.dart';
+import 'accessibility_helper.dart';
 
 /// Enhanced quiz question widget supporting text, video, and image questions
 class QuizQuestionWidget extends ConsumerWidget {
@@ -216,7 +217,11 @@ class EnhancedOptionsWidget extends ConsumerWidget {
       textColor = appColors.blue;
     }
 
-    return GestureDetector(
+    return AccessibleQuizOption(
+      optionText: option.text,
+      isSelected: isSelected,
+      showAnswer: showCorrectAnswer,
+      isCorrect: isCorrect,
       onTap: () => onOptionSelected(index),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),

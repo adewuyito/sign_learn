@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../../core/core.dart';
 import '../../../../common/commons.dart';
 import '../providers/quiz_controller.dart';
+import 'accessibility_helper.dart';
 
 /// Feedback overlay component showing correct/incorrect responses
 class FeedbackOverlay extends ConsumerWidget {
@@ -22,23 +23,26 @@ class FeedbackOverlay extends ConsumerWidget {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
-      child: Container(
-        color: Colors.black54,
-        child: Center(
-          child: Container(
-            margin: const EdgeInsets.all(32),
-            padding: const EdgeInsets.all(24),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  blurRadius: 10,
-                  offset: const Offset(0, 5),
-                ),
-              ],
-            ),
+      child: AccessibleFeedbackOverlay(
+        isCorrect: feedbackState == QuizFeedbackState.correct,
+        feedbackMessage: feedbackMessage,
+        child: Container(
+          color: Colors.black54,
+          child: Center(
+            child: Container(
+              margin: const EdgeInsets.all(32),
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 10,
+                    offset: const Offset(0, 5),
+                  ),
+                ],
+              ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -108,6 +112,7 @@ class FeedbackOverlay extends ConsumerWidget {
                   ],
                 ),
               ],
+            ),
             ),
           ),
         ),

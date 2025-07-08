@@ -9,6 +9,7 @@ import '../data/data.dart';
 import 'providers/quiz_controller.dart';
 import 'widgets/quiz_question_widget.dart';
 import 'widgets/feedback_overlay.dart';
+import 'widgets/accessibility_helper.dart';
 import 'quiz_score_screen.dart';
 
 @RoutePage()
@@ -62,9 +63,43 @@ class _SignQuizViewState extends ConsumerState<SignQuizView> {
     }
 
     if (controllerState.isLoading || session == null || currentQuestion == null) {
-      return const Scaffold(
+      return Scaffold(
         body: Center(
-          child: CircularProgressIndicator(),
+          child: controllerState.error != null
+              ? Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.error_outline,
+                      size: 64,
+                      color: appColors.red,
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      'Error loading quiz',
+                      style: TextTheme.of(context).headlineSmall,
+                    ),
+                    const SizedBox(height: 8),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 32),
+                      child: Text(
+                        controllerState.error!,
+                        textAlign: TextAlign.center,
+                        style: TextTheme.of(context).bodyMedium?.copyWith(
+                          color: appColors.grey767676,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    ElevatedButton(
+                      onPressed: () {
+                        _initializeMockQuiz();
+                      },
+                      child: const Text('Retry'),
+                    ),
+                  ],
+                )
+              : const CircularProgressIndicator(),
         ),
       );
     }
@@ -138,6 +173,13 @@ class _SignQuizViewState extends ConsumerState<SignQuizView> {
                         setState(() {
                           selectedOptionIndex = index;
                         });
+                        
+                        // Announce selection for accessibility
+                        AccessibilityQuizHelper.announceProgress(
+                          context, 
+                          session.currentQuestionIndex + 1, 
+                          session.totalQuestions,
+                        );
                       },
                     ),
                   ),

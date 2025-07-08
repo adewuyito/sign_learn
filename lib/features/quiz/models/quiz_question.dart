@@ -1,3 +1,7 @@
+
+import '../domain/entities/quiz.dart';
+
+
 import 'package:flutter/foundation.dart';
 
 enum QuestionType { text, image, video }
@@ -7,6 +11,7 @@ class QuizQuestion {
   final String id;
   final String question;
   final QuestionType type;
+
   final String? mediaUrl; // URL for image or video content
   final List<String> options;
   final int correctOptionIndex;
@@ -21,6 +26,7 @@ class QuizQuestion {
     required this.correctOptionIndex,
     required this.explanation,
   });
+
 
   bool isAnswerCorrect(int selectedIndex) => selectedIndex == correctOptionIndex;
 
@@ -47,4 +53,5 @@ class QuizQuestion {
       explanation: json['explanation'] as String,
     );
   }
+
 }

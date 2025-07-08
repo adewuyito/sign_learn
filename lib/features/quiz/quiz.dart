@@ -1,4 +1,10 @@
 
+export './data/data.dart';
+export './domain/domain.dart';
+export './models/models.dart';
+export './controllers/quiz_controller.dart';
+
+
  export 'models/quiz_question.dart';
 export 'models/quiz_session.dart';
 
@@ -25,3 +31,4 @@ export 'presentation/widgets/accessibility_helper.dart';
 export 'presentation/widgets/lesson_navigation_button.dart';
 export 'presentation/widgets/sign_quiz_option_view.dart';
 export 'presentation/widgets/options_widget.dart';
+

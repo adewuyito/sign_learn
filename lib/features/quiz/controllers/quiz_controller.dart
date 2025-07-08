@@ -1,4 +1,7 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+import '../data/dummy_data.dart';
+
 import '../models/quiz_session.dart';
 import '../models/quiz_question.dart';
 
@@ -8,6 +11,21 @@ final quizControllerProvider = StateNotifierProvider<QuizController, QuizSession
 
 class QuizController extends StateNotifier<QuizSession?> {
   QuizController() : super(null);
+
+  Future<void> loadQuiz(String lessonId) async {
+    // For testing, we'll use dummy data
+    final questions = DummyQuizData.getDummyQuizzes().map((quiz) => QuizQuestion(
+      id: quiz.id,
+      question: quiz.question,
+      type: quiz.type,
+      mediaUrl: quiz.mediaPath,
+      options: quiz.options,
+      correctOptionIndex: quiz.correctOptionIndex,
+      explanation: quiz.explanation,
+    )).toList();
+
+    state = QuizSession(
+      id: DateTime.now().toIso8601String(),
 
   void initializeQuiz(List<QuizQuestion> questions) {
     if (questions.isEmpty) {
@@ -19,6 +37,7 @@ class QuizController extends StateNotifier<QuizSession?> {
       questions: questions,
     );
   }
+
 
   void answerQuestion(int selectedAnswerIndex) {
     if (state == null) return;
@@ -62,12 +81,24 @@ class QuizController extends StateNotifier<QuizSession?> {
 
     state = state!.copyWith(
       currentQuestionIndex: 0,
-      answers: List.filled(state!.questions.length, -1),
+      userAnswers: List.filled(state!.questions.length, null),
+
       isCompleted: false,
     );
   }
 
+
+  int? getCurrentAnswer() {
+    if (state == null) return null;
+    return state!.userAnswers[state!.currentQuestionIndex];
+  }
+
+  bool isAnswerCorrect(int questionIndex, int answerIndex) {
+    if (state == null || questionIndex >= state!.questions.length) return false;
+    return state!.questions[questionIndex].correctOptionIndex == answerIndex;
+  }
   void clearQuiz() {
     state = null;
+
   }
 }

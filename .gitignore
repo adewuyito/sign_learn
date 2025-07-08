@@ -49,4 +49,4 @@ app.*.map.json
 # FVM Version Cache
 .fvm/
 
-/dictionary_entry
+/dictionary_entryflutter.tar.xz

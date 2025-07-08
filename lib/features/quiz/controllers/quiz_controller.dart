@@ -1,5 +1,7 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
 import '../data/dummy_data.dart';
+
 import '../models/quiz_session.dart';
 import '../models/quiz_question.dart';
 
@@ -24,41 +26,54 @@ class QuizController extends StateNotifier<QuizSession?> {
 
     state = QuizSession(
       id: DateTime.now().toIso8601String(),
+
+  void initializeQuiz(List<QuizQuestion> questions) {
+    if (questions.isEmpty) {
+      throw ArgumentError('Questions list cannot be empty');
+    }
+    
+    state = QuizSession(
+      id: DateTime.now().toIso8601String(), // TODO: Get from backend
       questions: questions,
     );
   }
 
-  void answerQuestion(int answerIndex) {
+
+  void answerQuestion(int selectedAnswerIndex) {
     if (state == null) return;
 
-    final updatedAnswers = List<int?>.from(state!.userAnswers);
-    updatedAnswers[state!.currentQuestionIndex] = answerIndex;
-
-    state = state!.copyWith(userAnswers: updatedAnswers);
-  }
-
-  void nextQuestion() {
-    if (state == null || !state!.hasNextQuestion) return;
-
-    if (state!.currentQuestionIndex == state!.questions.length - 1) {
-      // Last question, mark as completed
-      state = state!.copyWith(
-        currentQuestionIndex: state!.currentQuestionIndex + 1,
-        isCompleted: true,
-      );
-    } else {
-      state = state!.copyWith(
-        currentQuestionIndex: state!.currentQuestionIndex + 1,
-      );
+    final currentQuestion = state!.currentQuestion;
+    if (selectedAnswerIndex < 0 || selectedAnswerIndex >= currentQuestion.options.length) {
+      return; // Invalid answer index
     }
+
+    final newAnswers = List<int>.from(state!.answers);
+    newAnswers[state!.currentQuestionIndex] = selectedAnswerIndex;
+
+    state = state!.copyWith(answers: newAnswers);
   }
 
-  void previousQuestion() {
-    if (state == null || state!.currentQuestionIndex <= 0) return;
+  void moveToNext() {
+    if (state == null || !state!.canMoveToNext) return;
+
+    state = state!.copyWith(
+      currentQuestionIndex: state!.currentQuestionIndex + 1,
+    );
+  }
+
+  void moveToPrevious() {
+    if (state == null || !state!.canMoveToPrevious) return;
 
     state = state!.copyWith(
       currentQuestionIndex: state!.currentQuestionIndex - 1,
     );
+  }
+
+  void completeQuiz() {
+    if (state == null) return;
+
+    state = state!.copyWith(isCompleted: true);
+    // TODO: Submit results to backend
   }
 
   void resetQuiz() {
@@ -67,9 +82,11 @@ class QuizController extends StateNotifier<QuizSession?> {
     state = state!.copyWith(
       currentQuestionIndex: 0,
       userAnswers: List.filled(state!.questions.length, null),
+
       isCompleted: false,
     );
   }
+
 
   int? getCurrentAnswer() {
     if (state == null) return null;
@@ -79,5 +96,9 @@ class QuizController extends StateNotifier<QuizSession?> {
   bool isAnswerCorrect(int questionIndex, int answerIndex) {
     if (state == null || questionIndex >= state!.questions.length) return false;
     return state!.questions[questionIndex].correctOptionIndex == answerIndex;
+  }
+  void clearQuiz() {
+    state = null;
+
   }
 }

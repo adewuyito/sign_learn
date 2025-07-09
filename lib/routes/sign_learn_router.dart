@@ -1,4 +1,3 @@
-import 'package:sign_learn/features/lessons/presentation/gpt_lesson_view.dart';
 import 'package:sign_learn/routes/sign_learn_router.gr.dart';
 
 import 'route_guard.dart';
@@ -97,7 +96,6 @@ class SignRouter extends RootStackRouter {
           guards: [connectionGuard],
         ),
 
-
         // ~ Dictionary View
         routeWithTransition(
           page: DictionaryEntryDetailRoute.page,
@@ -110,14 +108,6 @@ class SignRouter extends RootStackRouter {
           page: ProfileEditRoute.page,
           guards: [connectionGuard],
         ),
-
-        //~ Quiz
-        routeWithTransition(
-          page: SignQuizRoute.page,
-          guards: [connectionGuard],
-        ),
-
-        routeWithTransition(page: SignQuizVideoOptionRoute.page),
 
         // routeWithTransition(
         //   page: QuizScoreScreenRoute.page,

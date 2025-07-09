@@ -1,6 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:auto_route/auto_route.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -10,7 +9,6 @@ import 'package:sign_learn/features/profile/profile.dart';
 import '../../../common/commons.dart';
 import '../../../core/core.dart';
 import '../../../gen/fonts.gen.dart';
-import '../../../routes/router.dart';
 import '../../lessons/data/data.dart';
 import 'widgets/home_calender.dart';
 import 'widgets/module_buttons.dart';
@@ -41,13 +39,35 @@ class _HomeViewState extends ConsumerState<HomeView> {
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
-            final fb = FirebaseStorage.instance;
+            // SignNavigator.of(context).push(SignQuizRoute());
 
-            final downloadPath = await fb
-                .ref("/lessons/ASL1/unit1/lesson1/260397_tiny.mp4")
-                .getDownloadURL();
+            // final lesson = await ref.watch(lessonRepositoryProvider).getLesson(
+            //       levelId: "asl_lesson1",
+            //       unitId: "unit1",
+            //       lessonId: "0bb17c56-544e-4c2e-b620-c1fe53f1625f",
+            //     );
 
-            debugPrint(downloadPath.toString());
+            // if (mounted)
+            //   SignNavigator.of(context).push(LessonRoute(
+            //     lesson: lesson,
+            //     lessonId: "ASL 1",
+            //     clipUrls: [
+            //       "https://firebasestorage.googleapis.com/v0/b/sign-learn-3e2d3.firebasestorage.app/o/lessons%2FASL1%2Funit1%2Flesson1%2F260397_tiny.mp4?alt=media&token=aa827d2a-f72a-4940-aa35-176e7905796d",
+            //       "https://firebasestorage.googleapis.com/v0/b/sign-learn-3e2d3.firebasestorage.app/o/lessons%2FASL1%2Funit1%2Flesson1%2F260397_tiny.mp4?alt=media&token=aa827d2a-f72a-4940-aa35-176e7905796d",
+            //       "https://firebasestorage.googleapis.com/v0/b/sign-learn-3e2d3.firebasestorage.app/o/lessons%2FASL1%2Funit1%2Flesson1%2F260397_tiny.mp4?alt=media&token=aa827d2a-f72a-4940-aa35-176e7905796d",
+            //     ],
+            //   ));
+
+            // final vidUrl = ref.watch(lessonRepositoryProvider);
+
+            // final lesson = await ref.watch(lessonRepositoryProvider).getLesson(
+            //       levelId: "asl_lesson1",
+            //       unitId: "unit1",
+            //       lessonId: "0bb17c56-544e-4c2e-b620-c1fe53f1625f",
+            //     );
+
+            // final url = await vidUrl.fetchVideoUrl(lesson);
+            // debugPrint(url.first.toString());
           },
         ),
 

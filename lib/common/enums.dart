@@ -21,3 +21,5 @@ enum TextFieldRole{
   secureField,
   validationField
 }
+
+enum QuestionType { text, image, video }

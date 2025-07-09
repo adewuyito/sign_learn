@@ -1,20 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:sign_learn/common/components/sign_button/sign_button.dart';
+import 'package:sign_learn/core/constants/constants.dart';
+import 'package:sign_learn/features/lessons/data/models/lesson_model.dart';
+import 'package:sign_learn/features/lessons/data/repositories/lesson_repository.dart';
+import 'package:sign_learn/gen/fonts.gen.dart';
 import 'package:video_player/video_player.dart';
 import 'package:chewie/chewie.dart';
 import 'package:auto_route/auto_route.dart';
 
 @RoutePage()
+
 /// Public constructor: pass lessonId + ordered clip URLs.
 class LessonPage extends ConsumerStatefulWidget {
   const LessonPage({
     super.key,
     required this.lessonId,
     required this.clipUrls,
+    required this.lesson,
   });
 
   final String lessonId;
   final List<String> clipUrls;
+  final LessonModel lesson;
 
   @override
   ConsumerState<LessonPage> createState() => _LessonPageState();
@@ -50,8 +58,7 @@ class _LessonPageState extends ConsumerState<LessonPage> {
     // When a clip ends → move to next
     for (int i = 0; i < _videoCtrls.length; i++) {
       _videoCtrls[i].addListener(() {
-        if (_videoCtrls[i].value.position >=
-                _videoCtrls[i].value.duration &&
+        if (_videoCtrls[i].value.position >= _videoCtrls[i].value.duration &&
             mounted) {
           _onClipFinished(i);
         }
@@ -93,14 +100,21 @@ class _LessonPageState extends ConsumerState<LessonPage> {
     );
   }
 
-  double get _progress =>
-      (_currentIndex + 1) / widget.clipUrls.length; // 0 → 1
+  double get _progress => (_currentIndex + 1) / widget.clipUrls.length; // 0 → 1
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Lesson')),
+      appBar: AppBar(
+        title: Text(
+          widget.lesson.title,
+          style: TextTheme.of(context).labelMedium!.copyWith(
+                fontFamily: FontFamily.satoshi,
+              ),
+        ),
+      ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           // --- Progress bar ------------------------------------------------
           Padding(
@@ -114,7 +128,9 @@ class _LessonPageState extends ConsumerState<LessonPage> {
             ),
           ),
           // --- Clip carousel ----------------------------------------------
+
           Expanded(
+            // size: Size.fromWidth(buttonSize(ButtonSize.full).width),
             child: PageView.builder(
               controller: _pageController,
               physics: const NeverScrollableScrollPhysics(), // disable swipe
@@ -131,14 +147,30 @@ class _LessonPageState extends ConsumerState<LessonPage> {
               },
             ),
           ),
+          Card(
+            color: appColors.buttonYellow,
+            elevation: 0,
+            margin: EdgeInsets.symmetric(horizontal: 20, vertical: 50),
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+              child: Text(
+                'Understand how to sign about different places',
+                style: TextTheme.of(context).labelMedium!.copyWith(
+                      fontFamily: FontFamily.generalSans,
+                      fontWeight: FontWeight.w500,
+                    ),
+              ),
+            ),
+          ),
           // --- Manual next button (in case user pauses) -------------------
           if (_currentIndex < widget.clipUrls.length - 1)
             Padding(
               padding: const EdgeInsets.only(bottom: 24),
-              child: ElevatedButton.icon(
+              child: SignActionButton(
+                size: buttonSize(ButtonSize.half),
                 onPressed: () => _onClipFinished(_currentIndex),
-                icon: const Icon(Icons.arrow_forward),
-                label: const Text('Next clip'),
+                labelWidget: Row(
+                    children: [Text('Next clip'), Icon(Icons.arrow_forward)]),
               ),
             ),
         ],

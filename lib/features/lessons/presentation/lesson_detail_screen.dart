@@ -123,7 +123,7 @@ class SecondLessonDetailScreen extends HookConsumerWidget {
                         onPrev: () => currentVideoIndex.value--,
                         onNext: () => currentVideoIndex.value++,
                         onFinish: () =>
-                            print('All videos completed – navigate'),
+                            print('All videos completed - navigate'),
                       ),
                     ],
                   ),

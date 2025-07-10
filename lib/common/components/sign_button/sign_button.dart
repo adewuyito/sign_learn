@@ -79,7 +79,7 @@ class SignUpButton extends StatelessWidget {
                   : color,
               disabledBackgroundColor: role == ButtonRole.destructive
                   ? ButtonRole.destructive.deActiveColor
-                  : color.withAlpha(100),
+                  : color.withAlpha(200),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.elliptical(90, 90)),
                 side: BorderSide(

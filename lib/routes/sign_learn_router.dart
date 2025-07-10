@@ -1,3 +1,6 @@
+import 'package:sign_learn/features/quiz/presentation/presentation.dart';
+import 'package:sign_learn/features/quiz/presentation/example_multi_choice_view.dart';
+import 'package:sign_learn/features/quiz/presentation/quiz_score_view.dart';
 import 'package:sign_learn/routes/sign_learn_router.gr.dart';
 
 import 'route_guard.dart';
@@ -81,6 +84,20 @@ class SignRouter extends RootStackRouter {
           ],
         ),
 
+        routeWithTransition(page: QuizDetailRoute.page),
+
+        // ~ Quiz Score View
+        routeWithTransition(
+          page: QuizScoreRoute.page,
+          transitionsBuilder: TransitionsBuilder.cupertino,
+        ),
+
+        // ~ Example Multi-Choice View
+        routeWithTransition(
+          page: ExampleMultiChoiceRoute.page,
+          transitionsBuilder: TransitionsBuilder.cupertino,
+        ),
+
         // ~ Settings Routes
         routeWithTransition(
           initial: false,
@@ -108,11 +125,6 @@ class SignRouter extends RootStackRouter {
           page: ProfileEditRoute.page,
           guards: [connectionGuard],
         ),
-
-        // routeWithTransition(
-        //   page: QuizScoreScreenRoute.page,
-        //   guards: [connectionGuard],
-        // ),
 
         // ~ No Connection View
         routeWithTransition(page: NoConnectionRoute.page),

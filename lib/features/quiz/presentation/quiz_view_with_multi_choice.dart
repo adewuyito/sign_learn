@@ -4,16 +4,14 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sign_learn/features/quiz/data/data.dart';
 import 'package:sign_learn/features/quiz/domain/usecases/usecases.dart';
 import 'package:sign_learn/features/quiz/presentation/widgets/multi_choice_widget.dart';
-import 'package:sign_learn/features/quiz/presentation/quiz_score_view.dart';
-import 'package:sign_learn/routes/router.dart';
 
 @RoutePage()
-class QuizDetailView extends ConsumerStatefulWidget {
+class QuizViewWithMultiChoice extends ConsumerStatefulWidget {
   final String levelId;
   final String unitId;
   final String lessonId;
 
-  const QuizDetailView({
+  const QuizViewWithMultiChoice({
     super.key,
     required this.levelId,
     required this.unitId,
@@ -21,22 +19,13 @@ class QuizDetailView extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<QuizDetailView> createState() => _QuizScreenState();
+  ConsumerState<QuizViewWithMultiChoice> createState() =>
+      _QuizViewWithMultiChoiceState();
 }
 
-class _QuizScreenState extends ConsumerState<QuizDetailView> {
+class _QuizViewWithMultiChoiceState
+    extends ConsumerState<QuizViewWithMultiChoice> {
   int currentIndex = 0;
-  DateTime? quizStartTime;
-  List<QuizQuestionResult> questionResults = [];
-  int correctAnswers = 0;
-  int incorrectAnswers = 0;
-  int skippedQuestions = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    quizStartTime = DateTime.now();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -100,6 +89,7 @@ class _QuizScreenState extends ConsumerState<QuizDetailView> {
                           showFeedback: showFeedback,
                           isCorrect: isCorrect,
                           onOptionSelected: (index) {
+                            // Option selected callback
                             debugPrint('Selected option: $index');
                           },
                         ),
@@ -119,8 +109,6 @@ class _QuizScreenState extends ConsumerState<QuizDetailView> {
                   selectedOption,
                   showFeedback,
                   question.correctOptionIndex,
-                  questions,
-                  quiz.title,
                 ),
               ],
             ),
@@ -302,8 +290,6 @@ class _QuizScreenState extends ConsumerState<QuizDetailView> {
     int? selectedOption,
     bool showFeedback,
     int correctOptionIndex,
-    List<QuizQuestionModel> questions,
-    String quizTitle,
   ) {
     return Column(
       children: [
@@ -322,28 +308,9 @@ class _QuizScreenState extends ConsumerState<QuizDetailView> {
                 ? null
                 : () {
                     if (!showFeedback) {
-                      // Show feedback and record result
+                      // Show feedback
                       final isCorrect = selectedOption == correctOptionIndex;
                       MultiChoiceController.showFeedback(ref, isCorrect);
-
-                      // Record question result
-                      final questionStartTime = DateTime.now()
-                          .subtract(const Duration(seconds: 30)); // Approximate
-                      final questionTime =
-                          DateTime.now().difference(questionStartTime);
-
-                      questionResults.add(QuizQuestionResult(
-                        isCorrect: isCorrect,
-                        timeTaken: questionTime,
-                        selectedOption: selectedOption,
-                        correctOption: correctOptionIndex,
-                      ));
-
-                      if (isCorrect) {
-                        correctAnswers++;
-                      } else {
-                        incorrectAnswers++;
-                      }
                     } else {
                       // Next question or finish
                       if (currentIndex < totalQuestions - 1) {
@@ -352,8 +319,8 @@ class _QuizScreenState extends ConsumerState<QuizDetailView> {
                         });
                         MultiChoiceController.reset(ref);
                       } else {
-                        // Quiz finished - navigate to score view
-                        _navigateToScoreView(quizTitle, totalQuestions);
+                        // Quiz finished
+                        _showQuizCompletionDialog();
                       }
                     }
                   },
@@ -382,14 +349,6 @@ class _QuizScreenState extends ConsumerState<QuizDetailView> {
                 ),
               ),
               onPressed: () {
-                // Skip question
-                skippedQuestions++;
-                questionResults.add(QuizQuestionResult(
-                  isCorrect: false,
-                  selectedOption: null,
-                  correctOption: correctOptionIndex,
-                ));
-
                 setState(() {
                   currentIndex++;
                 });
@@ -409,21 +368,22 @@ class _QuizScreenState extends ConsumerState<QuizDetailView> {
     );
   }
 
-  void _navigateToScoreView(String quizTitle, int totalQuestions) {
-    final timeTaken = DateTime.now().difference(quizStartTime!);
-
-    SignNavigator.of(context).replace(
-      QuizScoreRoute(
-        levelId: widget.levelId,
-        unitId: widget.unitId,
-        lessonId: widget.lessonId,
-        quizTitle: quizTitle,
-        totalQuestions: totalQuestions,
-        correctAnswers: correctAnswers,
-        incorrectAnswers: incorrectAnswers,
-        skippedQuestions: skippedQuestions,
-        questionResults: questionResults,
-        timeTaken: timeTaken,
+  void _showQuizCompletionDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        title: const Text('Quiz Complete!'),
+        content: const Text('Congratulations! You have completed the quiz.'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              context.router.pop();
+            },
+            child: const Text('OK'),
+          ),
+        ],
       ),
     );
   }

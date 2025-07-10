@@ -3,13 +3,14 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import "package:sign_learn/features/lessons/data/models/fake_model_lesson.dart";
-import 'package:sign_learn/features/profile/profile.dart';
-
+import "../../lessons/data/models/fake_model_lesson.dart";
 import '../../../common/commons.dart';
 import '../../../core/core.dart';
 import '../../../gen/fonts.gen.dart';
+import '../../../routes/router.dart';
 import '../../lessons/data/data.dart';
+import '../../profile/profile.dart';
+import '../../quiz/presentation/quiz_score_view.dart';
 import 'widgets/home_calender.dart';
 import 'widgets/module_buttons.dart';
 
@@ -39,36 +40,46 @@ class _HomeViewState extends ConsumerState<HomeView> {
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
-            // SignNavigator.of(context).push(SignQuizRoute());
+            //   final firebase = FirebaseStorage.instance;
 
-            // final lesson = await ref.watch(lessonRepositoryProvider).getLesson(
-            //       levelId: "asl_lesson1",
-            //       unitId: "unit1",
-            //       lessonId: "0bb17c56-544e-4c2e-b620-c1fe53f1625f",
-            //     );
+            //  final imageUrl = await firebase.ref('/quiz/images/image_1.jpg').getDownloadURL();
 
-            // if (mounted)
-            //   SignNavigator.of(context).push(LessonRoute(
-            //     lesson: lesson,
-            //     lessonId: "ASL 1",
-            //     clipUrls: [
-            //       "https://firebasestorage.googleapis.com/v0/b/sign-learn-3e2d3.firebasestorage.app/o/lessons%2FASL1%2Funit1%2Flesson1%2F260397_tiny.mp4?alt=media&token=aa827d2a-f72a-4940-aa35-176e7905796d",
-            //       "https://firebasestorage.googleapis.com/v0/b/sign-learn-3e2d3.firebasestorage.app/o/lessons%2FASL1%2Funit1%2Flesson1%2F260397_tiny.mp4?alt=media&token=aa827d2a-f72a-4940-aa35-176e7905796d",
-            //       "https://firebasestorage.googleapis.com/v0/b/sign-learn-3e2d3.firebasestorage.app/o/lessons%2FASL1%2Funit1%2Flesson1%2F260397_tiny.mp4?alt=media&token=aa827d2a-f72a-4940-aa35-176e7905796d",
-            //     ],
-            //   ));
+            //   debugPrint(imageUrl);
 
-            // final vidUrl = ref.watch(lessonRepositoryProvider);
+            SignNavigator.of(context).push(QuizDetailRoute(
+              levelId: "asl_lesson1",
+              unitId: 'unit1',
+              lessonId: 'lesson_1',
+            ));
 
-            // final lesson = await ref.watch(lessonRepositoryProvider).getLesson(
-            //       levelId: "asl_lesson1",
-            //       unitId: "unit1",
-            //       lessonId: "0bb17c56-544e-4c2e-b620-c1fe53f1625f",
-            //     );
-
-            // final url = await vidUrl.fetchVideoUrl(lesson);
-            // debugPrint(url.first.toString());
+            // Navigator.of(context).push(
+            //   MaterialPageRoute(
+            //     builder: (context) => const ExampleMultiChoiceView(),
+            //   ),
+            // );
           },
+
+          /* onPressed: () async {
+            // Example level/unit IDs; adjust as needed
+            const levelId = 'asl_lesson1';
+            const unitId = 'unit1';
+
+            try {
+              await uploadMockQuizzes(levelId: levelId, unitId: unitId, ref: ref);
+              if (context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Mock quizzes uploaded!')),
+                );
+              }
+            } catch (e) {
+              if (context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Upload failed: $e')),
+                );
+              }
+            }
+          },
+ */
         ),
 
         // }),
@@ -115,6 +126,60 @@ class _HomeViewState extends ConsumerState<HomeView> {
             YBox(padding.dy),
             ModuleButtons(),
             // UploadMockLessonsButton(),
+
+            // Test Quiz Score Button
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: ElevatedButton.icon(
+                onPressed: () {
+                  // Navigate to a sample quiz score view
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => QuizScoreView(
+                        levelId: "asl_lesson1",
+                        unitId: "unit1",
+                        lessonId: "lesson_1",
+                        quizTitle: "Sample Quiz - ASL Basics",
+                        totalQuestions: 10,
+                        correctAnswers: 7,
+                        incorrectAnswers: 2,
+                        skippedQuestions: 1,
+                        questionResults: [
+                          QuizQuestionResult(isCorrect: true, correctOption: 0),
+                          QuizQuestionResult(
+                              isCorrect: false,
+                              selectedOption: 1,
+                              correctOption: 2),
+                          QuizQuestionResult(isCorrect: true, correctOption: 1),
+                          QuizQuestionResult(isCorrect: true, correctOption: 3),
+                          QuizQuestionResult(
+                              isCorrect: false,
+                              selectedOption: 0,
+                              correctOption: 1),
+                          QuizQuestionResult(isCorrect: true, correctOption: 2),
+                          QuizQuestionResult(isCorrect: true, correctOption: 0),
+                          QuizQuestionResult(isCorrect: true, correctOption: 1),
+                          QuizQuestionResult(isCorrect: true, correctOption: 3),
+                          QuizQuestionResult(
+                              isCorrect: false,
+                              selectedOption: null,
+                              correctOption: 2),
+                        ],
+                        timeTaken: const Duration(minutes: 5, seconds: 30),
+                      ),
+                    ),
+                  );
+                },
+                icon: const Icon(Icons.analytics),
+                label: const Text('View Sample Quiz Score'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.orange,
+                  foregroundColor: Colors.white,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                ),
+              ),
+            ),
           ],
         ),
       ),

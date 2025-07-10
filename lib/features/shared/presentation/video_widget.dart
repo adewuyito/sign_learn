@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:sign_learn/features/lessons/data/data.dart';
-import 'package:sign_learn/features/shared/advanced_video_palyer_imp.dart';
+
 
 import '../../../common/commons.dart';
 import '../../../core/core.dart';
